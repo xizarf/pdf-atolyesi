@@ -32,20 +32,10 @@ body{background:var(--bg);color:var(--fg);font:17px/1.45 -apple-system,BlinkMacS
 -webkit-backdrop-filter:blur(22px) saturate(180%);backdrop-filter:blur(22px) saturate(180%);
 border:1px solid var(--hair);box-shadow:inset 0 1px 0 var(--rim),inset 0 -1px 1px var(--hair),0 10px 30px var(--shade)}
 main{max-width:680px;margin:auto}
-nav{position:sticky;top:calc(env(safe-area-inset-top,0px) + 8px);z-index:3;display:grid;grid-template-columns:repeat(4,1fr);max-width:520px;margin:0 auto;padding:5px;border-radius:26px}
-nav::before{content:"";position:absolute;top:5px;height:calc((100% - 10px)/2);left:5px;width:calc((100% - 10px)/4);border-radius:999px;background:var(--pill);box-shadow:inset 0 1px 0 var(--rim),0 3px 12px var(--shade);transition:transform .45s cubic-bezier(.3,1.35,.5,1)}
-nav[data-tab="1"]::before{transform:translate(100%,0%)}
-nav[data-tab="2"]::before{transform:translate(200%,0%)}
-nav[data-tab="3"]::before{transform:translate(300%,0%)}
-nav[data-tab="4"]::before{transform:translate(0%,100%)}
-nav[data-tab="5"]::before{transform:translate(100%,100%)}
-nav[data-tab="6"]::before{transform:translate(200%,100%)}
-nav[data-tab="7"]::before{transform:translate(300%,100%)}
 button{font-family:inherit;font-size:16px;font-weight:600;line-height:1.2;color:var(--fg);cursor:pointer;border:0;background:transparent;border-radius:999px;transition:transform .18s ease,opacity .2s}
 button:active:not(:disabled){transform:scale(.94)}
 button:disabled{opacity:.35;cursor:default}
 button:focus-visible,input:focus-visible,.pick:focus-within{outline:3px solid var(--acc);outline-offset:2px}
-nav button{position:relative;padding:11px 0;font-size:clamp(11px,3.1vw,14px);white-space:nowrap;color:var(--mut)}nav button[aria-selected=true]{color:var(--fg)}
 header{text-align:center;padding:34px 4px 22px}
 h1{font:700 clamp(38px,11vw,56px)/1.05 -apple-system,BlinkMacSystemFont,"SF Pro Display",Inter,system-ui,sans-serif;letter-spacing:-.03em;margin:0 0 12px;text-wrap:balance}
 h1 span{display:block;padding-bottom:.08em}
@@ -144,6 +134,100 @@ select option{color:#000;background:#fff}
 .sliders label{display:grid;grid-template-columns:44px 1fr;align-items:center;gap:8px;font-size:15px;font-weight:600}
 input[type=range]{width:100%;height:38px;accent-color:var(--acc)}
 .acts{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:640px;margin:14px auto 0}.acts button{padding:15px 8px}.acts .main{padding:15px 8px}
+/* ================= Web sitesi düzeni ================= */
+body{padding-block:0 0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+main{max-width:1120px}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:6;margin:0 calc(-1 * max(16px,env(safe-area-inset-right,0px))) 0 calc(-1 * max(16px,env(safe-area-inset-left,0px)));background:var(--solid);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);border-bottom:1px solid var(--hair)}
+.bar{max-width:1152px;margin:auto;padding:0 16px}
+.brand{display:flex;align-items:center;gap:9px;padding:11px 0 4px;font-size:17px;font-weight:700;letter-spacing:-.02em;color:var(--fg);text-decoration:none;white-space:nowrap}
+.brand svg{width:22px;height:22px}
+nav{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;margin:0 -16px;padding:6px 12px 9px;-webkit-overflow-scrolling:touch}
+nav::-webkit-scrollbar{display:none}
+nav button{flex:none;padding:8px 13px;font-size:14px;font-weight:500;white-space:nowrap;color:var(--mut)}
+nav button[aria-selected=true]{color:var(--on);background:var(--acc);font-weight:600}
+nav button:focus-visible{outline-offset:-3px}
+section{scroll-margin-top:110px}
+section>header{padding:34px 4px 22px}
+.side,.work{display:contents}
+.cards{display:grid;gap:14px;margin-top:0}.cards>.card{margin-top:0}
+.foot{max-width:1120px;margin:56px auto 0;padding:26px 4px calc(30px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--hair);display:flex;flex-wrap:wrap;gap:10px 28px;justify-content:space-between;font-size:14px;color:var(--mut)}
+.foot p{margin:0;max-width:60ch}.foot a{color:var(--fg)}
+
+/* telefonda yüzen işlem çubuğu sayfanın sonunu kapatmasın */
+@media (max-width:759px){main:has(>#panel0:not([hidden]),>#panel1:not([hidden]),>#panel2:not([hidden]),>#panel3:not([hidden]))+.foot{padding-bottom:calc(190px + env(safe-area-inset-bottom,0px))}}
+/* ---- ana sayfa ---- */
+.hero{display:grid;gap:26px;padding:40px 0 8px;align-items:center}
+.hero h1{font-size:clamp(46px,13vw,92px);line-height:.98;letter-spacing:-.045em;margin:0 0 18px;text-align:left}
+.hero h1 span{display:block;padding:0}
+.hero p{margin:0;max-width:44ch;font-size:19px;color:var(--mut)}
+.cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.cta button{padding:15px 26px;font-size:16px}.cta .main{width:auto}
+/* imza öğesi: yamuk çekilmiş sayfa, düzelip kırpılır */
+.desk{position:relative;height:340px;border-radius:34px;overflow:hidden;background:radial-gradient(120% 90% at 20% 10%,#3a3a3a,#0b0b0b 70%);box-shadow:0 30px 60px var(--shade);border:1px solid var(--hair)}
+.paper{position:absolute;left:50%;top:50%;width:200px;height:272px;margin:-136px 0 0 -100px;background:#fff;border-radius:3px;box-shadow:0 18px 40px rgba(0,0,0,.55);padding:20px 18px;animation:straighten 2.1s .35s cubic-bezier(.7,0,.2,1) both}
+.paper i{display:block;height:5px;margin-bottom:8px;border-radius:3px;background:#c9c9c9}
+.paper i.t{height:11px;width:62%;background:#111;margin-bottom:16px}
+.paper i.s{width:74%}.paper i.x{width:48%;margin-bottom:17px}
+.paper u{display:flex;justify-content:space-between;margin:2px 0 18px}.paper u b{width:15px;height:15px;border-radius:50%;border:1.5px solid #999}.paper u b.on{background:#111;border-color:#111}
+.frame{position:absolute;inset:-9px;border:1.5px solid rgba(255,255,255,.9);animation:snap 2.1s .35s cubic-bezier(.7,0,.2,1) both}
+.frame b{position:absolute;width:13px;height:13px;border-radius:50%;background:#fff;box-shadow:0 1px 5px rgba(0,0,0,.5)}
+.frame b:nth-child(1){left:-7px;top:-7px}.frame b:nth-child(2){right:-7px;top:-7px}.frame b:nth-child(3){right:-7px;bottom:-7px}.frame b:nth-child(4){left:-7px;bottom:-7px}
+.done{position:absolute;right:16px;bottom:16px;padding:10px 16px;border-radius:99px;font-size:14px;font-weight:700;color:#000;background:rgba(255,255,255,.94);box-shadow:0 8px 24px rgba(0,0,0,.4);animation:pop .5s 2.3s cubic-bezier(.3,1.5,.5,1) both}
+@keyframes straighten{0%,25%{transform:perspective(700px) rotateX(24deg) rotateY(-19deg) rotateZ(-11deg) scale(.92);filter:brightness(.72) sepia(.35)}100%{transform:none;filter:none}}
+@keyframes snap{0%{opacity:0;inset:-34px}22%,75%{opacity:1}100%{opacity:1;inset:-9px}}
+@keyframes pop{from{opacity:0;transform:translateY(14px) scale(.9)}}
+.today{display:grid;grid-template-columns:1fr 1fr;margin-top:30px;border-radius:28px;overflow:hidden}
+.today button{display:block;text-align:left;border-radius:0;padding:18px 18px 16px;font-weight:500;font-size:14px;color:var(--mut);border:solid var(--hair);border-width:0 1px 1px 0;min-width:0}
+.today button b{display:block;font-size:30px;letter-spacing:-.03em;color:var(--fg);font-variant-numeric:tabular-nums;line-height:1.25}
+.tools-title{margin:54px 4px 16px;font-size:clamp(28px,6vw,40px);letter-spacing:-.03em;line-height:1.1}
+.bento{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.bento button{display:flex;flex-direction:column;align-items:flex-start;gap:6px;text-align:left;padding:20px 18px;border-radius:26px;min-width:0}
+.bento button svg{width:28px;height:28px;margin-bottom:18px}
+.bento b{font-size:19px;letter-spacing:-.01em}.bento span{font-size:14px;font-weight:400;color:var(--mut);line-height:1.4}
+.bento .wide2{grid-column:1/-1}
+.bento .ink{color:var(--on);background:linear-gradient(160deg,var(--acc2),var(--acc))}.bento .ink span{color:var(--on);opacity:.78}
+.bento button:focus-visible,.today button:focus-visible{outline:3px solid var(--acc);outline-offset:-3px}
+
+@media (min-width:760px){
+  .hero{grid-template-columns:1.05fr .95fr;gap:44px;padding-top:64px}
+  .hero h1{font-size:clamp(54px,6.6vw,92px)}
+  .desk{height:440px}.paper{width:236px;height:322px;margin:-161px 0 0 -118px;padding:26px 22px}.paper i{height:6px;margin-bottom:10px}.paper i.t{height:13px}
+  .today{grid-template-columns:repeat(4,1fr);margin-top:44px}.today button{border-width:0 1px 0 0;padding:22px}
+  .bento{grid-template-columns:repeat(6,1fr);gap:14px}.bento button{grid-column:span 2;padding:24px 22px}.bento .wide2{grid-column:span 3}.bento .wide2 svg{margin-bottom:44px}
+  section>header{text-align:left;padding:44px 4px 26px}
+  section>header h1{font-size:clamp(36px,4vw,50px)}section>header h1 span{display:inline;margin-left:.24em}
+  section>header p{margin:0;max-width:62ch}
+  #panel2{max-width:640px;margin:auto}
+  .dock{position:static;max-width:none;margin-top:14px;border-radius:28px}
+  #grid{grid-template-columns:repeat(auto-fill,minmax(190px,1fr))}
+  .cards{grid-template-columns:1fr 1fr;align-items:start}
+  #years{grid-template-columns:repeat(3,1fr)}
+  #alist{grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
+  #panel7 #asearch{max-width:420px}
+  .acts,.swatches{width:100%}
+}
+@media (min-width:940px){
+  #panel0:not([hidden]),#panel1:not([hidden]),#panel3:not([hidden]){display:grid;grid-template-columns:360px minmax(0,1fr);column-gap:28px;align-items:start}
+  #panel0>header,#panel1>header,#panel3>header{grid-column:1/-1}
+  .side,.work{display:block;min-width:0}
+  .side>:first-child,.work>:first-child{margin-top:0}
+  .work #grid{margin-top:0}.work #dlist{margin-top:0}
+  .work .how{margin-top:0;grid-template-columns:repeat(3,1fr)}.work .how li{padding:70px 12px;font-size:15px}
+  #blist{grid-template-columns:repeat(auto-fill,minmax(280px,1fr));align-items:start}
+  .work #bcount{margin-top:0!important}
+  .bookempty{display:block}
+}
+@media (min-width:1080px){
+  .bar{display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .brand{padding:0}
+  nav{margin:0;padding:11px 0;overflow:visible}
+  nav button{padding:8px 11px}
+  .cards.three{grid-template-columns:repeat(3,1fr)}
+  .cards.three>.span{grid-column:1/-1;max-width:640px;width:100%;justify-self:center}
+}
+.bookempty{display:none;padding:70px 20px;border-radius:26px;text-align:center;color:var(--mut);border:1.5px dashed var(--hair)}
+#blist:not(:empty)~.bookempty{display:none}
+@media (hover:hover){nav button:hover:not([aria-selected=true]){color:var(--fg);background:var(--hair)}.bento button:hover,.today button:hover{filter:brightness(1.06)}#years a:hover{border-color:var(--fg)}}
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.glass,.item,#dlist li,.how li{background:var(--solid)}}
 @media (prefers-reduced-transparency:reduce){.glass,.item,#dlist li,.how li{background:var(--solid);-webkit-backdrop-filter:none;backdrop-filter:none}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
@@ -152,10 +236,33 @@ input[type=range]{width:100%;height:38px;accent-color:var(--acc)}
 #sname{font-weight:600;overflow-wrap:anywhere;margin:0 0 14px}#sno{width:100%;padding:14px}
 </style>
 <div class="aura" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+<div class="top"><div class="bar"><a class="brand" href="#ana-sayfa" id="brand"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h8l5 5v13H6z"/><path d="M14 3v5h5"/><path d="M9 13h7M9 17h5"/></svg>PDF Atölyesi</a>
+<nav role="tablist" aria-label="Bölümler"><button id="tab8" role="tab" aria-controls="panel8" aria-selected="true">Ana sayfa</button><button id="tab0" role="tab" aria-controls="panel0" aria-selected="false">Tara</button><button id="tab3" role="tab" aria-controls="panel3" aria-selected="false">Yanlışlar</button><button id="tab1" role="tab" aria-controls="panel1" aria-selected="false">Dosya</button><button id="tab2" role="tab" aria-controls="panel2" aria-selected="false">Ses</button><button id="tab4" role="tab" aria-controls="panel4" aria-selected="false">Sayaç</button><button id="tab6" role="tab" aria-controls="panel6" aria-selected="false">Takip</button><button id="tab5" role="tab" aria-controls="panel5" aria-selected="false">Çıkmış</button><button id="tab7" role="tab" aria-controls="panel7" aria-selected="false">Arşiv</button></nav></div></div>
 <main>
-<nav class="glass" role="tablist" data-tab="0"><button id="tab0" role="tab" aria-selected="true">Tara</button><button id="tab3" role="tab" aria-selected="false">Yanlışlar</button><button id="tab1" role="tab" aria-selected="false">Dosya</button><button id="tab2" role="tab" aria-selected="false">Ses</button><button id="tab4" role="tab" aria-selected="false">Sayaç</button><button id="tab6" role="tab" aria-selected="false">Takip</button><button id="tab5" role="tab" aria-selected="false">Çıkmış</button><button id="tab7" role="tab" aria-selected="false">Arşiv</button></nav>
-<section id="panel0">
+<section id="panel8">
+<div class="hero"><div><h1>Çek. Kırp.<span>PDF hazır.</span></h1><p>Ders sayfalarını PDF’e çevir, yanlışlarını biriktir, sınava hazırlığını takip et. Dosyaların cihazında işlenir.</p>
+<div class="cta"><button class="main" id="hscan" data-go="0">Sayfa tara</button><button class="glass" data-go="3">Yanlış defterini aç</button></div></div>
+<div class="desk" aria-hidden="true"><div class="paper"><i class="t"></i><i></i><i></i><i class="s"></i><u><b></b><b class="on"></b><b></b><b></b><b></b></u><i></i><i class="s"></i><i class="x"></i><u><b></b><b></b><b></b><b class="on"></b><b></b></u><i></i><i></i><i class="s"></i><div class="frame"><b></b><b></b><b></b><b></b></div></div><div class="done">PDF hazır ✓</div></div></div>
+<div class="today glass" aria-label="Bugünkü durumun">
+<button data-go="6"><b id="hdays">–</b><span id="hdaysl">sınava kalan gün</span></button>
+<button data-go="6"><b id="hgoal">–</b><span>bugün çözülen soru</span></button>
+<button data-go="3"><b id="hbook">0</b><span>defterdeki soru</span></button>
+<button data-go="7"><b id="hshelf">0</b><span>arşivdeki PDF</span></button></div>
+<h2 class="tools-title">Ne yapmak istiyorsun?</h2>
+<div class="bento">
+<button class="ink wide2" data-go="0"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8V4h4M16 4h4v4M20 16v4h-4M8 20H4v-4"/><path d="M8 9h8M8 12h8M8 15h5"/></svg><b>Sayfa tara</b><span>Fotoğrafı veya ekran görüntüsünü ekle. Sayfa kırpılır, düzeltilir ve PDF olur.</span></button>
+<button class="glass wide2" data-go="3"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h13v17H7a2 2 0 0 1-2-2z"/><path d="M9.500 9.500l5 5M14.500 9.500l-5 5"/></svg><b>Yanlış defteri</b><span>Yapamadığın soruları kutuyla seç, ders ve konuya göre topla.</span></button>
+<button class="glass" data-go="1"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3h8l4 4v11H8z"/><path d="M4 8v13h11"/></svg><b>Dosyadan PDF</b><span>Word, Excel, metin ve görselleri tek PDF yap.</span></button>
+<button class="glass" data-go="4"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 2h6"/></svg><b>Sayaç ve net</b><span>Deneme süresi, soru başı süre, Pomodoro ve net hesabı.</span></button>
+<button class="glass" data-go="6"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16M7 16v-5M12 16V6M17 16v-8"/></svg><b>Takip</b><span>Konular, günlük soru hedefi ve sınava kalan gün.</span></button>
+<button class="glass" data-go="5"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-9 9"/><path d="M18 14v6H4V6h6"/></svg><b>Çıkmış sorular</b><span>2018-2026 kitapçıkları için ÖSYM bağlantıları.</span></button>
+<button class="glass" data-go="2"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10v4h4l5 4V6L8 10z"/><path d="M16.500 9a4 4 0 0 1 0 6"/></svg><b>Videodan ses</b><span>Videonun sesini ayırıp kaydet.</span></button>
+<button class="glass" data-go="7"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16v13H4zM3 4h18v3H3zM9 11h6"/></svg><b>Arşiv</b><span>Oluşturduğun PDF’leri bu cihazda bul.</span></button>
+</div>
+</section>
+<section id="panel0" hidden>
 <header><h1>Çek. Kırp.<span>PDF hazır.</span></h1><p>Ekran görüntülerindeki ve kitap fotoğraflarındaki sayfalar otomatik kırpılır. Yarım kalan işin bu cihazda saklanır.</p></header>
+<div class="side">
 <label class="pick glass"><span class="plus" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 4v16M4 12h16"/></svg></span><b>Görüntü veya fotoğraf ekle</b><small>Birden fazla seçebilirsin</small><input id="file" type="file" accept="image/*" multiple></label>
 <label class="cam glass"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg><span>Kamerayla tara</span><input id="camera" type="file" accept="image/*" capture="environment"></label>
 <div class="opts glass">
@@ -167,18 +274,25 @@ input[type=range]{width:100%;height:38px;accent-color:var(--acc)}
 <label class="wide"><span>Kapak sayfası</span><input id="cover" type="checkbox" role="switch"></label>
 <label class="wide"><span>Sayfa numarası</span><input id="nums" type="checkbox" role="switch"></label>
 </div>
+<footer class="dock glass"><p id="status" role="status">Henüz görüntü eklenmedi.</p><button id="make" class="main" disabled>PDF oluştur</button></footer>
+</div>
+<div class="work">
 <div id="grid"></div>
 <button id="clear" class="glass wipe" hidden>Tümünü temizle</button>
 <ol class="how"><li><b>1</b>Görüntüleri ekle</li><li><b>2</b>Sırayı kontrol et</li><li><b>3</b>PDF'i kaydet</li></ol>
-<footer class="dock glass"><p id="status" role="status">Henüz görüntü eklenmedi.</p><button id="make" class="main" disabled>PDF oluştur</button></footer>
+</div>
 </section>
 <section id="panel1" hidden>
 <header><h1>Her dosya.<span>Tek PDF.</span></h1><p>Dosyalar telefonunda işlenir. Karmaşık belgelerde düzen farklı olabilir.</p></header>
+<div class="side">
 <label class="pick glass"><span class="plus" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 4v16M4 12h16"/></svg></span><b>Dosya ekle</b><small>Word (.docx), Excel (.xlsx), CSV, metin, görsel</small><input id="dfile" type="file" multiple></label>
 <div class="opts glass"><span>PDF adı</span><input id="dname" class="field" type="text" maxlength="80" placeholder="Örn. Ders Notları" autocomplete="off" enterkeyhint="done"></div>
+<div class="dock glass"><p id="dstatus" role="status">Henüz dosya eklenmedi.</p><button id="dmake" class="main" disabled>PDF oluştur</button></div>
+</div>
+<div class="work">
 <ul id="dlist"></ul>
 <ol class="how"><li><b>1</b>Dosyaları ekle</li><li><b>2</b>Sıraya koy</li><li><b>3</b>PDF'i kaydet</li></ol>
-<div class="dock glass"><p id="dstatus" role="status">Henüz dosya eklenmedi.</p><button id="dmake" class="main" disabled>PDF oluştur</button></div>
+</div>
 </section>
 <section id="panel2" hidden>
 <header><h1>Videonu seç.<span>Sesini al.</span></h1><p>Kendi videonun veya kullanma iznin olan bir videonun sesini ayır. Video telefonunda işlenir.</p></header>
@@ -190,19 +304,25 @@ input[type=range]{width:100%;height:38px;accent-color:var(--acc)}
 
 <section id="panel3" hidden>
 <header><h1>Yanlışların.<span>Tek defterde.</span></h1><p>Fotoğraftan soruyu kutuyla seç. Defter bu cihazın tarayıcısında saklanır.</p></header>
+<div class="side">
 <label class="pick glass"><span class="plus" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 4v16M4 12h16"/></svg></span><b>Fotoğraftan soru ekle</b><small>Taranan sayfalardan da ekleyebilirsin</small><input id="bfile" type="file" accept="image/*" multiple></label>
 <label class="cam glass"><span>Soruyu kamerayla çek</span><input id="bscan" type="file" accept="image/*" capture="environment"></label>
 <div class="opts glass"><span>PDF adı</span><input id="bname" class="field" type="text" maxlength="80" placeholder="Yanlış Sorularım" autocomplete="off">
 <span>Düzen</span><select id="blayout"><option value="solo">Çözüm boşluklu</option><option value="tight">Sık: alt alta</option></select></div>
 <div id="filters" class="opts glass" hidden><span>Ders</span><select id="fders"><option value="*">Tümü</option></select><span>Konu</span><select id="fkonu"><option value="*">Tümü</option></select></div>
+<div class="dock glass"><p id="bstatus" role="status">Henüz soru eklenmedi.</p><button id="bmake" class="main" disabled>Defteri PDF yap</button></div>
+</div>
+<div class="work">
 <p id="bcount" style="font-weight:700;margin:18px 4px 0"></p>
 <ul id="blist"></ul>
+<p class="bookempty">Eklediğin sorular burada görünür.</p>
 <button id="bwipe" class="glass" style="width:100%;margin-top:14px;padding:14px" hidden>Tüm defteri boşalt</button>
-<div class="dock glass"><p id="bstatus" role="status">Henüz soru eklenmedi.</p><button id="bmake" class="main" disabled>Defteri PDF yap</button></div>
+</div>
 </section>
 
 <section id="panel4" hidden>
 <header><h1>Süreni tut.<span>Netini gör.</span></h1></header>
+<div class="cards three">
 <div class="card glass"><h2>Deneme süresi</h2><output id="xtime" class="big">40:00</output>
 <label class="line">Süre (dakika)<input id="xmin" class="field" type="number" inputmode="numeric" min="1" max="600" value="40"></label>
 <div class="pair"><button id="xgo" class="main">Başlat</button><button id="xreset" class="soft">Sıfırla</button></div><p id="xnote" role="status"></p></div>
@@ -211,15 +331,17 @@ input[type=range]{width:100%;height:38px;accent-color:var(--acc)}
 <div class="card glass"><h2>Pomodoro</h2><output id="otime" class="big">25:00</output><p id="ophase"></p>
 <div class="pair"><label class="line col">Çalışma (dk)<input id="owork" class="field" type="number" inputmode="numeric" min="1" max="180" value="25"></label><label class="line col">Mola (dk)<input id="orest" class="field" type="number" inputmode="numeric" min="1" max="60" value="5"></label></div>
 <div class="pair"><button id="ogo" class="main">Başlat</button><button id="oreset" class="soft">Sıfırla</button></div><p id="onote" role="status"></p></div>
-<p class="hint">Ses uyarısı için sayfa ve telefon açık kalmalı. Sessiz mod sesi kapatabilir.</p>
-<div class="card glass"><h2>Net hesaplama</h2>
+<div class="card glass span"><h2>Net hesaplama</h2>
 <div class="pair three"><label class="line col">Doğru<input id="nd" class="field" type="number" inputmode="numeric" min="0"></label><label class="line col">Yanlış<input id="ny" class="field" type="number" inputmode="numeric" min="0"></label><label class="line col">Soru sayısı<input id="nt" class="field" type="number" inputmode="numeric" min="0" placeholder="–"></label></div>
 <label class="line col">Kural<select id="nk"><option value="4">4 yanlış 1 doğruyu götürür</option><option value="3">3 yanlış 1 doğruyu götürür</option><option value="0">Yanlış götürmez</option></select></label>
 <output id="nres" class="big">0</output><p>net</p><p id="nnote"></p></div>
+</div>
+<p class="hint">Ses uyarısı için sayfa ve telefon açık kalmalı. Sessiz mod sesi kapatabilir.</p>
 </section>
 
 <section id="panel6" hidden>
 <header><h1>Hedefini koy.<span>Yolunu gör.</span></h1></header>
+<div class="cards three">
 <div class="card glass"><h2>Sınava geri sayım</h2><output id="days" class="big">–</output><p id="daysnote"></p>
 <label class="line">Sınav tarihi<input id="examdate" class="field date" type="date"></label>
 <p class="hint">Varsayılan: 19 Haziran 2027 (ÖSYM duyurusu: YKS 19-20 Haziran 2027). Tarih değişirse buradan güncelle.</p></div>
@@ -233,6 +355,7 @@ input[type=range]{width:100%;height:38px;accent-color:var(--acc)}
 <div class="addrow"><input id="tnew" class="field" maxlength="60" placeholder="Yeni konu" aria-label="Yeni konu" autocomplete="off"><button id="tadd" class="soft">Ekle</button></div>
 <button id="treset" class="soft wideb" hidden>Bu dersin başlangıç listesine dön</button>
 <p class="hint">Bu bir başlangıç listesidir, resmi ÖSYM listesi değildir. Kendi kaynağına göre konu ekleyip silebilirsin.</p></div>
+</div>
 <p id="twarn" class="hint" role="status"></p>
 </section>
 
@@ -262,6 +385,7 @@ input[type=range]{width:100%;height:38px;accent-color:var(--acc)}
 <p class="hint">Sorular ÖSYM'ye aittir ve bu sitede kopyaları tutulmaz. Bağlantı açılmazsa <a href="https://www.osym.gov.tr/SinavGrubu/Menu/323" target="_blank" rel="noopener">ÖSYM'nin YKS sayfasını</a> aç.</p>
 </section>
 </main>
+<div class="foot"><p>PDF Atölyesi’ne eklediğin dosyalar cihazında işlenir. Defter, arşiv ve takip bilgilerin bu tarayıcıda saklanır.</p><p><a href="https://www.osym.gov.tr/SinavGrubu/Menu/323" target="_blank" rel="noopener">ÖSYM YKS sayfası</a></p></div>
 
 <div id="selector" class="sheet" hidden><p id="shint" role="status"></p>
 <div class="tags stag"><select id="sders" aria-label="Eklenecek sorunun dersi"><option value="">Ders seç</option><option>Türkçe</option><option>Matematik</option><option>Geometri</option><option>Fizik</option><option>Kimya</option><option>Biyoloji</option><option>Edebiyat</option><option>Tarih</option><option>Coğrafya</option><option>Felsefe</option><option>Din Kültürü</option><option>Yabancı Dil</option><option>Diğer</option></select><input id="skonu" class="field" list="shints" maxlength="60" placeholder="Konu" aria-label="Eklenecek sorunun konusu" autocomplete="off"><datalist id="shints"></datalist></div><div class="stage"><canvas id="sview"></canvas></div>
@@ -530,7 +654,7 @@ function render(){
     grid.appendChild(el);
   });
   $('clear').hidden=!items.length; $('clear').disabled=busy;
-  update(); saveDraft();
+  update(); saveDraft(); homeSoon();
 }
 function move(i,d){ [items[i],items[i+d]]=[items[i+d],items[i]]; render(); }
 
@@ -1040,13 +1164,21 @@ $('dmake').onclick=async()=>{
   }
   docBusy=false; drender();
 };
-// sekme kimliği -> menüdeki sırası
-const TABS=[0,3,1,2,4,6,5,7];
-function tab(n){
+// sekme kimliği -> adres çubuğundaki adı
+const TABS=[8,0,3,1,2,4,6,5,7];
+const SLUG={8:'ana-sayfa',0:'tara',3:'yanlislar',1:'dosya',2:'ses',4:'sayac',6:'takip',5:'cikmis',7:'arsiv'};
+function tab(n,fromAddress){
   TABS.forEach(i=>{ $('tab'+i).setAttribute('aria-selected',i===n); $('panel'+i).hidden=i!==n; });
-  document.querySelector('nav').dataset.tab=TABS.indexOf(n); window.scrollTo(0,0);
+  if(!fromAddress&&location.hash!=='#'+SLUG[n]){ try{ history.pushState(null,'','#'+SLUG[n]); }catch(e){} }
+  // seçili sekme dar ekranda görünür kalsın (sayfayı kaydırmadan)
+  const t=$('tab'+n), box=t.parentElement, a=t.getBoundingClientRect(), r=box.getBoundingClientRect();
+  box.scrollLeft+=a.left+a.width/2-(r.left+r.width/2);
+  window.scrollTo(0,0); if(n===8) homeSoon();
 }
-TABS.forEach(i=>$('tab'+i).onclick=()=>tab(i));
+TABS.forEach(i=>$('tab'+i).addEventListener('click',()=>tab(i)));
+const fromHash=()=>Number(Object.keys(SLUG).find(k=>'#'+SLUG[k]===location.hash)??8);
+window.addEventListener('popstate',()=>tab(fromHash(),true));
+window.addEventListener('hashchange',()=>tab(fromHash(),true));
 dl.then(()=>{ drender(); if(!downloads) dsay('Bu görünümde PDF kaydedilemiyor. Sayfayı Claude uygulamasında veya claude.ai üzerinde aç.'); });
 
 // ---- Videodan Ses: cihazdaki videonun sesi WAV olarak ZIP içine konur ----
@@ -1318,7 +1450,7 @@ function brender(){
   $('filters').hidden=!book.length;
   $('bcount').textContent=!book.length?'':vis.length===book.length?book.length+' soru':vis.length+' / '+book.length+' soru gösteriliyor';
   $('bmake').textContent=vis.length&&vis.length<book.length?'Gösterilen '+vis.length+' soruyu PDF yap':'Defteri PDF yap';
-  $('bmake').disabled=bookBusy||!vis.length||!downloads; $('bwipe').hidden=!book.length; $('bfile').disabled=$('bscan').disabled=bookBusy;
+  $('bmake').disabled=bookBusy||!vis.length||!downloads; $('bwipe').hidden=!book.length; $('bfile').disabled=$('bscan').disabled=bookBusy; homeSoon();
 }
 $('fders').onchange=()=>{ $('fkonu').value='*'; brender(); }; $('fkonu').onchange=brender;
 
@@ -1540,6 +1672,7 @@ function saveTrack(){
     .catch(()=>{ $('twarn').textContent='Dikkat: Bu tarayıcı takip bilgilerini saklayamıyor.'; });
 }
 function countdown(){
+  homeSoon();
   const v=track.exam, big=$('days'), note=$('daysnote');
   if(!v){ big.textContent='–'; note.textContent='Sınav tarihini seç.'; return; }
   const n=dayNo(v)-dayNo(dayKey());
@@ -1559,7 +1692,7 @@ function goalRender(){
     a.textContent=n; bar.style.height=(4+Math.min(1,n/goal)*46)+'px'; if(n>=goal) bar.className='full'; t.textContent=d.toLocaleDateString('tr-TR',{weekday:'short'});
     li.append(a,bar,t); list.appendChild(li);
   }
-  $('gsum').textContent='Son 7 gün: '+sum+' soru';
+  $('gsum').textContent='Son 7 gün: '+sum+' soru'; homeSoon();
 }
 function addSolved(n){ const k=dayKey(); track.days[k]=Math.max(0,Math.min(9999,(track.days[k]||0)+n)); goalRender(); saveTrack(); }
 function topicRender(){
@@ -1630,6 +1763,7 @@ async function shelfLoad(){
   catch(e){ asay('Arşiv okunamadı. Sayfayı yenile.'); }
 }
 function shelfRender(){
+  homeSoon();
   const q=$('asearch').value.trim().toLocaleLowerCase('tr'), list=$('alist'); list.textContent='';
   const vis=shelf.filter(f=>f.name.toLocaleLowerCase('tr').includes(q));
   for(const f of vis){
@@ -1665,6 +1799,23 @@ function shelfRender(){
 $('asearch').oninput=shelfRender;
 $('tab7').addEventListener('click',shelfLoad);
 dl.then(shelfRender); shelfLoad();
+
+// ================= Ana sayfa =================
+function homeRender(){
+  if(trackReady){
+    const n=track.exam?dayNo(track.exam)-dayNo(dayKey()):-1;
+    $('hdays').textContent=n>0?n:n===0?'Bugün':'–';
+    $('hdaysl').textContent=n===0?'sınav günü':n>0?'sınava kalan gün':'sınav tarihi seç';
+    $('hgoal').textContent=(track.days[dayKey()]||0)+' / '+track.goal;
+  }
+  $('hbook').textContent=book.length; $('hshelf').textContent=shelf.length;
+  $('hscan').textContent=items.length?'Kaldığın yere dön ('+items.length+' sayfa)':'Sayfa tara';
+}
+function homeSoon(){ queueMicrotask(homeRender); }
+for(const b of document.querySelectorAll('[data-go]')) b.onclick=()=>$('tab'+b.dataset.go).click();
+$('brand').onclick=e=>{ e.preventDefault(); tab(8); };
+bookReady.then(homeSoon);
+tab(fromHash(),true);
 </script>
 <script>if('serviceWorker' in navigator) addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
 </body>
