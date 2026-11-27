@@ -40,6 +40,7 @@ nav[data-tab="3"]::before{transform:translate(300%,0%)}
 nav[data-tab="4"]::before{transform:translate(0%,100%)}
 nav[data-tab="5"]::before{transform:translate(100%,100%)}
 nav[data-tab="6"]::before{transform:translate(200%,100%)}
+nav[data-tab="7"]::before{transform:translate(300%,100%)}
 button{font-family:inherit;font-size:16px;font-weight:600;line-height:1.2;color:var(--fg);cursor:pointer;border:0;background:transparent;border-radius:999px;transition:transform .18s ease,opacity .2s}
 button:active:not(:disabled){transform:scale(.94)}
 button:disabled{opacity:.35;cursor:default}
@@ -117,6 +118,10 @@ select option{color:#000;background:#fff}
 #topics input{width:22px;height:22px;flex:none;margin:0;accent-color:var(--acc)}
 #topics input:checked+span{text-decoration:line-through;color:var(--mut)}
 #topics button{flex:none;min-width:36px;height:36px;font-size:12px;color:var(--mut)}
+#alist{list-style:none;padding:0;margin:12px 0 0;display:grid;gap:10px}
+#alist li>b{display:block;margin:4px 4px 0;font-size:16px;overflow-wrap:anywhere}
+#alist .addrow{margin:0}#alist .row button{font-size:13px;padding:11px 2px}
+#asearch{margin-top:4px}
 .addrow{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:10px}.addrow input.field{min-width:0}.addrow .soft{padding:12px 18px}
 .hint{font-size:13px;color:var(--mut);text-align:center;margin:10px 8px}
 .sheet{position:fixed;inset:0;z-index:20;background:var(--bg);overflow:auto;padding:calc(12px + env(safe-area-inset-top,0px)) 12px calc(20px + env(safe-area-inset-bottom,0px))}
@@ -148,7 +153,7 @@ input[type=range]{width:100%;height:38px;accent-color:var(--acc)}
 </style>
 <div class="aura" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
 <main>
-<nav class="glass" role="tablist" data-tab="0"><button id="tab0" role="tab" aria-selected="true">Tara</button><button id="tab3" role="tab" aria-selected="false">Yanlışlar</button><button id="tab1" role="tab" aria-selected="false">Dosya</button><button id="tab2" role="tab" aria-selected="false">Ses</button><button id="tab4" role="tab" aria-selected="false">Sayaç</button><button id="tab6" role="tab" aria-selected="false">Takip</button><button id="tab5" role="tab" aria-selected="false">Çıkmış</button></nav>
+<nav class="glass" role="tablist" data-tab="0"><button id="tab0" role="tab" aria-selected="true">Tara</button><button id="tab3" role="tab" aria-selected="false">Yanlışlar</button><button id="tab1" role="tab" aria-selected="false">Dosya</button><button id="tab2" role="tab" aria-selected="false">Ses</button><button id="tab4" role="tab" aria-selected="false">Sayaç</button><button id="tab6" role="tab" aria-selected="false">Takip</button><button id="tab5" role="tab" aria-selected="false">Çıkmış</button><button id="tab7" role="tab" aria-selected="false">Arşiv</button></nav>
 <section id="panel0">
 <header><h1>Çek. Kırp.<span>PDF hazır.</span></h1><p>Ekran görüntülerindeki ve kitap fotoğraflarındaki sayfalar otomatik kırpılır. Yarım kalan işin bu cihazda saklanır.</p></header>
 <label class="pick glass"><span class="plus" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 4v16M4 12h16"/></svg></span><b>Görüntü veya fotoğraf ekle</b><small>Birden fazla seçebilirsin</small><input id="file" type="file" accept="image/*" multiple></label>
@@ -229,6 +234,15 @@ input[type=range]{width:100%;height:38px;accent-color:var(--acc)}
 <button id="treset" class="soft wideb" hidden>Bu dersin başlangıç listesine dön</button>
 <p class="hint">Bu bir başlangıç listesidir, resmi ÖSYM listesi değildir. Kendi kaynağına göre konu ekleyip silebilirsin.</p></div>
 <p id="twarn" class="hint" role="status"></p>
+</section>
+
+<section id="panel7" hidden>
+<header><h1>PDF'lerin.<span>Elinin altında.</span></h1><p>Burada oluşturduğun PDF'ler yalnızca bu cihazın tarayıcısında saklanır. Hiçbir yere yüklenmez.</p></header>
+<input id="asearch" class="field" type="search" placeholder="Dosya ara" aria-label="Dosya ara" autocomplete="off" hidden>
+<p id="acount" class="hint"></p>
+<ul id="alist"></ul>
+<p id="astatus" class="hint" role="status"></p>
+<p class="hint">Tarayıcı verilerini silersen arşiv de silinir. Önemli dosyaları Dosyalar uygulamasına da kaydet.</p>
 </section>
 
 <section id="panel5" hidden>
@@ -1018,15 +1032,16 @@ $('dmake').onclick=async()=>{
     }
     const note=made.warn.length?' Eksik veya farklı görünebilir: '+made.warn.join(', ')+'. PDF\'i kontrol et.':'';
     dsay(made.count+' sayfa hazır. Kaydetmeyi onayla.'+note);
-    await downloads.save({filename:cleanName($('dname').value||baseName(docs[0]),'belge'),data:made.blob});
-    dsay('PDF kaydetme ekranına gönderildi.'+note);
+    const dfn=cleanName($('dname').value||baseName(docs[0]),'belge'), kept=await archive(dfn,made.blob,'Dosyadan PDF');
+    await downloads.save({filename:dfn,data:made.blob});
+    dsay('PDF kaydetme ekranına gönderildi.'+archived(kept)+note);
   }catch(e){
     dsay(e&&e.code==='declined'?'Kaydetme iptal edildi. İstersen tekrar dene.':(current?current+' çevrilemedi: ':'PDF kaydedilemedi: ')+((e&&(e.message||e.code))||'bilinmeyen hata'));
   }
   docBusy=false; drender();
 };
 // sekme kimliği -> menüdeki sırası
-const TABS=[0,3,1,2,4,6,5];
+const TABS=[0,3,1,2,4,6,5,7];
 function tab(n){
   TABS.forEach(i=>{ $('tab'+i).setAttribute('aria-selected',i===n); $('panel'+i).hidden=i!==n; });
   document.querySelector('nav').dataset.tab=TABS.indexOf(n); window.scrollTo(0,0);
@@ -1204,9 +1219,9 @@ $('make').onclick=async()=>{
   try{
     const o=opt(), name=fileName(), pages=await buildScanPages(o,$('name').value.trim()||'Föy');
     say('PDF hazır. Kaydetmeyi onayla.');
-    const blob=buildPdf(pages);
+    const blob=buildPdf(pages), kept=await archive(name,blob,'Tarama');
     await downloads.save({filename:name,data:blob});
-    say('PDF kaydetme ekranına gönderildi ('+pages.length+' sayfa, '+(blob.size/1048576).toFixed(1).replace('.',',')+' MB).');
+    say('PDF kaydetme ekranına gönderildi ('+pages.length+' sayfa, '+(blob.size/1048576).toFixed(1).replace('.',',')+' MB).'+archived(kept));
   }catch(e){
     say(e&&e.code==='declined'?'Kaydetme iptal edildi. İstersen tekrar dene.':'PDF kaydedilemedi: '+((e&&(e.code||e.message))||'bilinmeyen hata'));
   }
@@ -1378,8 +1393,9 @@ $('bmake').onclick=async()=>{
   bookBusy=true; brender();
   try{
     const pages=await bookPages(), name=cleanName($('bname').value,'Yanlış Sorularım');
-    bsay('PDF hazır. Kaydetmeyi onayla.'); await downloads.save({filename:name,data:buildPdf(pages)});
-    bsay('PDF kaydetme ekranına gönderildi ('+pages.length+' sayfa).');
+    const blob=buildPdf(pages), kept=await archive(name,blob,'Yanlış soru defteri');
+    bsay('PDF hazır. Kaydetmeyi onayla.'); await downloads.save({filename:name,data:blob});
+    bsay('PDF kaydetme ekranına gönderildi ('+pages.length+' sayfa).'+archived(kept));
   }catch(e){ bsay(e&&e.code==='declined'?'Kaydetme iptal edildi.':'PDF kaydedilemedi: '+((e&&(e.message||e.code))||'bilinmeyen hata')); }
   bookBusy=false; brender();
 };
@@ -1588,6 +1604,67 @@ $('panel6').inert=true;
 (async()=>{ await bookReady; try{ const t=bookDb&&await kv(s=>s.get('takip')); if(t) track={...track,...t}; }catch(e){} trackReady=true; $('panel6').inert=false; trackAll(); })();
 document.addEventListener('visibilitychange',()=>{ if(trackReady){ countdown(); goalRender(); } });
 setInterval(()=>{ if(trackReady){ countdown(); goalRender(); } },60000);
+
+// ================= Arşiv: üretilen PDF'ler yalnızca bu cihazda saklanır =================
+// Her PDF ayrı anahtarda durur; hiçbir dosya internete gönderilmez.
+let shelf=[], shelfSeq=0;
+const shelfKeys=new WeakMap(); // aynı PDF yeniden kaydedilirse ikinci kopya oluşmaz
+const asay=t=>{ $('astatus').textContent=t; };
+const mb=n=>n<104858?Math.max(1,Math.round(n/1024))+' KB':(n/1048576).toFixed(1).replace('.',',')+' MB';
+async function archive(name,blob,kind){
+  try{
+    await bookReady; if(!bookDb) return false;
+    let key=shelfKeys.get(blob);
+    if(!key){ key='ars:'+Date.now()+'-'+(++shelfSeq); shelfKeys.set(blob,key); }
+    await kv(s=>s.put({key,name,kind,date:Date.now(),blob},key));
+    // tarayıcıdan, yer azalınca bu verileri silmemesi istenir (kabul etmek zorunda değil)
+    if(navigator.storage&&navigator.storage.persist) navigator.storage.persist().catch(()=>{});
+    await shelfLoad(); return true;
+  }catch(e){ return false; }
+}
+const archived=ok=>ok?' Bir kopyası Arşiv sekmesinde.':' Arşive eklenemedi, dosyayı mutlaka kaydet.';
+async function shelfLoad(){
+  await bookReady;
+  if(!bookDb){ asay('Bu tarayıcı dosya saklayamıyor.'); return; }
+  try{ shelf=(await kv(s=>s.getAll(IDBKeyRange.bound('ars:','ars:￿')))).sort((a,b)=>b.date-a.date||b.key.localeCompare(a.key)); shelfRender(); }
+  catch(e){ asay('Arşiv okunamadı. Sayfayı yenile.'); }
+}
+function shelfRender(){
+  const q=$('asearch').value.trim().toLocaleLowerCase('tr'), list=$('alist'); list.textContent='';
+  const vis=shelf.filter(f=>f.name.toLocaleLowerCase('tr').includes(q));
+  for(const f of vis){
+    const li=document.createElement('li'); li.className='item';
+    const title=document.createElement('b'); title.textContent=f.name;
+    const info=document.createElement('div'); info.className='meta';
+    info.textContent=[f.kind,new Date(f.date).toLocaleDateString('tr-TR',{day:'numeric',month:'long',year:'numeric'}),mb(f.blob.size)].join(' · ');
+    const row=document.createElement('div'); row.className='row';
+    const act=(t,label,fn)=>{ const b=document.createElement('button'); b.textContent=t; b.setAttribute('aria-label',label+': '+f.name); b.onclick=()=>fn(b); row.appendChild(b); return b; };
+    act('Aç / Kaydet','Aç veya kaydet',async()=>{
+      if(!downloads){ asay('Bu görünümde dosya kaydedilemiyor.'); return; }
+      try{ await downloads.save({filename:f.name,data:f.blob}); asay('Kaydetme ekranına gönderildi.'); }
+      catch(e){ asay(e&&e.code==='declined'?'Kaydetme iptal edildi.':'Dosya açılamadı: '+((e&&(e.message||e.code))||'bilinmeyen hata')); }
+    }).disabled=!downloads;
+    act('Adını değiştir','Adını değiştir',()=>{
+      const form=document.createElement('div'); form.className='addrow';
+      const input=document.createElement('input'); input.className='field'; input.maxLength=80; input.value=f.name.replace(/\.pdf$/i,''); input.setAttribute('aria-label','Yeni ad');
+      const ok=document.createElement('button'); ok.className='soft'; ok.textContent='Tamam';
+      ok.onclick=async()=>{ try{ const name=cleanName(input.value,f.name.replace(/\.pdf$/i,'')); await kv(s=>s.put({...f,name},f.key)); await shelfLoad(); asay('Ad değiştirildi.'); }catch(e){ asay('Ad değiştirilemedi.'); } };
+      input.onkeydown=e=>{ if(e.key==='Enter') ok.click(); };
+      form.append(input,ok); title.replaceWith(form); input.focus();
+    });
+    act('Sil','Sil',async b=>{
+      if(!b.dataset.sure){ b.dataset.sure=1; b.textContent='Emin misin?'; setTimeout(()=>{ delete b.dataset.sure; b.textContent='Sil'; },3000); return; }
+      try{ await kv(s=>s.delete(f.key)); await shelfLoad(); asay('Dosya arşivden silindi.'); }catch(e){ asay('Dosya silinemedi.'); }
+    });
+    li.append(title,info,row); list.appendChild(li);
+  }
+  $('asearch').hidden=!shelf.length;
+  $('acount').textContent=!shelf.length?'Henüz PDF yok. Uygulamada oluşturduğun PDF\'ler buraya eklenir.'
+    :!vis.length?'Aramaya uyan dosya yok.':shelf.length+' PDF · toplam '+mb(shelf.reduce((a,f)=>a+f.blob.size,0));
+}
+$('asearch').oninput=shelfRender;
+$('tab7').addEventListener('click',shelfLoad);
+dl.then(shelfRender); shelfLoad();
 </script>
 <script>if('serviceWorker' in navigator) addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
 </body>
