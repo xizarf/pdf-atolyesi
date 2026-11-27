@@ -14,23 +14,15 @@
 <body>
 <style>
 /* Düzen: yüzen cam sekmeler, büyük ortalı başlık, cam kartlar, altta yüzen işlem çubuğu */
-:root{--bg:#f4f4f4;--fg:#000;--mut:#454545;--acc:#000;--acc2:#2c2c2c;--on:#fff;--warn:#000;--glass:rgba(255,255,255,.28);--solid:rgba(255,255,255,.7);--rim:rgba(255,255,255,.8);--hair:rgba(0,0,0,.1);--shade:rgba(0,0,0,.1);--pill:rgba(255,255,255,.92);--o1:#b4b4b4;--o2:#cfcfcf;--o3:#a8a8a8;--o4:#d6d6d6}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#000;--fg:#fff;--mut:#c4c4c4;--acc:#fff;--acc2:#fff;--on:#000;--warn:#fff;--glass:rgba(255,255,255,.07);--solid:rgba(28,28,28,.72);--rim:rgba(255,255,255,.18);--hair:rgba(255,255,255,.14);--shade:rgba(0,0,0,.5);--pill:rgba(255,255,255,.2);--o1:#5a5a5a;--o2:#3c3c3c;--o3:#4a4a4a;--o4:#2e2e2e;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#000;--fg:#fff;--mut:#c4c4c4;--acc:#fff;--acc2:#fff;--on:#000;--warn:#fff;--glass:rgba(255,255,255,.07);--solid:rgba(28,28,28,.72);--rim:rgba(255,255,255,.18);--hair:rgba(255,255,255,.14);--shade:rgba(0,0,0,.5);--pill:rgba(255,255,255,.2);--o1:#5a5a5a;--o2:#3c3c3c;--o3:#4a4a4a;--o4:#2e2e2e;color-scheme:dark}
+:root{--bg:#fff;--fg:#000;--mut:#2b2b2b;--acc:#000;--acc2:#000;--on:#fff;--warn:#000;--glass:rgba(255,255,255,.46);--solid:rgba(255,255,255,.62);--rim:#fff;--hair:rgba(0,0,0,.13);--shade:rgba(0,0,0,.14);--veil:rgba(255,255,255,.72);--sheen:rgba(255,255,255,.95);--glow:rgba(255,255,255,.75);--depth:rgba(0,0,0,.16);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#000;--fg:#fff;--mut:#e4e4e4;--acc:#fff;--acc2:#fff;--on:#000;--warn:#fff;--glass:rgba(255,255,255,.08);--solid:rgba(18,18,18,.62);--rim:rgba(255,255,255,.55);--hair:rgba(255,255,255,.2);--shade:rgba(0,0,0,.7);--veil:rgba(0,0,0,.66);--sheen:rgba(255,255,255,.2);--glow:rgba(255,255,255,.07);--depth:rgba(255,255,255,.1);color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#000;--fg:#fff;--mut:#e4e4e4;--acc:#fff;--acc2:#fff;--on:#000;--warn:#fff;--glass:rgba(255,255,255,.08);--solid:rgba(18,18,18,.62);--rim:rgba(255,255,255,.55);--hair:rgba(255,255,255,.2);--shade:rgba(0,0,0,.7);--veil:rgba(0,0,0,.66);--sheen:rgba(255,255,255,.2);--glow:rgba(255,255,255,.07);--depth:rgba(255,255,255,.1);color-scheme:dark}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{background:var(--bg);color:var(--fg);font:17px/1.45 -apple-system,BlinkMacSystemFont,"SF Pro Text",Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:12px 190px}
-/* camın arkasında yavaşça süzülen renkler */
-.aura{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
-.aura i{position:absolute;width:85vmax;height:85vmax;border-radius:50%;opacity:.75;animation:drift 18s ease-in-out infinite alternate}
-.aura i:nth-child(1){background:radial-gradient(closest-side,var(--o1),transparent);top:-30vmax;left:-35vmax}
-.aura i:nth-child(2){background:radial-gradient(closest-side,var(--o2),transparent);top:5vmax;right:-45vmax;animation-delay:-6s}
-.aura i:nth-child(3){background:radial-gradient(closest-side,var(--o3),transparent);bottom:-35vmax;left:-25vmax;animation-delay:-11s}
-.aura i:nth-child(4){background:radial-gradient(closest-side,var(--o4),transparent);bottom:-40vmax;right:-30vmax;animation-delay:-3s}
-@keyframes drift{to{transform:translate3d(7vmax,5vmax,0) scale(1.12)}}
-/* cam malzemesi: bulanıklık, parlak kenar, üstten vuran ışık */
-.glass,.item,#dlist li,.how li{background:linear-gradient(135deg,var(--rim) -60%,transparent 45%),var(--glass);
--webkit-backdrop-filter:blur(22px) saturate(180%);backdrop-filter:blur(22px) saturate(180%);
-border:1px solid var(--hair);box-shadow:inset 0 1px 0 var(--rim),inset 0 -1px 1px var(--hair),0 10px 30px var(--shade)}
+/* liquid glass: saydam gövde, iki köşede parlayan kenar, altta kalınlık gölgesi */
+.glass,.item,#dlist li,.how li{background:linear-gradient(135deg,var(--sheen),transparent 34%,transparent 70%,var(--glow)),var(--glass);
+-webkit-backdrop-filter:blur(16px) saturate(200%);backdrop-filter:blur(16px) saturate(200%);border:1px solid var(--hair);
+box-shadow:inset 1.5px 1.5px 1px -.5px var(--rim),inset -1.5px -1.5px 1px -.5px var(--rim),inset 0 -14px 22px -16px var(--depth),inset 0 0 20px var(--glow),0 2px 5px rgba(0,0,0,.07),0 18px 40px -8px var(--shade)}
 main{max-width:680px;margin:auto}
 button{font-family:inherit;font-size:16px;font-weight:600;line-height:1.2;color:var(--fg);cursor:pointer;border:0;background:transparent;border-radius:999px;transition:transform .18s ease,opacity .2s}
 button:active:not(:disabled){transform:scale(.94)}
@@ -226,35 +218,116 @@ section>header{padding:34px 4px 22px}
   .cards.three>.span{grid-column:1/-1;max-width:640px;width:100%;justify-self:center}
 }
 .bookempty{display:none;padding:70px 20px;border-radius:26px;text-align:center;color:var(--mut);border:1.5px dashed var(--hair)}
+@media (min-width:940px){.bookempty{display:block}}
 #blist:not(:empty)~.bookempty{display:none}
 @media (hover:hover){nav button:hover:not([aria-selected=true]){color:var(--fg);background:var(--hair)}.bento button:hover,.today button:hover{filter:brightness(1.06)}#years a:hover{border-color:var(--fg)}}
+/* ================= Siyah-beyaz sahneler ve yüzen cam ================= */
+.top{top:calc(env(safe-area-inset-top,0px) + 8px);margin:0 -6px;background:none;border:0;-webkit-backdrop-filter:none;backdrop-filter:none}
+.bar{max-width:1152px;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:0 10px;padding:0 14px;border-radius:30px;
+background:linear-gradient(135deg,var(--sheen),transparent 30%,transparent 74%,var(--glow)),var(--veil);-webkit-backdrop-filter:blur(20px) saturate(200%);backdrop-filter:blur(20px) saturate(200%);border:1px solid var(--hair);
+box-shadow:inset 1.5px 1.5px 1px -.5px var(--rim),inset -1.5px -1.5px 1px -.5px var(--rim),inset 0 0 16px var(--glow),0 14px 36px -10px var(--shade)}
+.brand{grid-column:1;grid-row:1}
+nav{grid-column:1/-1;grid-row:2;margin:0 -14px;padding:6px 8px 8px;border-radius:0 0 30px 30px}
+nav button{color:var(--fg)}
+nav button[aria-selected=true]{box-shadow:inset 0 1px 1px rgba(255,255,255,.45),inset 0 -6px 12px -8px rgba(255,255,255,.5),0 6px 14px -4px var(--shade)}
+#theme{grid-column:2;grid-row:1;display:flex;align-items:center;gap:6px;margin-top:6px;padding:7px 12px;font-size:13px;background:var(--glass);border:1px solid var(--hair);box-shadow:inset 1px 1px 0 var(--rim),inset -1px -1px 0 var(--rim)}
+#theme svg{width:17px;height:17px}
+.main{background:linear-gradient(180deg,rgba(255,255,255,.2),transparent 48%),var(--acc);box-shadow:inset 0 1.5px 1px rgba(255,255,255,.55),inset 0 -8px 16px -10px rgba(255,255,255,.55),0 10px 22px -6px var(--shade)}
+/* her bölümün başlığı siyah sahne: beyaz küre ve üstünde cam damla */
+section>header{position:relative;isolation:isolate;overflow:hidden;margin:18px 0 18px;padding:30px 22px 104px;border-radius:34px;background:#000;color:#fff;border:1px solid rgba(255,255,255,.2);text-align:left}
+section>header p{margin:0;color:#fff}
+section>header::before{content:"";position:absolute;z-index:-1;right:-30px;bottom:-84px;width:164px;height:164px;border-radius:50%;background:radial-gradient(circle at 36% 28%,#fff 0 58%,#d9d9d9 100%);box-shadow:-190px -24px 0 -62px #fff;animation:float 9s ease-in-out infinite alternate}
+section>header::after{content:"";position:absolute;right:76px;bottom:18px;width:150px;height:48px;border-radius:99px;background:rgba(255,255,255,.08);-webkit-backdrop-filter:blur(5px) saturate(180%);backdrop-filter:blur(5px) saturate(180%);border:1px solid rgba(255,255,255,.28);box-shadow:inset 1.5px 1.5px 1px -.5px #fff,inset -1.5px -1.5px 1px -.5px #fff,inset 0 0 14px rgba(255,255,255,.35),0 10px 22px rgba(0,0,0,.35)}
+@keyframes float{to{transform:translate(-26px,-4px)}}
+.lens::before,.lens::after{animation-name:drift2}
+@keyframes drift2{to{transform:translate(-26px,-12px)}}
+/* ana sayfadaki durum camları: arkada beyaz küreler */
+.lens{position:relative;isolation:isolate;overflow:hidden;margin-top:30px;padding:54px 14px;border-radius:38px;background:#000;border:1px solid rgba(255,255,255,.2)}
+.lens::before,.lens::after{content:"";position:absolute;z-index:-1;border-radius:50%;background:radial-gradient(circle at 36% 28%,#fff 0 60%,#d9d9d9 100%);animation:float 11s ease-in-out infinite alternate}
+.lens::before{width:190px;height:190px;left:-40px;top:-62px}
+.lens::after{width:230px;height:230px;right:-52px;bottom:-96px;animation-delay:-5s}
+.lens .today{margin:0;background:rgba(0,0,0,.5);-webkit-backdrop-filter:blur(14px) saturate(180%);backdrop-filter:blur(14px) saturate(180%);border:1px solid rgba(255,255,255,.34);
+box-shadow:inset 1.5px 1.5px 1px -.5px #fff,inset -1.5px -1.5px 1px -.5px #fff,inset 0 0 22px rgba(255,255,255,.22),0 20px 40px rgba(0,0,0,.45)}
+.lens .today button{color:#fff;border-color:rgba(255,255,255,.28);text-shadow:0 1px 6px rgba(0,0,0,.65)}.lens .today button b{color:#fff}
+.done{background:rgba(255,255,255,.82);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:inset 1px 1px 0 #fff,0 8px 24px rgba(0,0,0,.4)}
+.desk{background:#000;border-color:rgba(255,255,255,.2)}
+.bento button:nth-child(2){color:var(--fg)}
+/* gri dolgu yerine saydam cam düğmeler */
+.soft,.row,.wdays button,.swatches button,.ask,#review .acts button:not(.main){background:linear-gradient(135deg,var(--sheen),transparent 40%),var(--glass);border:1px solid var(--hair);box-shadow:inset 1px 1px 0 var(--rim),inset -1px -1px 0 var(--rim),0 4px 12px -4px var(--shade)}
+.wdays button[aria-pressed=true]{color:var(--on);background:var(--acc);border-color:var(--acc)}
+.main:disabled{opacity:.5;color:var(--fg);background:transparent;border:1.5px solid var(--fg);box-shadow:none}
+/* ---- işaretli listeler: program ve konular ---- */
+.checks{list-style:none;margin:10px 0 0;padding:0;text-align:left}
+.checks li{display:flex;align-items:center;gap:6px;border-top:1px solid var(--hair)}
+.checks label{flex:1;display:flex;align-items:center;gap:11px;padding:11px 2px;min-width:0;font-size:15px;cursor:pointer}
+.checks label span{min-width:0;overflow-wrap:anywhere}
+.checks input{width:22px;height:22px;flex:none;margin:0;accent-color:var(--acc)}
+.checks input:checked+span{text-decoration:line-through;color:var(--mut)}
+.checks button{flex:none;min-width:36px;height:36px;font-size:12px}
+.wdays{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;margin-top:12px}
+.wdays button{display:flex;flex-direction:column;align-items:center;gap:1px;padding:8px 0;border-radius:16px;font-size:13px}
+.wdays button small{font-size:11px;font-weight:500;min-height:1.2em}
+.wdays button[aria-pressed=true]{color:var(--on);background:var(--acc)}
+.wdays button.now{outline:2px solid var(--fg);outline-offset:1px}
+.wadd{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:10px}.wadd select{grid-column:1/-1}.wadd .soft{padding:12px 18px}
+.cards>.week{grid-column:1/-1}
+.plan{margin-top:14px;padding:18px 18px 14px;border-radius:28px}.plan h2{margin:0;font-size:19px}.plan p{margin:8px 0 0;color:var(--mut);font-size:15px}
+.plan .soft{width:100%;margin-top:10px;padding:12px}
+/* ---- tekrar modu ---- */
+.rv{display:flex;flex-direction:column;gap:10px;margin-top:14px;padding:16px;border-radius:26px;text-align:center}
+.rv b{display:block;font-size:18px}.rv small{display:block;color:var(--mut);font-size:14px;margin-top:2px}
+#review .stage canvas{touch-action:auto;max-height:56vh;border:1px solid var(--hair)}
+#rvtag{margin:0 0 10px}#rvnotes{display:block;max-width:640px;margin:12px auto 0;width:100%;padding:12px}
+/* ---- yedek ---- */
+#bkopen{position:absolute;opacity:0;width:1px;height:1px}
+#backup{scroll-margin-top:120px;max-width:640px;margin-left:auto;margin-right:auto}
+#backup .main{margin-top:12px}#bkfiles{width:22px;height:22px;flex:none;accent-color:var(--acc)}
+#backup .pair .main{margin:0}#bktop{display:block;width:100%;max-width:420px;margin:0 auto;padding:12px}
+@media (min-width:760px){
+  section>header{margin:26px 0 22px;padding:44px 40px 52px}
+  section>header>*{max-width:68%}
+  section>header::before{width:300px;height:300px;right:-40px;bottom:-130px;box-shadow:-300px -40px 0 -126px #fff}
+  section>header::after{width:230px;height:70px;right:150px;bottom:34px}
+  .lens{padding:70px 40px}.lens::before{width:280px;height:280px;left:-60px;top:-120px}.lens::after{width:340px;height:340px;right:-80px;bottom:-170px}
+}
+@media (min-width:1080px){
+  .bar{grid-template-columns:auto minmax(0,1fr) auto;gap:10px;padding:0 10px 0 18px;border-radius:99px}
+  .brand{padding:0}
+  nav{grid-column:2;grid-row:1;justify-content:center;margin:0;padding:9px 0}
+  nav button{padding:8px 10px}
+  #theme{grid-column:3;margin:0}
+}
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.glass,.item,#dlist li,.how li{background:var(--solid)}}
-@media (prefers-reduced-transparency:reduce){.glass,.item,#dlist li,.how li{background:var(--solid);-webkit-backdrop-filter:none;backdrop-filter:none}}
+@media (prefers-reduced-transparency:reduce){.bar,.lens .today,.glass,.item,#dlist li,.how li{background:var(--solid);-webkit-backdrop-filter:none;backdrop-filter:none}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 #saver{position:fixed;inset:0;z-index:30;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.4);padding:16px 12px calc(16px + env(safe-area-inset-bottom,0px))}
 #saver>div{width:100%;max-width:480px;border-radius:34px;padding:18px 14px 8px;text-align:center;background:var(--solid)}
 #sname{font-weight:600;overflow-wrap:anywhere;margin:0 0 14px}#sno{width:100%;padding:14px}
 </style>
-<div class="aura" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+<script>
+// tema seçimi sayfa çizilmeden uygulanır
+(()=>{ try{ const m=localStorage.getItem('pdf-atolyesi-tema'); if(m==='light'||m==='dark') document.documentElement.setAttribute('data-theme',m); }catch(e){} })();
+</script>
 <div class="top"><div class="bar"><a class="brand" href="#ana-sayfa" id="brand"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h8l5 5v13H6z"/><path d="M14 3v5h5"/><path d="M9 13h7M9 17h5"/></svg>PDF Atölyesi</a>
-<nav role="tablist" aria-label="Bölümler"><button id="tab8" role="tab" aria-controls="panel8" aria-selected="true">Ana sayfa</button><button id="tab0" role="tab" aria-controls="panel0" aria-selected="false">Tara</button><button id="tab3" role="tab" aria-controls="panel3" aria-selected="false">Yanlışlar</button><button id="tab1" role="tab" aria-controls="panel1" aria-selected="false">Dosya</button><button id="tab2" role="tab" aria-controls="panel2" aria-selected="false">Ses</button><button id="tab4" role="tab" aria-controls="panel4" aria-selected="false">Sayaç</button><button id="tab6" role="tab" aria-controls="panel6" aria-selected="false">Takip</button><button id="tab5" role="tab" aria-controls="panel5" aria-selected="false">Çıkmış</button><button id="tab7" role="tab" aria-controls="panel7" aria-selected="false">Arşiv</button></nav></div></div>
+<nav role="tablist" aria-label="Bölümler"><button id="tab8" role="tab" aria-controls="panel8" aria-selected="true">Ana sayfa</button><button id="tab0" role="tab" aria-controls="panel0" aria-selected="false">Tara</button><button id="tab3" role="tab" aria-controls="panel3" aria-selected="false">Yanlışlar</button><button id="tab1" role="tab" aria-controls="panel1" aria-selected="false">Dosya</button><button id="tab2" role="tab" aria-controls="panel2" aria-selected="false">Ses</button><button id="tab4" role="tab" aria-controls="panel4" aria-selected="false">Sayaç</button><button id="tab6" role="tab" aria-controls="panel6" aria-selected="false">Takip</button><button id="tab5" role="tab" aria-controls="panel5" aria-selected="false">Çıkmış</button><button id="tab7" role="tab" aria-controls="panel7" aria-selected="false">Arşiv</button></nav><button id="theme" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5a8.500 8.500 0 0 1 0 17z" fill="currentColor"/></svg><span id="themel">Otomatik</span></button></div></div>
 <main>
 <section id="panel8">
 <div class="hero"><div><h1>Çek. Kırp.<span>PDF hazır.</span></h1><p>Ders sayfalarını PDF’e çevir, yanlışlarını biriktir, sınava hazırlığını takip et. Dosyaların cihazında işlenir.</p>
 <div class="cta"><button class="main" id="hscan" data-go="0">Sayfa tara</button><button class="glass" data-go="3">Yanlış defterini aç</button></div></div>
 <div class="desk" aria-hidden="true"><div class="paper"><i class="t"></i><i></i><i></i><i class="s"></i><u><b></b><b class="on"></b><b></b><b></b><b></b></u><i></i><i class="s"></i><i class="x"></i><u><b></b><b></b><b></b><b class="on"></b><b></b></u><i></i><i></i><i class="s"></i><div class="frame"><b></b><b></b><b></b><b></b></div></div><div class="done">PDF hazır ✓</div></div></div>
-<div class="today glass" aria-label="Bugünkü durumun">
+<div class="lens"><div class="today" aria-label="Bugünkü durumun">
 <button data-go="6"><b id="hdays">–</b><span id="hdaysl">sınava kalan gün</span></button>
 <button data-go="6"><b id="hgoal">–</b><span>bugün çözülen soru</span></button>
-<button data-go="3"><b id="hbook">0</b><span>defterdeki soru</span></button>
-<button data-go="7"><b id="hshelf">0</b><span>arşivdeki PDF</span></button></div>
+<button data-go="3"><b id="hbook">0</b><span id="hbookl">defterdeki soru</span></button>
+<button data-go="7"><b id="hshelf">0</b><span>arşivdeki PDF</span></button></div></div>
+<div class="plan glass"><h2 id="hplant">Bugünün programı</h2><p id="hplanempty">Bugün için ders eklenmemiş.</p><ul id="hplan" class="checks"></ul><button class="soft" data-go="6">Haftalık programı düzenle</button></div>
 <h2 class="tools-title">Ne yapmak istiyorsun?</h2>
 <div class="bento">
 <button class="ink wide2" data-go="0"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8V4h4M16 4h4v4M20 16v4h-4M8 20H4v-4"/><path d="M8 9h8M8 12h8M8 15h5"/></svg><b>Sayfa tara</b><span>Fotoğrafı veya ekran görüntüsünü ekle. Sayfa kırpılır, düzeltilir ve PDF olur.</span></button>
 <button class="glass wide2" data-go="3"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h13v17H7a2 2 0 0 1-2-2z"/><path d="M9.500 9.500l5 5M14.500 9.500l-5 5"/></svg><b>Yanlış defteri</b><span>Yapamadığın soruları kutuyla seç, ders ve konuya göre topla.</span></button>
 <button class="glass" data-go="1"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3h8l4 4v11H8z"/><path d="M4 8v13h11"/></svg><b>Dosyadan PDF</b><span>Word, Excel, metin ve görselleri tek PDF yap.</span></button>
 <button class="glass" data-go="4"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 2h6"/></svg><b>Sayaç ve net</b><span>Deneme süresi, soru başı süre, Pomodoro ve net hesabı.</span></button>
-<button class="glass" data-go="6"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16M7 16v-5M12 16V6M17 16v-8"/></svg><b>Takip</b><span>Konular, günlük soru hedefi ve sınava kalan gün.</span></button>
+<button class="glass" data-go="6"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16M7 16v-5M12 16V6M17 16v-8"/></svg><b>Takip</b><span>Haftalık program, konular, günlük hedef ve kalan gün.</span></button>
 <button class="glass" data-go="5"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-9 9"/><path d="M18 14v6H4V6h6"/></svg><b>Çıkmış sorular</b><span>2018-2026 kitapçıkları için ÖSYM bağlantıları.</span></button>
 <button class="glass" data-go="2"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10v4h4l5 4V6L8 10z"/><path d="M16.500 9a4 4 0 0 1 0 6"/></svg><b>Videodan ses</b><span>Videonun sesini ayırıp kaydet.</span></button>
 <button class="glass" data-go="7"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16v13H4zM3 4h18v3H3zM9 11h6"/></svg><b>Arşiv</b><span>Oluşturduğun PDF’leri bu cihazda bul.</span></button>
@@ -310,6 +383,7 @@ section>header{padding:34px 4px 22px}
 <div class="opts glass"><span>PDF adı</span><input id="bname" class="field" type="text" maxlength="80" placeholder="Yanlış Sorularım" autocomplete="off">
 <span>Düzen</span><select id="blayout"><option value="solo">Çözüm boşluklu</option><option value="tight">Sık: alt alta</option></select></div>
 <div id="filters" class="opts glass" hidden><span>Ders</span><select id="fders"><option value="*">Tümü</option></select><span>Konu</span><select id="fkonu"><option value="*">Tümü</option></select></div>
+<div id="rvcard" class="rv glass" hidden><div><b id="rvcount"></b><small id="rvnote"></small></div><button id="rvgo" class="main">Tekrara başla</button></div>
 <div class="dock glass"><p id="bstatus" role="status">Henüz soru eklenmedi.</p><button id="bmake" class="main" disabled>Defteri PDF yap</button></div>
 </div>
 <div class="work">
@@ -342,6 +416,9 @@ section>header{padding:34px 4px 22px}
 <section id="panel6" hidden>
 <header><h1>Hedefini koy.<span>Yolunu gör.</span></h1></header>
 <div class="cards three">
+<div class="card glass week"><h2>Haftalık program</h2><div id="wdays" class="wdays" role="group" aria-label="Gün seç"></div>
+<ul id="wlist" class="checks"></ul><p id="wsum"></p>
+<div class="wadd"><select id="wders" aria-label="Programa eklenecek ders"></select><input id="wkonu" class="field" list="wints" maxlength="60" placeholder="Konu veya not" aria-label="Konu veya not" autocomplete="off"><datalist id="wints"></datalist><button id="wadd" class="soft">Ekle</button></div></div>
 <div class="card glass"><h2>Sınava geri sayım</h2><output id="days" class="big">–</output><p id="daysnote"></p>
 <label class="line">Sınav tarihi<input id="examdate" class="field date" type="date"></label>
 <p class="hint">Varsayılan: 19 Haziran 2027 (ÖSYM duyurusu: YKS 19-20 Haziran 2027). Tarih değişirse buradan güncelle.</p></div>
@@ -361,11 +438,18 @@ section>header{padding:34px 4px 22px}
 
 <section id="panel7" hidden>
 <header><h1>PDF'lerin.<span>Elinin altında.</span></h1><p>Burada oluşturduğun PDF'ler yalnızca bu cihazın tarayıcısında saklanır. Hiçbir yere yüklenmez.</p></header>
+<button id="bktop" type="button" class="glass">Yedekle veya geri yükle</button>
 <input id="asearch" class="field" type="search" placeholder="Dosya ara" aria-label="Dosya ara" autocomplete="off" hidden>
 <p id="acount" class="hint"></p>
 <ul id="alist"></ul>
 <p id="astatus" class="hint" role="status"></p>
 <p class="hint">Tarayıcı verilerini silersen arşiv de silinir. Önemli dosyaları Dosyalar uygulamasına da kaydet.</p>
+<div class="card glass" id="backup"><h2>Yedekle ve geri yükle</h2><p>Yanlış defteri, takip bilgileri, haftalık program ve arşiv tek bir dosyaya kaydedilir. Tara sekmesindeki yarım iş yedeğe girmez.</p>
+<label class="line"><span id="bkfilesl">Arşivdeki PDF'leri de ekle</span><input id="bkfiles" type="checkbox" checked></label>
+<button id="bksave" class="main">Yedek al</button><p id="bklast"></p>
+<label class="cam glass"><span>Yedekten geri yükle</span><input id="bkopen" type="file" accept=".json,application/json"></label>
+<div id="bkconfirm" hidden><p id="bksum"></p><div class="pair"><button id="bkdo" class="main">Geri yükle</button><button id="bkno" class="soft">Vazgeç</button></div></div>
+<p id="bkstatus" role="status"></p><p class="hint">Yedek dosyasını Dosyalar uygulamasında veya bilgisayarında sakla. Dosya şifreli değildir.</p></div>
 </section>
 
 <section id="panel5" hidden>
@@ -391,6 +475,9 @@ section>header{padding:34px 4px 22px}
 <div class="tags stag"><select id="sders" aria-label="Eklenecek sorunun dersi"><option value="">Ders seç</option><option>Türkçe</option><option>Matematik</option><option>Geometri</option><option>Fizik</option><option>Kimya</option><option>Biyoloji</option><option>Edebiyat</option><option>Tarih</option><option>Coğrafya</option><option>Felsefe</option><option>Din Kültürü</option><option>Yabancı Dil</option><option>Diğer</option></select><input id="skonu" class="field" list="shints" maxlength="60" placeholder="Konu" aria-label="Eklenecek sorunun konusu" autocomplete="off"><datalist id="shints"></datalist></div><div class="stage"><canvas id="sview"></canvas></div>
 <div class="acts"><button id="sadd" class="main" disabled>Soruyu ekle</button><button id="sdone" class="glass">Bitti</button></div></div>
 
+<div id="review" class="sheet" hidden role="dialog" aria-modal="true" aria-label="Tekrar"><p id="rvpos" role="status"></p><p id="rvtag" class="hint"></p><div class="stage"><canvas id="rvview"></canvas></div>
+<button id="rvnotes" class="glass" aria-pressed="false">Notlarımı göster</button>
+<div class="acts"><button id="rvno" class="glass">Yapamadım</button><button id="rvyes" class="main">Çözdüm</button><button id="rvskip">Sonraya bırak</button><button id="rvclose">Kapat</button></div></div>
 <div id="pen" class="sheet" hidden><div id="pbox" class="stage"><canvas id="pview"></canvas></div>
 <div id="colors" class="swatches" role="group" aria-label="Araç"><button data-c="#111111"><i style="background:#111111"></i>Siyah</button><button data-c="#d11f1f"><i style="background:#d11f1f"></i>Kırmızı</button><button data-c="#1457c8"><i style="background:#1457c8"></i>Mavi</button><button data-c="#ffffff"><i style="background:#ffffff"></i>Silgi</button></div>
 <label class="line thick">Kalınlık<input id="psize" type="range" min="2" max="30" value="6"></label>
@@ -412,7 +499,7 @@ section>header{padding:34px 4px 22px}
 <script>
 function saveFile({filename,data}){
   return new Promise((ok,no)=>{
-    const types={pdf:'application/pdf',zip:'application/zip'};
+    const types={pdf:'application/pdf',zip:'application/zip',json:'application/json'};
     const file=new File([data],filename,{type:types[filename.split('.').pop()]});
     const share=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
     const el=id=>document.getElementById(id);
@@ -1173,7 +1260,7 @@ function tab(n,fromAddress){
   // seçili sekme dar ekranda görünür kalsın (sayfayı kaydırmadan)
   const t=$('tab'+n), box=t.parentElement, a=t.getBoundingClientRect(), r=box.getBoundingClientRect();
   box.scrollLeft+=a.left+a.width/2-(r.left+r.width/2);
-  window.scrollTo(0,0); if(n===8) homeSoon();
+  window.scrollTo(0,0); if(n===8) homeSoon(); if(rv) reviewClose();
 }
 TABS.forEach(i=>$('tab'+i).addEventListener('click',()=>tab(i)));
 const fromHash=()=>Number(Object.keys(SLUG).find(k=>'#'+SLUG[k]===location.hash)??8);
@@ -1404,7 +1491,7 @@ const openDb=()=>new Promise((ok,no)=>{ try{ const r=indexedDB.open('pdf-atolyes
 const dbOp=(mode,fn)=>new Promise((ok,no)=>{ const t=bookDb.transaction('defter',mode), r=fn(t.objectStore('defter')); t.oncomplete=()=>ok(r.result); t.onerror=t.onabort=()=>no(t.error); });
 let writing=Promise.resolve();
 function persist(){
-  const snap=book.map(q=>({data:q.data,marks:q.marks,w:q.w,h:q.h,ders:q.ders||'',konu:q.konu||''}));
+  const snap=book.map(q=>({data:q.data,marks:q.marks,w:q.w,h:q.h,ders:q.ders||'',konu:q.konu||'',r:q.r||null}));
   writing=writing.then(async()=>{ if(!bookDb) throw 0; await dbOp('readwrite',s=>s.put(snap,'sorular')); bookSaved=true; })
     .catch(()=>{ bookSaved=false; bsay('Dikkat: Bu tarayıcı defteri saklayamıyor. Sayfayı kapatmadan PDF olarak kaydet.'); });
   return writing;
@@ -1450,7 +1537,7 @@ function brender(){
   $('filters').hidden=!book.length;
   $('bcount').textContent=!book.length?'':vis.length===book.length?book.length+' soru':vis.length+' / '+book.length+' soru gösteriliyor';
   $('bmake').textContent=vis.length&&vis.length<book.length?'Gösterilen '+vis.length+' soruyu PDF yap':'Defteri PDF yap';
-  $('bmake').disabled=bookBusy||!vis.length||!downloads; $('bwipe').hidden=!book.length; $('bfile').disabled=$('bscan').disabled=bookBusy; homeSoon();
+  $('bmake').disabled=bookBusy||!vis.length||!downloads; $('bwipe').hidden=!book.length; $('bfile').disabled=$('bscan').disabled=bookBusy; reviewCard(); homeSoon();
 }
 $('fders').onchange=()=>{ $('fkonu').value='*'; brender(); }; $('fkonu').onchange=brender;
 
@@ -1532,6 +1619,59 @@ $('bmake').onclick=async()=>{
   bookBusy=false; brender();
 };
 dl.then(()=>brender());
+
+// ================= Tekrar modu: aralıklı tekrar =================
+// "Çözdüm" aralığı uzatır (3, 7, 14, 30, 60 gün); "Yapamadım" soruyu ertesi güne getirir.
+const GAPS=[3,7,14,30,60];
+const later=n=>{ const d=new Date(); d.setHours(12,0,0,0); d.setDate(d.getDate()+n); return dayKey(d); };
+const isDue=q=>!q.r||q.r.due<=dayKey();
+let rv=null;
+function reviewCard(){
+  const vis=shown(), due=vis.filter(isDue).length;
+  $('rvcard').hidden=!vis.length;
+  $('rvcount').textContent=due?due+' soru tekrar bekliyor':'Bugünlük tekrar tamam';
+  const next=vis.filter(q=>!isDue(q)).map(q=>q.r.due).sort()[0];
+  $('rvnote').textContent=due?'Yapamadıkların daha sık karşına çıkar.':next?'Sıradaki tekrar: '+new Date(next+'T12:00').toLocaleDateString('tr-TR',{day:'numeric',month:'long'}):'';
+  $('rvgo').textContent=due?'Tekrara başla':'Yine de hepsini çöz'; $('rvgo').disabled=bookBusy;
+}
+async function reviewShow(){
+  const mine=rv, over=mine.i>=mine.list.length;
+  for(const id of ['rvno','rvyes','rvskip','rvnotes']) $(id).hidden=over;
+  $('rvview').hidden=over; $('review').scrollTop=0;
+  if(over){ $('rvpos').textContent='Tekrar bitti'; $('rvtag').textContent=mine.yes+' soruyu çözdün, '+mine.no+' soruyu yapamadın.'+(mine.no?' Yapamadıkların yarın yeniden gelecek.':''); return; }
+  const q=mine.list[mine.i];
+  $('rvpos').textContent='Soru '+(mine.i+1)+' / '+mine.list.length;
+  $('rvtag').textContent=[q.ders,q.konu].filter(Boolean).join(' · ');
+  const colored=q.marks.some(m=>m.c!=='#ffffff'); $('rvnotes').hidden=!colored;
+  $('rvnotes').textContent=mine.notes?'Notlarımı gizle':'Notlarımı göster'; $('rvnotes').setAttribute('aria-pressed',mine.notes);
+  mine.lock=true;
+  try{
+    // silgiyle kapatılan yerler kapalı kalır; renkli kalem notları istenince görünür
+    const c=await questionCanvas({...q,marks:mine.notes?q.marks:q.marks.filter(m=>m.c==='#ffffff')});
+    if(rv!==mine) return;
+    const v=$('rvview'); v.width=c.width; v.height=c.height; v.getContext('2d').drawImage(c,0,0);
+  }catch(e){ $('rvtag').textContent='Bu soru açılamadı.'; }
+  mine.lock=false;
+}
+function reviewStart(){
+  let list=shown().filter(isDue); if(!list.length) list=shown().slice(); if(!list.length) return;
+  // en uzun süredir bekleyen ve en zayıf olan önce gelir
+  list.sort((a,b)=>(a.r?a.r.due:'').localeCompare(b.r?b.r.due:'')||(a.r?a.r.b:0)-(b.r?b.r.b:0));
+  rv={list,i:0,yes:0,no:0,notes:false,lock:false}; $('review').hidden=false; reviewShow();
+}
+function reviewGrade(ok){
+  if(!rv||rv.lock||rv.i>=rv.list.length) return;
+  const q=rv.list[rv.i], early=!isDue(q), b=q.r?q.r.b:0;
+  if(!ok) q.r={b:0,due:later(1),t:Date.now()};
+  else if(!early){ const n=Math.min(GAPS.length,b+1); q.r={b:n,due:later(GAPS[n-1]),t:Date.now()}; } // erken çözmek aralığı uzatmaz
+  rv[ok?'yes':'no']++; rv.i++; rv.notes=false; persist(); reviewShow();
+}
+function reviewClose(){ rv=null; $('review').hidden=true; brender(); }
+$('rvgo').onclick=reviewStart;
+$('rvyes').onclick=()=>reviewGrade(true); $('rvno').onclick=()=>reviewGrade(false);
+$('rvskip').onclick=()=>{ if(!rv||rv.lock) return; rv.i++; rv.notes=false; reviewShow(); };
+$('rvnotes').onclick=()=>{ if(!rv||rv.lock) return; rv.notes=!rv.notes; reviewShow(); };
+$('rvclose').onclick=reviewClose;
 
 // ================= Sayaçlar =================
 // Süreler saat farkından hesaplanır; sayfa arka plandayken de doğru kalır.
@@ -1662,7 +1802,7 @@ const TOPICS={
 'AYT Felsefe Grubu':'Felsefe|Mantık|Psikoloji|Sosyoloji',
 'AYT Din Kültürü':'Dünya ve Ahiret|Kur\'an\'da Bazı Kavramlar|İnançla İlgili Meseleler|İslam ve Bilim|Anadolu\'da İslam'};
 const SUBJECTS=['Türkçe','Matematik','Geometri','Fizik','Kimya','Biyoloji','Edebiyat','Tarih','Coğrafya','Felsefe','Din Kültürü','Yabancı Dil','Diğer'];
-let track={exam:'2027-06-19',goal:100,days:{},lists:{},done:{}}, trackChain=Promise.resolve(), trackReady=false;
+let track={exam:'2027-06-19',goal:100,days:{},lists:{},done:{},plan:[[],[],[],[],[],[],[]],backup:0}, trackChain=Promise.resolve(), trackReady=false;
 const topicsOf=k=>track.lists[k]||TOPICS[k].split('|');
 const dayKey=(d=new Date())=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
 const dayNo=s=>{ const [y,m,d]=s.split('-').map(Number); return Date.UTC(y,m-1,d)/864e5; };
@@ -1715,7 +1855,7 @@ function topicRender(){
 }
 // yanlış defterindeki konu önerileri, takip listesinden gelir
 function konuHints(){
-  for(const [sel_,id] of [['sders','shints']]){
+  for(const [sel_,id] of [['sders','shints'],['wders','wints']]){
     const ders=$(sel_).value, box=$(id); box.textContent='';
     const set=new Set(); for(const k of Object.keys(TOPICS)) if(k.slice(4)===ders) topicsOf(k).forEach(t=>set.add(t));
     for(const q of book) if(q.ders===ders&&q.konu) set.add(q.konu);
@@ -1731,12 +1871,65 @@ $('treset').onclick=()=>{ delete track.lists[$('tsel').value]; saveTrack(); topi
 $('examdate').onchange=()=>{ track.exam=$('examdate').value; countdown(); saveTrack(); };
 $('goal').onchange=()=>{ track.goal=num('goal',1,2000,100); $('goal').value=track.goal; goalRender(); saveTrack(); };
 for(const b of document.querySelectorAll('[data-add]')) b.onclick=()=>addSolved(Number(b.dataset.add));
-function trackAll(){ $('examdate').value=track.exam; $('goal').value=track.goal; countdown(); goalRender(); topicRender(); }
+// ================= Haftalık ders programı =================
+const WDAYS=['Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi','Pazar'];
+const WSHORT=['Pzt','Sal','Çar','Per','Cum','Cmt','Paz'];
+const weekDay=(d=new Date())=>(d.getDay()+6)%7;
+// işaretler haftalıktır: yeni haftada program aynı kalır, işaretler boşalır
+const weekKey=()=>later(-weekDay());
+let planDay=weekDay(), planSeq=0;
+const planId=()=>Date.now().toString(36)+'-'+(++planSeq)+Math.random().toString(36).slice(2,6);
+function cleanPlan(p){
+  return WDAYS.map((_,i)=>(Array.isArray(p&&p[i])?p[i]:[]).filter(x=>x&&typeof x.ders==='string').slice(0,40)
+    .map(x=>({id:String(x.id||planId()),ders:x.ders.slice(0,30),konu:String(x.konu||'').slice(0,60),done:String(x.done||'')})));
+}
+function planList(ul,day,editable){
+  ul.textContent=''; const week=weekKey();
+  for(const x of track.plan[day]){
+    const li=document.createElement('li'), lab=document.createElement('label'), box=document.createElement('input'), name=document.createElement('span');
+    const text=[x.ders,x.konu].filter(Boolean).join(' · ');
+    // yalnızca bugüne kadarki günler işaretlenebilir
+    box.type='checkbox'; box.checked=x.done===week; box.disabled=day>weekDay(); name.textContent=text;
+    box.onchange=()=>{ x.done=box.checked?week:''; saveTrack(); planRender(); };
+    lab.append(box,name); li.appendChild(lab);
+    if(editable){
+      const del=document.createElement('button'); del.textContent='✕'; del.setAttribute('aria-label','Programdan sil: '+text);
+      del.onclick=()=>{ if(del.dataset.sure){ track.plan[day]=track.plan[day].filter(y=>y!==x); saveTrack(); planRender(); }
+        else { del.dataset.sure=1; del.textContent='Sil?'; setTimeout(()=>{ delete del.dataset.sure; del.textContent='✕'; },3000); } };
+      li.appendChild(del);
+    }
+    ul.appendChild(li);
+  }
+}
+function planRender(){
+  const week=weekKey(), days=$('wdays'); days.textContent='';
+  WSHORT.forEach((t,i)=>{
+    const b=document.createElement('button'), n=document.createElement('small'), len=track.plan[i].length, done=track.plan[i].filter(x=>x.done===week).length;
+    b.type='button'; b.textContent=t; n.textContent=len?done+'/'+len:''; b.appendChild(n); b.setAttribute('aria-pressed',i===planDay); if(i===weekDay()) b.className='now';
+    b.setAttribute('aria-label',WDAYS[i]+(len?', '+len+' ders, '+done+' tamam':', boş')); b.onclick=()=>{ planDay=i; planRender(); };
+    days.appendChild(b);
+  });
+  planList($('wlist'),planDay,true);
+  const all=track.plan.flat(), done=all.filter(x=>x.done===week).length;
+  $('wsum').textContent=(track.plan[planDay].length?'':WDAYS[planDay]+' boş. Aşağıdan ders ekle. ')+(all.length?'Bu hafta: '+done+' / '+all.length+' tamam':'');
+  homeSoon();
+}
+for(const d of SUBJECTS) $('wders').add(new Option(d,d));
+$('wders').onchange=()=>{ $('wkonu').value=''; konuHints(); };
+$('wadd').onclick=()=>{
+  if(track.plan[planDay].length>=40) return;
+  track.plan[planDay].push({id:planId(),ders:$('wders').value,konu:$('wkonu').value.replace(/\s+/g,' ').trim(),done:''});
+  $('wkonu').value=''; saveTrack(); planRender();
+};
+$('wkonu').onkeydown=e=>{ if(e.key==='Enter') $('wadd').click(); };
+
+function trackAll(){ $('examdate').value=track.exam; $('goal').value=track.goal; countdown(); goalRender(); topicRender(); planRender(); backupInfo(); }
 // kayıt okunmadan dokunulursa eski bilgilerin üzerine yazılmasın
 $('panel6').inert=true;
-(async()=>{ await bookReady; try{ const t=bookDb&&await kv(s=>s.get('takip')); if(t) track={...track,...t}; }catch(e){} trackReady=true; $('panel6').inert=false; trackAll(); })();
-document.addEventListener('visibilitychange',()=>{ if(trackReady){ countdown(); goalRender(); } });
-setInterval(()=>{ if(trackReady){ countdown(); goalRender(); } },60000);
+(async()=>{ await bookReady; try{ const t=bookDb&&await kv(s=>s.get('takip')); if(t) track={...track,...t}; }catch(e){} track.plan=cleanPlan(track.plan); trackReady=true; $('panel6').inert=false; trackAll(); })();
+document.addEventListener('visibilitychange',()=>{ if(trackReady){ countdown(); goalRender(); planRender(); brender(); } });
+let lastDay=dayKey();
+setInterval(()=>{ if(!trackReady) return; countdown(); goalRender(); if(lastDay!==dayKey()){ lastDay=dayKey(); planDay=weekDay(); planRender(); brender(); } },60000);
 
 // ================= Arşiv: üretilen PDF'ler yalnızca bu cihazda saklanır =================
 // Her PDF ayrı anahtarda durur; hiçbir dosya internete gönderilmez.
@@ -1800,6 +1993,141 @@ $('asearch').oninput=shelfRender;
 $('tab7').addEventListener('click',shelfLoad);
 dl.then(shelfRender); shelfLoad();
 
+// ================= Yedekle ve geri yükle =================
+const ksay=t=>{ $('bkstatus').textContent=t; };
+let backupBusy=false, incoming=null;
+function backupInfo(){
+  $('bklast').textContent=track.backup?'Son yedek: '+new Date(track.backup).toLocaleDateString('tr-TR',{day:'numeric',month:'long',year:'numeric'}):'Henüz yedek almadın.';
+}
+function backupSizes(){
+  const n=shelf.reduce((a,f)=>a+f.blob.size,0);
+  $('bkfilesl').textContent='Arşivdeki PDF\'leri de ekle'+(shelf.length?' ('+shelf.length+' PDF, yaklaşık '+mb(n*1.34)+')':'');
+}
+function backupLock(on){ backupBusy=on; $('bksave').disabled=on||!downloads; $('bkopen').disabled=$('bkdo').disabled=on; }
+const to64=blob=>new Promise((ok,no)=>{ const r=new FileReader(); r.onload=()=>ok(r.result.slice(r.result.indexOf(',')+1)); r.onerror=()=>no(r.error); r.readAsDataURL(blob); });
+async function makeBackup(withFiles){
+  await bookReady; await writing; await trackChain; if(withFiles) await shelfLoad();
+  const sorular=book.map(q=>({data:q.data,marks:q.marks,w:q.w,h:q.h,ders:q.ders||'',konu:q.konu||'',r:q.r||null}));
+  // parça parça yazılır: büyük arşivde tek dev metin oluşmaz
+  const parts=['{"app":"pdf-atolyesi","v":1,"date":'+Date.now()+',"sorular":',JSON.stringify(sorular),',"takip":',JSON.stringify(track),',"arsiv":['];
+  if(withFiles) for(let i=0;i<shelf.length;i++){
+    const f=shelf[i]; ksay('Yedek hazırlanıyor: '+(i+1)+' / '+shelf.length);
+    parts.push((i?',':'')+JSON.stringify({key:f.key,name:f.name,kind:f.kind,date:f.date,data:await to64(f.blob)}));
+  }
+  parts.push(']}');
+  return new Blob(parts,{type:'application/json'});
+}
+$('bksave').onclick=async()=>{
+  if(backupBusy||!downloads) return; backupLock(true); ksay('Yedek hazırlanıyor…');
+  try{
+    if(!trackReady) throw new Error('bilgiler henüz okunmadı, birazdan tekrar dene');
+    const blob=await makeBackup($('bkfiles').checked);
+    ksay('Yedek hazır. Kaydetmeyi onayla.');
+    await downloads.save({filename:'pdf-atolyesi-yedek-'+dayKey()+'.json',data:blob});
+    track.backup=Date.now(); saveTrack(); backupInfo(); ksay('Yedek kaydetme ekranına gönderildi ('+mb(blob.size)+').');
+  }catch(e){ ksay(e&&e.code==='declined'?'Kaydetme iptal edildi.':'Yedek alınamadı: '+((e&&(e.message||e.code))||'bilinmeyen hata')); }
+  backupLock(false);
+};
+// dışarıdan gelen dosyadaki her alan tek tek denetlenir
+const num01=n=>typeof n==='number'&&Number.isFinite(n);
+const text=(v,n)=>typeof v==='string'?v.slice(0,n):'';
+const isDay=v=>typeof v==='string'&&/^\d{4}-\d\d-\d\d$/.test(v);
+function cleanQuestion(q){
+  if(!q||typeof q.data!=='string'||!/^data:image\/(jpeg|png);base64,/.test(q.data)||!(q.w>0&&q.w<=12000&&q.h>0&&q.h<=12000)) return null;
+  const marks=(Array.isArray(q.marks)?q.marks:[]).filter(m=>m&&/^#[0-9a-f]{6}$/i.test(m.c)&&num01(m.s)&&Array.isArray(m.p)&&m.p.length&&m.p.every(p=>Array.isArray(p)&&num01(p[0])&&num01(p[1])));
+  const r=q.r&&num01(q.r.b)&&isDay(q.r.due)?{b:Math.max(0,Math.min(5,Math.round(q.r.b))),due:q.r.due,t:num01(q.r.t)?q.r.t:0}:null;
+  return {data:q.data,marks,w:Math.round(q.w),h:Math.round(q.h),ders:text(q.ders,30),konu:text(q.konu,60),r};
+}
+function readBackup(raw){
+  let d; try{ d=JSON.parse(raw); }catch(e){ throw new Error('dosya okunamadı veya bozuk'); }
+  if(!d||d.app!=='pdf-atolyesi') throw new Error('bu bir PDF Atölyesi yedeği değil');
+  if(d.v!==1) throw new Error('yedek daha yeni bir sürümle alınmış, sayfayı yenile');
+  const sorular=(Array.isArray(d.sorular)?d.sorular:[]).map(cleanQuestion).filter(Boolean);
+  const arsiv=(Array.isArray(d.arsiv)?d.arsiv:[]).filter(f=>f&&typeof f.key==='string'&&f.key.startsWith('ars:')&&typeof f.data==='string'&&f.data.startsWith('JVBER'));
+  return {date:num01(d.date)?d.date:0,sorular,arsiv,takip:d.takip&&typeof d.takip==='object'?d.takip:null};
+}
+// birleştirme: cihazdaki bilgi silinmez, yedektekiler eklenir
+function mergeTrack(t){
+  if(isDay(t.exam)||t.exam==='') track.exam=t.exam;
+  if(num01(t.goal)) track.goal=Math.max(1,Math.min(2000,Math.round(t.goal)));
+  for(const [k,n] of Object.entries(t.days||{})) if(isDay(k)&&num01(n)) track.days[k]=Math.max(track.days[k]||0,Math.max(0,Math.min(9999,Math.round(n))));
+  for(const [k,l] of Object.entries(t.lists||{})) if(Object.hasOwn(TOPICS,k)&&Array.isArray(l)){
+    const theirs=l.filter(x=>typeof x==='string').map(x=>x.slice(0,60));
+    track.lists[k]=track.lists[k]?[...new Set([...track.lists[k],...theirs])]:theirs;
+  }
+  for(const [k,v] of Object.entries(t.done||{})) if(v&&k.includes('|')) track.done[k]=1;
+  cleanPlan(t.plan).forEach((list,i)=>{
+    for(const x of list){
+      const same=track.plan[i].find(y=>y.id===x.id||(y.ders===x.ders&&y.konu===x.konu));
+      if(!same) track.plan[i].push(x); else if(x.done>same.done) same.done=x.done;
+    }
+  });
+}
+async function applyBackup(d){
+  await bookReady; if(!bookDb||!trackReady) throw new Error('bu tarayıcı bilgi saklayamıyor');
+  const have=new Map(book.map(q=>[q.data,q])); let q=0, f=0;
+  for(const x of d.sorular){
+    const mine=have.get(x.data);
+    if(!mine){ book.push(x); have.set(x.data,x); q++; }
+    else if(x.r&&(!mine.r||x.r.t>mine.r.t)) mine.r=x.r;
+  }
+  await persist(); if(!bookSaved) throw new Error('cihazda yer kalmamış olabilir');
+  if(d.takip){ mergeTrack(d.takip); saveTrack(); await trackChain; }
+  const keys=new Set(await kv(s=>s.getAllKeys(IDBKeyRange.bound('ars:','ars:￿'))));
+  for(let i=0;i<d.arsiv.length;i++){
+    const a=d.arsiv[i]; if(keys.has(a.key)) continue;
+    ksay('PDF\'ler geri yükleniyor: '+(i+1)+' / '+d.arsiv.length);
+    const bin=atob(a.data), bytes=new Uint8Array(bin.length); for(let j=0;j<bin.length;j++) bytes[j]=bin.charCodeAt(j);
+    const rec={key:a.key,name:cleanName(text(a.name,120),'dosya'),kind:text(a.kind,40),date:num01(a.date)?a.date:Date.now(),blob:new Blob([bytes],{type:'application/pdf'})};
+    await kv(s=>s.put(rec,rec.key)); keys.add(a.key); f++;
+  }
+  if(book.length) bsay('Defterde '+book.length+' soru var.');
+  brender(); trackAll(); await shelfLoad();
+  return {q,f};
+}
+$('bkopen').onchange=async e=>{
+  const file=e.target.files[0]; e.target.value=''; if(!file||backupBusy) return;
+  incoming=null; $('bkconfirm').hidden=true; backupLock(true); ksay('Yedek okunuyor…');
+  try{
+    incoming=readBackup(await file.text());
+    $('bksum').textContent=(incoming.date?new Date(incoming.date).toLocaleDateString('tr-TR',{day:'numeric',month:'long',year:'numeric'})+' tarihli yedek: ':'Yedek: ')+incoming.sorular.length+' soru, '+incoming.arsiv.length+' PDF'+(incoming.takip?', takip ve program':'')+'. Cihazdaki bilgiler silinmez, yedektekiler eklenir. Sınav tarihi ve günlük hedef yedekteki gibi olur.';
+    $('bkconfirm').hidden=false; ksay('');
+  }catch(err){ ksay('Yedek açılamadı: '+err.message+'.'); }
+  backupLock(false);
+};
+$('bkdo').onclick=async()=>{
+  if(!incoming||backupBusy) return; backupLock(true);
+  try{ const n=await applyBackup(incoming); incoming=null; $('bkconfirm').hidden=true; ksay('Geri yüklendi: '+n.q+' yeni soru, '+n.f+' yeni PDF.'); }
+  catch(e){ ksay('Geri yükleme tamamlanamadı: '+((e&&e.message)||'bilinmeyen hata')+'.'); }
+  backupLock(false);
+};
+$('bkno').onclick=()=>{ incoming=null; $('bkconfirm').hidden=true; ksay('Vazgeçildi.'); };
+$('bktop').onclick=()=>$('backup').scrollIntoView({block:'start'});
+$('tab7').addEventListener('click',()=>shelfLoad().then(backupSizes));
+dl.then(()=>{ backupLock(false); }); shelfLoad().then(backupSizes);
+
+// ================= Tema: otomatik, açık, koyu =================
+const THEMES={auto:'Otomatik',light:'Açık',dark:'Koyu'};
+let themeMode='auto';
+try{ const m=localStorage.getItem('pdf-atolyesi-tema'); if(m==='light'||m==='dark') themeMode=m; }catch(e){}
+// "Otomatik" seçilince sayfayı açan ortamın kendi ayarı geri gelir
+let hostTheme=themeMode==='auto'?document.documentElement.getAttribute('data-theme'):null;
+function themeApply(){
+  const root=document.documentElement, v=themeMode==='auto'?hostTheme:themeMode;
+  if(v) root.setAttribute('data-theme',v); else root.removeAttribute('data-theme');
+  $('themel').textContent=THEMES[themeMode]; $('theme').setAttribute('aria-label','Tema: '+THEMES[themeMode]+'. Değiştirmek için dokun');
+  let meta=document.querySelector('meta[name=theme-color]');
+  if(!meta){ meta=document.createElement('meta'); meta.name='theme-color'; document.head.appendChild(meta); }
+  meta.content=getComputedStyle(root).getPropertyValue('--bg').trim();
+}
+$('theme').onclick=()=>{
+  themeMode={auto:'dark',dark:'light',light:'auto'}[themeMode];
+  try{ localStorage.setItem('pdf-atolyesi-tema',themeMode); }catch(e){}
+  themeApply();
+};
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change',themeApply);
+themeApply();
+
 // ================= Ana sayfa =================
 function homeRender(){
   if(trackReady){
@@ -1808,7 +2136,9 @@ function homeRender(){
     $('hdaysl').textContent=n===0?'sınav günü':n>0?'sınava kalan gün':'sınav tarihi seç';
     $('hgoal').textContent=(track.days[dayKey()]||0)+' / '+track.goal;
   }
-  $('hbook').textContent=book.length; $('hshelf').textContent=shelf.length;
+  const due=book.filter(isDue).length;
+  $('hbook').textContent=due||book.length; $('hbookl').textContent=due?'tekrar bekleyen soru':'defterdeki soru'; $('hshelf').textContent=shelf.length;
+  if(trackReady){ const today=track.plan[weekDay()]; planList($('hplan'),weekDay(),false); $('hplanempty').hidden=!!today.length; $('hplant').textContent='Bugünün programı: '+WDAYS[weekDay()]; }
   $('hscan').textContent=items.length?'Kaldığın yere dön ('+items.length+' sayfa)':'Sayfa tara';
 }
 function homeSoon(){ queueMicrotask(homeRender); }
