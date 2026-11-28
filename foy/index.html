@@ -298,13 +298,21 @@ box-shadow:inset 1.5px 1.5px 1px -.5px #fff,inset -1.5px -1.5px 1px -.5px #fff,i
 #preflist button{flex:none;min-width:34px;height:34px;padding:0 6px;font-size:12px}
 .prefadd{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.prefadd>*{min-width:0}.prefadd button{grid-column:1/-1}
 #srest{max-width:180px}
+.kinds{margin-bottom:10px}.kinds button[aria-pressed=true]{background:var(--acc);color:var(--on)}
+#cdeck,#cfront,#cback,#cex,#csearch{margin-top:8px}textarea.field{resize:vertical;line-height:1.4;font-family:inherit}
+#cadd,#cgo{margin-top:10px}#crev{width:22px;height:22px;flex:none;accent-color:var(--acc)}
+#clist{list-style:none;padding:0;margin:10px 0 0;text-align:left;max-height:420px;overflow:auto}#clist li{display:flex;align-items:center;gap:6px;border-top:1px solid var(--hair);padding:9px 0}
+#clist div{flex:1;min-width:0;overflow-wrap:anywhere}#clist b,#clist small{display:block;white-space:pre-line}#clist small{font-size:13px;color:var(--mut)}#clist button{flex:none;min-width:34px;height:34px;padding:0 6px;font-size:13px}
+.flash{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;width:100%;max-width:640px;min-height:46vh;margin:0 auto;padding:28px 20px;border-radius:34px;text-align:center;overflow-wrap:anywhere;white-space:pre-line}
+.flash b{font-size:clamp(24px,7vw,36px);line-height:1.2}.flash span{font-size:20px;font-weight:500}.flash span:not(:empty){border-top:2px solid var(--fg);padding-top:16px;align-self:stretch}.flash small{font-size:15px;color:var(--mut);font-weight:400}.flash i{font-style:normal;font-size:14px;font-weight:500;color:var(--mut)}
+@media (min-width:1080px) and (max-width:1279px){.bar{grid-template-columns:minmax(0,1fr) auto;border-radius:30px;padding:0 14px}.brand{padding:11px 0 4px}nav{grid-column:1/-1;grid-row:2}#theme{grid-column:2;grid-row:1;margin-top:6px}}
 </style>
 <script>
 // tema seçimi sayfa çizilmeden uygulanır
 (()=>{ try{ const m=localStorage.getItem('pdf-atolyesi-tema'); if(m==='light'||m==='dark') document.documentElement.setAttribute('data-theme',m); }catch(e){} })();
 </script>
 <div class="top"><div class="bar"><a class="brand" href="#ana-sayfa" id="brand"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h8l5 5v13H6z"/><path d="M14 3v5h5"/><path d="M9 13h7M9 17h5"/></svg>PDF Atölyesi</a>
-<nav role="tablist" aria-label="Bölümler"><button id="tab8" role="tab" aria-controls="panel8" aria-selected="true">Ana sayfa</button><button id="tab0" role="tab" aria-controls="panel0" aria-selected="false">Tara</button><button id="tab3" role="tab" aria-controls="panel3" aria-selected="false">Yanlışlar</button><button id="tab1" role="tab" aria-controls="panel1" aria-selected="false">Dosya</button><button id="tab2" role="tab" aria-controls="panel2" aria-selected="false">Ses</button><button id="tab4" role="tab" aria-controls="panel4" aria-selected="false">Sayaç</button><button id="tab6" role="tab" aria-controls="panel6" aria-selected="false">Takip</button><button id="tab5" role="tab" aria-controls="panel5" aria-selected="false">Çıkmış</button><button id="tab7" role="tab" aria-controls="panel7" aria-selected="false">Arşiv</button></nav><button id="theme" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5a8.500 8.500 0 0 1 0 17z" fill="currentColor"/></svg><span id="themel">Otomatik</span></button></div></div>
+<nav role="tablist" aria-label="Bölümler"><button id="tab8" role="tab" aria-controls="panel8" aria-selected="true">Ana sayfa</button><button id="tab0" role="tab" aria-controls="panel0" aria-selected="false">Tara</button><button id="tab3" role="tab" aria-controls="panel3" aria-selected="false">Yanlışlar</button><button id="tab9" role="tab" aria-controls="panel9" aria-selected="false">Kartlar</button><button id="tab1" role="tab" aria-controls="panel1" aria-selected="false">Dosya</button><button id="tab2" role="tab" aria-controls="panel2" aria-selected="false">Ses</button><button id="tab4" role="tab" aria-controls="panel4" aria-selected="false">Sayaç</button><button id="tab6" role="tab" aria-controls="panel6" aria-selected="false">Takip</button><button id="tab5" role="tab" aria-controls="panel5" aria-selected="false">Çıkmış</button><button id="tab7" role="tab" aria-controls="panel7" aria-selected="false">Arşiv</button></nav><button id="theme" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5a8.500 8.500 0 0 1 0 17z" fill="currentColor"/></svg><span id="themel">Otomatik</span></button></div></div>
 <main>
 <section id="panel8">
 <div class="hero"><div><h1>Çek. Kırp.<span>PDF hazır.</span></h1><p>Ders sayfalarını PDF’e çevir, yanlışlarını biriktir, sınava hazırlığını takip et. Dosyaların cihazında işlenir.</p>
@@ -320,6 +328,7 @@ box-shadow:inset 1.5px 1.5px 1px -.5px #fff,inset -1.5px -1.5px 1px -.5px #fff,i
 <div class="bento">
 <button class="ink wide2" data-go="0"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8V4h4M16 4h4v4M20 16v4h-4M8 20H4v-4"/><path d="M8 9h8M8 12h8M8 15h5"/></svg><b>Sayfa tara</b><span>Fotoğrafı veya ekran görüntüsünü ekle. Sayfa kırpılır, düzeltilir ve PDF olur.</span></button>
 <button class="glass wide2" data-go="3"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h13v17H7a2 2 0 0 1-2-2z"/><path d="M9.500 9.500l5 5M14.500 9.500l-5 5"/></svg><b>Yanlış defteri</b><span>Yapamadığın soruları kutuyla seç, ders ve konuya göre topla.</span></button>
+<button class="glass" data-go="9"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M3 8h14v12H3zM7 8V4h14v12h-4"/></svg><b>Kartlar</b><span>Bilgi kartları ve kelime defteri.</span></button>
 <button class="glass" data-go="1"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3h8l4 4v11H8z"/><path d="M4 8v13h11"/></svg><b>Dosyadan PDF</b><span>Word, Excel, metin ve görselleri tek PDF yap.</span></button>
 <button class="glass" data-go="4"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 2h6"/></svg><b>Sayaç ve net</b><span>Deneme süresi, soru başı süre, Pomodoro ve net hesabı.</span></button>
 <button class="glass" data-go="6"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16M7 16v-5M12 16V6M17 16v-8"/></svg><b>Takip</b><span>Haftalık program, konular, çalışma süresi ve kalan gün.</span></button>
@@ -389,6 +398,22 @@ box-shadow:inset 1.5px 1.5px 1px -.5px #fff,inset -1.5px -1.5px 1px -.5px #fff,i
 </div>
 </section>
 
+<section id="panel9" hidden>
+<header><h1>Çevir.<span>Aklında kalsın.</span></h1><p>Kendi bilgi kartlarını ve kelimelerini ekle. Bilemediklerin ertesi gün yeniden gelir.</p></header>
+<div class="cards">
+<div class="card glass"><div class="row kinds" role="group" aria-label="Kart türü"><button data-kind="kart" aria-pressed="true">Bilgi kartları</button><button data-kind="kelime" aria-pressed="false">Kelime defteri</button></div>
+<input id="cdeck" class="field" list="cdecks" maxlength="40" autocomplete="off"><datalist id="cdecks"></datalist>
+<textarea id="cfront" class="field" rows="2" maxlength="300"></textarea><textarea id="cback" class="field" rows="2" maxlength="600"></textarea>
+<input id="cex" class="field" maxlength="300" placeholder="Örnek cümle (isteğe bağlı)" aria-label="Örnek cümle" autocomplete="off">
+<button id="cadd" class="main">Ekle</button><button id="ccancel" class="soft wideb" hidden>Düzenlemekten vazgeç</button><p id="cmsg" role="status"></p></div>
+<div class="card glass"><label class="line">Deste<select id="cfilter"></select></label>
+<p id="cdue"></p><label class="line" id="crevl">Ters sor (anlamdan kelimeye)<input id="crev" type="checkbox"></label>
+<button id="cgo" class="main">Çalışmaya başla</button>
+<input id="csearch" class="field" type="search" placeholder="Kartlarda ara" aria-label="Kartlarda ara" autocomplete="off">
+<ul id="clist"></ul></div>
+</div>
+</section>
+
 <section id="panel4" hidden>
 <header><h1>Süreni tut.<span>Netini gör.</span></h1></header>
 <div class="cards three">
@@ -448,7 +473,7 @@ box-shadow:inset 1.5px 1.5px 1px -.5px #fff,inset -1.5px -1.5px 1px -.5px #fff,i
 <ul id="alist"></ul>
 <p id="astatus" class="hint" role="status"></p>
 <p class="hint">Tarayıcı verilerini silersen arşiv de silinir. Önemli dosyaları Dosyalar uygulamasına da kaydet.</p>
-<div class="card glass" id="backup"><h2>Yedekle ve geri yükle</h2><p>Yanlış defteri, takip bilgileri, haftalık program ve arşiv tek bir dosyaya kaydedilir. Tara sekmesindeki yarım iş yedeğe girmez.</p>
+<div class="card glass" id="backup"><h2>Yedekle ve geri yükle</h2><p>Yanlış defteri, takip bilgileri, haftalık program, kartlar, tercih listesi ve arşiv tek bir dosyaya kaydedilir. Tara sekmesindeki yarım iş yedeğe girmez.</p>
 <label class="line"><span id="bkfilesl">Arşivdeki PDF'leri de ekle</span><input id="bkfiles" type="checkbox" checked></label>
 <button id="bksave" class="main">Yedek al</button><p id="bklast"></p>
 <label class="cam glass"><span>Yedekten geri yükle</span><input id="bkopen" type="file" accept=".json,application/json"></label>
@@ -487,6 +512,9 @@ box-shadow:inset 1.5px 1.5px 1px -.5px #fff,inset -1.5px -1.5px 1px -.5px #fff,i
 <label class="line thick">Kalınlık<input id="psize" type="range" min="2" max="30" value="6"></label>
 <div class="acts four"><button id="pundo" class="glass">Geri al</button><button id="pclear" class="glass">Temizle</button><button id="pzoom" class="glass" aria-pressed="false">Yakınlaş</button><button id="ppan" class="glass" aria-pressed="false">Gezdir</button></div>
 <div class="acts"><button id="psave" class="main">Kaydet</button><button id="pcancel" class="glass">Vazgeç</button></div></div>
+<div id="study" class="sheet" hidden role="dialog" aria-modal="true" aria-label="Kart çalışması"><p id="stpos" role="status"></p><p id="stdeck" class="hint"></p>
+<button id="stcard" type="button" class="flash glass"><b id="stfront"></b><span id="stback"></span><small id="stex"></small><i id="sthint">Cevap için dokun</i></button>
+<div class="acts"><button id="stno" class="glass">Bilemedim</button><button id="styes" class="main">Bildim</button><button id="stskip">Sonraya bırak</button><button id="stclose">Kapat</button></div></div>
 <div id="editor" hidden>
 <canvas id="view"></canvas>
 <p id="qhint" style="text-align:center;margin:0 0 12px;font-size:15px" hidden>Beyaz noktaları sayfanın köşelerine sürükle.</p>
@@ -1234,15 +1262,15 @@ $('dmake').onclick=async()=>{
   docBusy=false; drender();
 };
 // sekme kimliği -> adres çubuğundaki adı
-const TABS=[8,0,3,1,2,4,6,5,7];
-const SLUG={8:'ana-sayfa',0:'tara',3:'yanlislar',1:'dosya',2:'ses',4:'sayac',6:'takip',5:'cikmis',7:'arsiv'};
+const TABS=[8,0,3,9,1,2,4,6,5,7];
+const SLUG={8:'ana-sayfa',0:'tara',3:'yanlislar',1:'dosya',2:'ses',4:'sayac',6:'takip',5:'cikmis',7:'arsiv',9:'kartlar'};
 function tab(n,fromAddress){
   TABS.forEach(i=>{ $('tab'+i).setAttribute('aria-selected',i===n); $('panel'+i).hidden=i!==n; });
   if(!fromAddress&&location.hash!=='#'+SLUG[n]){ try{ history.pushState(null,'','#'+SLUG[n]); }catch(e){} }
   // seçili sekme dar ekranda görünür kalsın (sayfayı kaydırmadan)
   const t=$('tab'+n), box=t.parentElement, a=t.getBoundingClientRect(), r=box.getBoundingClientRect();
   box.scrollLeft+=a.left+a.width/2-(r.left+r.width/2);
-  window.scrollTo(0,0); if(n===8) homeSoon(); if(rv) reviewClose();
+  window.scrollTo(0,0); if(n===8) homeSoon(); if(rv) reviewClose(); if(n!==9) studyClose();
 }
 TABS.forEach(i=>$('tab'+i).addEventListener('click',()=>tab(i)));
 const fromHash=()=>Number(Object.keys(SLUG).find(k=>'#'+SLUG[k]===location.hash)??8);
@@ -1784,7 +1812,7 @@ const TOPICS={
 'AYT Felsefe Grubu':'Felsefe|Mantık|Psikoloji|Sosyoloji',
 'AYT Din Kültürü':'Dünya ve Ahiret|Kur\'an\'da Bazı Kavramlar|İnançla İlgili Meseleler|İslam ve Bilim|Anadolu\'da İslam'};
 const SUBJECTS=['Türkçe','Matematik','Geometri','Fizik','Kimya','Biyoloji','Edebiyat','Tarih','Coğrafya','Felsefe','Din Kültürü','Yabancı Dil','Diğer'];
-let track={exam:'2027-06-19',goal:100,days:{},mgoal:360,mins:{},rest:-1,prefs:[],lists:{},done:{},plan:[[],[],[],[],[],[],[]],backup:0}, trackChain=Promise.resolve(), trackReady=false;
+let track={exam:'2027-06-19',goal:100,days:{},mgoal:360,mins:{},rest:-1,prefs:[],cards:[],lists:{},done:{},plan:[[],[],[],[],[],[],[]],backup:0}, trackChain=Promise.resolve(), trackReady=false;
 const topicsOf=k=>track.lists[k]||TOPICS[k].split('|');
 const dayKey=(d=new Date())=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
 const dayNo=s=>{ const [y,m,d]=s.split('-').map(Number); return Date.UTC(y,m-1,d)/864e5; };
@@ -2002,10 +2030,90 @@ $('padd').onclick=()=>{
   $('puni').value=$('pbol').value=$('psira').value=''; saveTrack(); prefRender();
 };
 
-function trackAll(){ $('examdate').value=track.exam; $('goal').value=track.mgoal/60; countdown(); goalRender(); topicRender(); planRender(); streakRender(); prefRender(); backupInfo(); }
+// ================= Bilgi kartları ve kelime defteri =================
+const CARD_MAX=3000;
+let kind='kart', cardEdit=null, st=null;
+function cleanCards(l){
+  const t=(v,n)=>typeof v==='string'?v.slice(0,n):'';
+  return (Array.isArray(l)?l:[]).filter(x=>x&&t(x.on,300).trim()&&t(x.arka,600).trim()).slice(0,CARD_MAX).map(x=>({
+    id:t(x.id,40)||planId(),tip:x.tip==='kelime'?'kelime':'kart',deste:t(x.deste,40),on:t(x.on,300),arka:t(x.arka,600),ornek:t(x.ornek,300),
+    r:x.r&&num01(x.r.b)&&isDay(x.r.due)?{b:Math.max(0,Math.min(5,Math.round(x.r.b))),due:x.r.due,t:num01(x.r.t)?x.r.t:0}:null}));
+}
+const ofKind=()=>track.cards.filter(c=>c.tip===kind);
+const deckCards=()=>ofKind().filter(c=>$('cfilter').value==='*'||c.deste===$('cfilter').value);
+function cardRender(){
+  const word=kind==='kelime';
+  for(const b of document.querySelectorAll('[data-kind]')) b.setAttribute('aria-pressed',b.dataset.kind===kind);
+  const label=(id,t)=>{ $(id).placeholder=t; $(id).setAttribute('aria-label',t); };
+  label('cdeck',word?'Liste adı (örn. İngilizce)':'Deste adı (örn. Tarih)'); label('cfront',word?'Kelime':'Ön yüz: soru veya terim'); label('cback',word?'Anlamı':'Arka yüz: cevap');
+  $('cex').hidden=!word; $('crevl').hidden=!word;
+  $('cadd').textContent=cardEdit?'Değişikliği kaydet':'Ekle'; $('ccancel').hidden=!cardEdit;
+  const decks=[...new Set(ofKind().map(c=>c.deste))].sort((a,b)=>a.localeCompare(b,'tr'));
+  const f=$('cfilter'), now=f.value; f.textContent=''; f.add(new Option('Tümü','*')); for(const d of decks) f.add(new Option(d||'Adsız',d));
+  f.value=[...f.options].some(o=>o.value===now)?now:'*';
+  const dl2=$('cdecks'); dl2.textContent=''; for(const d of decks) if(d) dl2.appendChild(new Option(d,d));
+  const vis=deckCards(), due=vis.filter(isDue).length;
+  $('cdue').textContent=!vis.length?(word?'Henüz kelime yok.':'Henüz kart yok.'):vis.length+(word?' kelime':' kart')+', '+(due?due+' tanesi tekrar bekliyor.':'bugünlük tekrar tamam.');
+  $('cgo').disabled=!vis.length; $('cgo').textContent=vis.length&&!due?'Yine de hepsini çalış':'Çalışmaya başla';
+  const q=$('csearch').value.trim().toLocaleLowerCase('tr'), found=vis.filter(c=>(c.on+' '+c.arka).toLocaleLowerCase('tr').includes(q)).reverse();
+  $('csearch').hidden=vis.length<6&&!q;
+  const ul=$('clist'); ul.textContent='';
+  for(const c of found.slice(0,100)){
+    const li=document.createElement('li'), body=document.createElement('div'), a=document.createElement('b'), m=document.createElement('small');
+    a.textContent=c.on; m.textContent=c.arka; body.append(a,m); li.appendChild(body);
+    const btn=(t,label,fn)=>{ const b=document.createElement('button'); b.className='soft'; b.textContent=t; b.setAttribute('aria-label',label+': '+c.on); b.onclick=fn; li.appendChild(b); return b; };
+    btn('✎︎','Düzenle',()=>{ cardEdit=c.id; $('cdeck').value=c.deste; $('cfront').value=c.on; $('cback').value=c.arka; $('cex').value=c.ornek; cardRender(); $('cfront').focus(); });
+    const del=btn('✕','Sil',()=>{ if(del.dataset.sure){ track.cards=track.cards.filter(x=>x.id!==c.id); if(cardEdit===c.id) cardReset(); saveTrack(); cardRender(); } else { del.dataset.sure=1; del.textContent='Sil?'; } });
+    ul.appendChild(li);
+  }
+  if(found.length>100){ const li=document.createElement('li'); li.textContent='İlk 100 gösteriliyor. Diğerleri için ara.'; ul.appendChild(li); }
+}
+function cardReset(){ cardEdit=null; $('cfront').value=$('cback').value=$('cex').value=''; }
+$('cadd').onclick=()=>{
+  const on=$('cfront').value.trim(), arka=$('cback').value.trim();
+  if(!on||!arka){ $('cmsg').textContent='İki alanı da doldur.'; return; }
+  const data={deste:$('cdeck').value.trim(),on,arka,ornek:kind==='kelime'?$('cex').value.trim():''};
+  const old=cardEdit&&track.cards.find(c=>c.id===cardEdit);
+  if(old) Object.assign(old,data);
+  else { if(track.cards.length>=CARD_MAX){ $('cmsg').textContent='Kart sınırına ulaşıldı.'; return; } track.cards.push({id:planId(),tip:kind,...data,r:null}); }
+  $('cmsg').textContent=old?'Güncellendi.':'Eklendi.'; cardReset(); saveTrack(); cardRender(); streakRender();
+};
+$('ccancel').onclick=()=>{ cardReset(); cardRender(); };
+for(const b of document.querySelectorAll('[data-kind]')) b.onclick=()=>{ kind=b.dataset.kind; cardReset(); $('cdeck').value=''; $('cmsg').textContent=''; $('csearch').value=''; $('cfilter').value='*'; cardRender(); };
+$('cfilter').onchange=$('csearch').oninput=cardRender;
+function studyShow(){
+  const over=st.i>=st.list.length;
+  for(const id of ['stno','styes','stskip','stcard']) $(id).hidden=over;
+  if(over){ $('stpos').textContent='Çalışma bitti'; $('stdeck').textContent=st.yes+' tanesini bildin, '+st.no+' tanesini bilemedin.'+(st.no?' Bilemediklerin yarın yeniden gelecek.':''); return; }
+  const c=st.list[st.i], rev=st.rev&&c.tip==='kelime';
+  $('stpos').textContent=(st.i+1)+' / '+st.list.length; $('stdeck').textContent=c.deste;
+  $('stfront').textContent=rev?c.arka:c.on; $('stback').textContent=st.open?(rev?c.on:c.arka):''; $('stex').textContent=st.open?c.ornek:'';
+  $('sthint').hidden=st.open;
+  // cevap görülmeden not verilmez
+  $('styes').disabled=$('stno').disabled=!st.open;
+}
+$('cgo').onclick=()=>{
+  let list=deckCards().filter(isDue); if(!list.length) list=deckCards(); if(!list.length) return;
+  list=list.map(c=>[Math.random(),c]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
+  st={list,i:0,yes:0,no:0,open:false,rev:$('crev').checked}; $('study').hidden=false; studyShow();
+};
+function studyGrade(ok){
+  if(!st||!st.open||st.i>=st.list.length) return;
+  const c=st.list[st.i], early=!isDue(c), b=c.r?c.r.b:0;
+  if(!ok) c.r={b:0,due:later(1),t:Date.now()};
+  else if(!early){ const n=Math.min(GAPS.length,b+1); c.r={b:n,due:later(GAPS[n-1]),t:Date.now()}; }
+  st[ok?'yes':'no']++; st.i++; st.open=false; saveTrack(); studyShow();
+}
+function studyClose(){ if(!st) return; st=null; $('study').hidden=true; cardRender(); }
+$('stcard').onclick=()=>{ if(st){ st.open=true; studyShow(); } };
+$('styes').onclick=()=>studyGrade(true); $('stno').onclick=()=>studyGrade(false);
+$('stskip').onclick=()=>{ if(!st) return; st.i++; st.open=false; studyShow(); };
+$('stclose').onclick=studyClose;
+
+function trackAll(){ $('examdate').value=track.exam; $('goal').value=track.mgoal/60; countdown(); goalRender(); topicRender(); planRender(); streakRender(); prefRender(); cardRender(); backupInfo(); }
 // kayıt okunmadan dokunulursa eski bilgilerin üzerine yazılmasın
-$('panel6').inert=true;
-(async()=>{ await bookReady; try{ const t=bookDb&&await kv(s=>s.get('takip')); if(t) track={...track,...t}; }catch(e){} track.plan=cleanPlan(track.plan); track.prefs=cleanPrefs(track.prefs); trackReady=true; $('panel6').inert=false; trackAll(); })();
+$('panel6').inert=$('panel9').inert=true;
+(async()=>{ await bookReady; try{ const t=bookDb&&await kv(s=>s.get('takip')); if(t) track={...track,...t}; }catch(e){} track.plan=cleanPlan(track.plan); track.prefs=cleanPrefs(track.prefs); track.cards=cleanCards(track.cards); trackReady=true; $('panel6').inert=$('panel9').inert=false; trackAll(); })();
 document.addEventListener('visibilitychange',()=>{ if(trackReady){ countdown(); goalRender(); planRender(); brender(); } });
 let lastDay=dayKey();
 setInterval(()=>{ if(!trackReady) return; countdown(); goalRender(); if(lastDay!==dayKey()){ lastDay=dayKey(); planDay=weekDay(); planRender(); brender(); } },60000);
@@ -2139,6 +2247,10 @@ function mergeTrack(t){
   for(const [k,v] of Object.entries(t.done||{})) if(v&&k.includes('|')) track.done[k]=1;
   if(Number.isInteger(t.rest)&&t.rest>=-1&&t.rest<=6) track.rest=t.rest;
   for(const x of cleanPrefs(t.prefs)) if(track.prefs.length<60&&!track.prefs.some(y=>y.id===x.id||(y.uni===x.uni&&y.bolum===x.bolum&&y.tur===x.tur))) track.prefs.push(x);
+  for(const x of cleanCards(t.cards)){
+    const mine=track.cards.find(y=>y.id===x.id||(y.tip===x.tip&&y.on===x.on&&y.arka===x.arka));
+    if(!mine){ if(track.cards.length<CARD_MAX) track.cards.push(x); } else if(x.r&&(!mine.r||x.r.t>mine.r.t)) mine.r=x.r;
+  }
   cleanPlan(t.plan).forEach((list,i)=>{
     for(const x of list){
       const same=track.plan[i].find(y=>y.id===x.id||(y.ders===x.ders&&y.konu===x.konu));
