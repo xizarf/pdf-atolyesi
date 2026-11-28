@@ -337,16 +337,26 @@ box-shadow:inset 1.5px 1.5px 1px -.5px #fff,inset -1.5px -1.5px 1px -.5px #fff,i
 #pdpages button{display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px;border-radius:18px;min-width:0;min-height:150px;justify-content:center}
 #pdpages canvas{width:100%;height:auto;border-radius:8px;background:#fff}#pdpages small{font-size:13px;font-weight:600}
 #pdfed{z-index:19}
+html[data-locked] body>*:not(#lock){visibility:hidden}
+#lock{z-index:40}.lockbox{max-width:360px;margin:14vh auto 0;text-align:center}.lockbox h2{font-size:24px;margin:0 0 16px}.lockbox .main{margin-top:10px}.lockbox .ask{width:100%;margin-top:6px;padding:12px;border-radius:99px}
+.pin{margin-top:8px;text-align:center}#lkset{margin-top:10px}
+#bkenc{width:22px;height:22px;flex:none;accent-color:var(--acc)}
+#stlist{list-style:none;padding:0;margin:12px 0 0;text-align:left;font-size:14px}#stlist li{display:flex;justify-content:space-between;gap:10px;border-top:1px solid var(--hair);padding:9px 0}#stlist b{white-space:nowrap}
+.doc{text-align:left}.card .doc p{color:var(--fg);font-size:15px}.card .doc p.hint{color:var(--mut);font-size:13px;text-align:left;margin:10px 0 0}.doc a{color:var(--fg)}
+#fbtext{margin-top:10px}.linkb{display:block;margin-top:10px;padding:14px 8px;border-radius:99px;font-size:16px;font-weight:600;color:var(--fg);text-decoration:none}
+#hsearch{margin-top:12px}#helps{text-align:left;margin-top:6px}#helps details{border-top:1px solid var(--hair)}#helps summary{cursor:pointer;padding:13px 2px;font-weight:600;font-size:15px}#helps details p{margin:0 0 14px;color:var(--fg)}
+.cards>.card.span{grid-column:1/-1}
 #saver{position:fixed;inset:0;z-index:30;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.4);padding:16px 12px calc(16px + env(safe-area-inset-bottom,0px))}
 #saver>div{width:100%;max-width:480px;border-radius:34px;padding:18px 14px 8px;text-align:center;background:var(--solid)}
 #sname{font-weight:600;overflow-wrap:anywhere;margin:0 0 14px}#sno{width:100%;padding:14px}
 </style>
 <script>
 // tema seçimi sayfa çizilmeden uygulanır
+(()=>{ try{ if(localStorage.getItem('pdf-atolyesi-kilit')) document.documentElement.setAttribute('data-locked',''); }catch(e){} })();
 (()=>{ try{ const m=localStorage.getItem('pdf-atolyesi-tema'); if(m==='light'||m==='dark') document.documentElement.setAttribute('data-theme',m); }catch(e){} })();
 </script>
 <div class="top"><div class="bar"><a class="brand" href="#ana-sayfa" id="brand"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h8l5 5v13H6z"/><path d="M14 3v5h5"/><path d="M9 13h7M9 17h5"/></svg>PDF Atölyesi</a>
-<nav role="tablist" aria-label="Bölümler"><button id="tab8" role="tab" aria-controls="panel8" aria-selected="true">Ana sayfa</button><button id="tab0" role="tab" aria-controls="panel0" aria-selected="false">Tara</button><button id="tab3" role="tab" aria-controls="panel3" aria-selected="false">Yanlışlar</button><button id="tab9" role="tab" aria-controls="panel9" aria-selected="false">Kartlar</button><button id="tab1" role="tab" aria-controls="panel1" aria-selected="false">Dosya</button><button id="tab2" role="tab" aria-controls="panel2" aria-selected="false">Ses</button><button id="tab4" role="tab" aria-controls="panel4" aria-selected="false">Sayaç</button><button id="tab6" role="tab" aria-controls="panel6" aria-selected="false">Takip</button><button id="tab5" role="tab" aria-controls="panel5" aria-selected="false">Çıkmış</button><button id="tab7" role="tab" aria-controls="panel7" aria-selected="false">Arşiv</button></nav><button id="theme" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5a8.500 8.500 0 0 1 0 17z" fill="currentColor"/></svg><span id="themel">Otomatik</span></button></div></div>
+<nav role="tablist" aria-label="Bölümler"><button id="tab8" role="tab" aria-controls="panel8" aria-selected="true">Ana sayfa</button><button id="tab0" role="tab" aria-controls="panel0" aria-selected="false">Tara</button><button id="tab3" role="tab" aria-controls="panel3" aria-selected="false">Yanlışlar</button><button id="tab9" role="tab" aria-controls="panel9" aria-selected="false">Kartlar</button><button id="tab1" role="tab" aria-controls="panel1" aria-selected="false">Dosya</button><button id="tab2" role="tab" aria-controls="panel2" aria-selected="false">Ses</button><button id="tab4" role="tab" aria-controls="panel4" aria-selected="false">Sayaç</button><button id="tab6" role="tab" aria-controls="panel6" aria-selected="false">Takip</button><button id="tab5" role="tab" aria-controls="panel5" aria-selected="false">Çıkmış</button><button id="tab7" role="tab" aria-controls="panel7" aria-selected="false">Arşiv</button><button id="tab10" role="tab" aria-controls="panel10" aria-selected="false">Ayarlar</button></nav><button id="theme" type="button"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5a8.500 8.500 0 0 1 0 17z" fill="currentColor"/></svg><span id="themel">Otomatik</span></button></div></div>
 <main>
 <section id="panel8">
 <div class="hero"><div><h1>Çek. Kırp.<span>PDF hazır.</span></h1><p>Ders sayfalarını PDF’e çevir, yanlışlarını biriktir, sınava hazırlığını takip et. Dosyaların cihazında işlenir.</p>
@@ -369,6 +379,7 @@ box-shadow:inset 1.5px 1.5px 1px -.5px #fff,inset -1.5px -1.5px 1px -.5px #fff,i
 <button class="glass" data-go="5"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-9 9"/><path d="M18 14v6H4V6h6"/></svg><b>Çıkmış sorular</b><span>2018-2026 kitapçıkları için ÖSYM bağlantıları.</span></button>
 <button class="glass" data-go="2"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10v4h4l5 4V6L8 10z"/><path d="M16.500 9a4 4 0 0 1 0 6"/></svg><b>Videodan ses</b><span>Videonun sesini ayırıp kaydet.</span></button>
 <button class="glass" data-go="7"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16v13H4zM3 4h18v3H3zM9 11h6"/></svg><b>Arşiv</b><span>Oluşturduğun PDF’leri bu cihazda bul.</span></button>
+<button class="glass" data-go="10"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg><b>Ayarlar</b><span>Kilit, depolama, gizlilik ve yardım.</span></button>
 </div>
 </section>
 <section id="panel0" hidden>
@@ -452,6 +463,49 @@ box-shadow:inset 1.5px 1.5px 1px -.5px #fff,inset -1.5px -1.5px 1px -.5px #fff,i
 </div>
 </section>
 
+<section id="panel10" hidden>
+<header><h1>Ayarlar.<span>Senin düzenin.</span></h1><p>Kilit, depolama, gizlilik ve yardım.</p></header>
+<div class="cards">
+<div class="card glass" id="lockcard"><h2>Uygulama kilidi</h2><p id="lkstate"></p>
+<input id="lkold" class="field pin" type="password" inputmode="numeric" maxlength="8" placeholder="Şimdiki şifre" aria-label="Şimdiki şifre" autocomplete="off">
+<input id="lknew" class="field pin" type="password" inputmode="numeric" maxlength="8" placeholder="Yeni şifre (4-8 rakam)" aria-label="Yeni şifre, 4-8 rakam" autocomplete="off">
+<input id="lkagain" class="field pin" type="password" inputmode="numeric" maxlength="8" placeholder="Yeni şifre tekrar" aria-label="Yeni şifre tekrar" autocomplete="off">
+<button id="lkset" class="main">Kilidi etkinleştir</button><div class="pair" id="lkmore" hidden><button id="lknow" class="soft">Şimdi kilitle</button><button id="lkoff" class="soft">Kilidi kaldır</button></div>
+<p id="lkmsg" role="status"></p><p class="hint">Kilit, telefonunu eline alan birinin siteye bakmasını zorlaştırır. Verileri şifrelemez, bilgisayar bilgisi olan biri aşabilir.</p></div>
+<div class="card glass" id="storecard"><h2>Depolama</h2><output id="stused" class="big">–</output><div class="meter"><i id="stbar"></i></div><p id="stfree"></p>
+<ul id="stlist"></ul><p id="stkeep"></p><button id="stask" class="soft wideb" hidden>Tarayıcıdan verileri korumasını iste</button><button class="soft wideb" data-go="7">Arşivi ve yedeği aç</button></div>
+<div class="card glass" id="privacy"><h2>Gizlilik</h2>
+<div class="doc">
+<p><b>Dosyaların cihazında işlenir.</b> Eklediğin fotoğraf, PDF ve diğer dosyalar bu sitenin bir sunucusuna yüklenmez. Sitenin hesap sistemi, reklamı ve ziyaretçi takip aracı yoktur.</p>
+<p><b>Cihazında saklananlar:</b> yanlış defteri, yarım kalan tarama, arşivdeki PDF’ler, çalışma süreleri, program, konular, kartlar ve tercih listesi tarayıcının depolama alanında durur. Tema seçimi ve kilit ayarı da tarayıcıda tutulur.</p>
+<p><b>Barındırma:</b> Ayrı web sitesi GitHub Pages üzerinde durur. GitHub’ın belgesine göre bir GitHub Pages sitesi ziyaret edildiğinde ziyaretçinin IP adresi güvenlik amacıyla kaydedilir ve saklanır. Claude içindeki sürüm claude.ai üzerinde çalışır ve oranın kuralları geçerlidir.</p>
+<p><b>Dışarı giden bilgiler:</b> Bir dosyayı kaydettiğinde, paylaştığında veya geri bildirim gönderdiğinde, seçtiğin uygulama veya site onu alır. Dış bağlantılar kendi sitelerine götürür.</p>
+<p><b>Silmek:</b> Tarayıcının site verilerini temizlemek bu cihazdaki kayıtları siler. İndirdiğin dosyalar ayrıca silinmelidir.</p>
+<p class="hint">Son güncelleme: 28 Kasım 2026. Bu metin sitenin nasıl çalıştığını anlatır, bir hukukçu tarafından incelenmemiştir.</p>
+<p><a href="https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages" target="_blank" rel="noopener">GitHub Pages belgesi</a></p></div></div>
+<div class="card glass" id="feedback"><h2>Geri bildirim</h2>
+<label class="line">Konu<select id="fbtype"><option>Hata</option><option>Öneri</option><option>Soru</option></select></label>
+<textarea id="fbtext" class="field" rows="4" maxlength="1500" placeholder="Ne oldu, ne bekliyordun?" aria-label="Geri bildirim metni"></textarea>
+<div class="pair"><button id="fbshare" class="main">Paylaş</button><button id="fbcopy" class="soft">Kopyala</button></div>
+<a id="fbgit" class="soft linkb" target="_blank" rel="noopener" href="https://github.com/xizarf/pdf-atolyesi/issues/new">GitHub’da bildir</a>
+<p id="fbmsg" role="status"></p><p class="hint">Site kendiliğinden hiçbir şey göndermez. GitHub’da yazdıkların herkese açık olur ve GitHub hesabı ister. Ad, telefon gibi kişisel bilgi yazma.</p></div>
+<div class="card glass span" id="help"><h2>Yardım merkezi</h2><input id="hsearch" class="field" type="search" placeholder="Yardımda ara" aria-label="Yardımda ara" autocomplete="off">
+<div id="helps">
+<details><summary>Siteyi iPhone ana ekranına nasıl eklerim?</summary><p>Siteyi Safari’de aç, Paylaş düğmesine dokun ve “Ana Ekrana Ekle”yi seç. Ana ekrandaki simge ile Safari verileri ayrı saklayabilir. Taşımadan önce yedek al.</p></details>
+<details><summary>Bilgilerim nerede duruyor?</summary><p>Bu cihazın tarayıcısında. Başka telefonda veya bilgisayarda kendiliğinden görünmez. Taşımak için Arşiv sekmesinden yedek al, diğer cihazda geri yükle.</p></details>
+<details><summary>Bilgilerim silinir mi?</summary><p>Tarayıcı verilerini temizlersen silinir. Tarayıcılar yer azaldığında veya site uzun süre açılmadığında da silebilir. Düzenli yedek al.</p></details>
+<details><summary>PDF nasıl oluştururum?</summary><p>Tara sekmesinde fotoğraf ekle, sayfa sırasını ve kırpmayı kontrol et, “PDF oluştur”a dokun.</p></details>
+<details><summary>“Bulanık olabilir” uyarısı ne demek?</summary><p>Yazı kenarları net görünmüyor. Işıklı bir yerde, telefonu sabit tutup yeniden çek. Uyarı yanılabilir. Sayfa okunuyorsa devam edebilirsin.</p></details>
+<details><summary>Parmak silme her zaman çalışır mı?</summary><p>Hayır. Yalnızca sayfa kenarındaki ten rengine benzeyen alanları kapatır. Parmak yazının üstündeyse altındaki yazı geri gelmez. Kenardaki benzer renkli bir çizim de silinebilir, önizlemeyi kontrol et.</p></details>
+<details><summary>Hazır bir PDF’in üzerine nasıl yazarım?</summary><p>Dosya sekmesinde “Hazır PDF’in üzerine yaz”ı seç, sayfaya dokun, çiz veya yazı ekle. Asıl dosyan değişmez, yeni bir PDF kaydedilir.</p></details>
+<details><summary>Çalışma serisi nasıl sayılır?</summary><p>O gün en az bir süre eklediysen gün sayılır. Seçtiğin dinlenme günü seriyi bozmaz. Dinlenme gününü değiştirirsen eski günler de yeni seçime göre hesaplanır.</p></details>
+<details><summary>Kilit şifremi unuttum.</summary><p>Şifre geri getirilemez. Kilit ekranındaki “Şifremi unuttum” seçeneği bu cihazdaki bütün site verilerini silip kilidi kaldırır. Yedeğin varsa sonra geri yükleyebilirsin.</p></details>
+<details><summary>Şifreli yedeğin şifresini unuttum.</summary><p>O yedek açılamaz. Şifre hiçbir yerde saklanmaz.</p></details>
+<details><summary>İnternetsiz çalışır mı?</summary><p>Ayrı web sitesi bir kez açıldıktan sonra çoğu araç internetsiz de açılır. PDF üzerine yazma aracının internetsiz çalışması için onu önce internet varken bir kez kullan. ÖSYM bağlantıları internet ister.</p></details>
+</div><p id="hnone" hidden>Sonuç yok. Geri bildirim bölümünden sorabilirsin.</p></div>
+</div>
+</section>
+
 <section id="panel4" hidden>
 <header><h1>Süreni tut.<span>Netini gör.</span></h1></header>
 <div class="cards three">
@@ -513,10 +567,13 @@ box-shadow:inset 1.5px 1.5px 1px -.5px #fff,inset -1.5px -1.5px 1px -.5px #fff,i
 <p class="hint">Tarayıcı verilerini silersen arşiv de silinir. Önemli dosyaları Dosyalar uygulamasına da kaydet.</p>
 <div class="card glass" id="backup"><h2>Yedekle ve geri yükle</h2><p>Yanlış defteri, takip bilgileri, haftalık program, kartlar, tercih listesi ve arşiv tek bir dosyaya kaydedilir. Tara sekmesindeki yarım iş yedeğe girmez.</p>
 <label class="line"><span id="bkfilesl">Arşivdeki PDF'leri de ekle</span><input id="bkfiles" type="checkbox" checked></label>
+<label class="line"><span>Yedeği şifrele</span><input id="bkenc" type="checkbox"></label>
+<div id="bkpwbox" hidden><input id="bkpw" class="field pin" type="password" maxlength="100" placeholder="Yedek şifresi (en az 8 karakter)" aria-label="Yedek şifresi" autocomplete="new-password"><input id="bkpw2" class="field pin" type="password" maxlength="100" placeholder="Yedek şifresi tekrar" aria-label="Yedek şifresi tekrar" autocomplete="new-password"><p class="hint">Şifreyi unutursan bu yedek açılamaz. Şifre hiçbir yerde saklanmaz.</p></div>
 <button id="bksave" class="main">Yedek al</button><p id="bklast"></p>
 <label class="cam glass"><span>Yedekten geri yükle</span><input id="bkopen" type="file" accept=".json,application/json"></label>
+<div id="bklockbox" hidden><p>Bu yedek şifreli.</p><input id="bkopenpw" class="field pin" type="password" maxlength="100" placeholder="Yedek şifresi" aria-label="Yedek şifresi" autocomplete="off"><div class="pair"><button id="bkdecrypt" class="main">Şifreyi aç</button><button id="bkcancelpw" class="soft">Vazgeç</button></div></div>
 <div id="bkconfirm" hidden><p id="bksum"></p><div class="pair"><button id="bkdo" class="main">Geri yükle</button><button id="bkno" class="soft">Vazgeç</button></div></div>
-<p id="bkstatus" role="status"></p><p class="hint">Yedek dosyasını Dosyalar uygulamasında veya bilgisayarında sakla. Dosya şifreli değildir.</p></div>
+<p id="bkstatus" role="status"></p><p class="hint">Yedek dosyasını Dosyalar uygulamasında veya bilgisayarında sakla. “Yedeği şifrele” kapalıysa dosyayı eline geçiren herkes içini okuyabilir.</p></div>
 </section>
 
 <section id="panel5" hidden>
@@ -557,6 +614,11 @@ box-shadow:inset 1.5px 1.5px 1px -.5px #fff,inset -1.5px -1.5px 1px -.5px #fff,i
 <div id="study" class="sheet" hidden role="dialog" aria-modal="true" aria-label="Kart çalışması"><p id="stpos" role="status"></p><p id="stdeck" class="hint"></p>
 <button id="stcard" type="button" class="flash glass"><b id="stfront"></b><span id="stback"></span><small id="stex"></small><i id="sthint">Cevap için dokun</i></button>
 <div class="acts"><button id="stno" class="glass">Bilemedim</button><button id="styes" class="main">Bildim</button><button id="stskip">Sonraya bırak</button><button id="stclose">Kapat</button></div></div>
+<div id="lock" class="sheet" hidden role="dialog" aria-modal="true" aria-labelledby="lktitle"><div class="lockbox">
+<h2 id="lktitle">PDF Atölyesi kilitli</h2><input id="lkpin" class="field pin" type="password" inputmode="numeric" maxlength="8" placeholder="Şifre" aria-label="Şifre" autocomplete="off">
+<button id="lkgo" class="main">Aç</button><p id="lkerr" role="status"></p>
+<button id="lkforgot" class="ask">Şifremi unuttum</button>
+<div id="lkreset" hidden><p><b>Bu cihazdaki bütün site verileri silinir:</b> defter, arşiv, takip, kartlar ve yarım iş. Geri alınamaz. Onaylamak için SİL yaz.</p><input id="lkword" class="field pin" maxlength="3" aria-label="Onay için SİL yaz" autocomplete="off"><button id="lkwipe" class="soft wideb" disabled>Her şeyi sil ve kilidi kaldır</button></div></div></div>
 <div id="saver" hidden role="dialog" aria-modal="true" aria-labelledby="sname"><div class="glass">
 <p id="sname"></p><button id="sgo" class="main">Kaydet</button><button id="sno">Kapat</button></div></div>
 <div id="editor" hidden>
@@ -1326,15 +1388,15 @@ $('dmake').onclick=async()=>{
   docBusy=false; drender();
 };
 // sekme kimliği -> adres çubuğundaki adı
-const TABS=[8,0,3,9,1,2,4,6,5,7];
-const SLUG={8:'ana-sayfa',0:'tara',3:'yanlislar',1:'dosya',2:'ses',4:'sayac',6:'takip',5:'cikmis',7:'arsiv',9:'kartlar'};
+const TABS=[8,0,3,9,1,2,4,6,5,7,10];
+const SLUG={8:'ana-sayfa',0:'tara',3:'yanlislar',1:'dosya',2:'ses',4:'sayac',6:'takip',5:'cikmis',7:'arsiv',9:'kartlar',10:'ayarlar'};
 function tab(n,fromAddress){
   TABS.forEach(i=>{ $('tab'+i).setAttribute('aria-selected',i===n); $('panel'+i).hidden=i!==n; });
   if(!fromAddress&&location.hash!=='#'+SLUG[n]){ try{ history.pushState(null,'','#'+SLUG[n]); }catch(e){} }
   // seçili sekme dar ekranda görünür kalsın (sayfayı kaydırmadan)
   const t=$('tab'+n), box=t.parentElement, a=t.getBoundingClientRect(), r=box.getBoundingClientRect();
   box.scrollLeft+=a.left+a.width/2-(r.left+r.width/2);
-  window.scrollTo(0,0); if(n===8) homeSoon(); if(rv) reviewClose(); if(n!==9) studyClose();
+  window.scrollTo(0,0); if(n===8) homeSoon(); if(rv) reviewClose(); if(n!==9) studyClose(); if(n===10){ lockCard(); storageRender().catch(()=>{ $('stfree').textContent='Depolama bilgisi okunamadı.'; }); }
 }
 TABS.forEach(i=>$('tab'+i).addEventListener('click',()=>tab(i)));
 const fromHash=()=>Number(Object.keys(SLUG).find(k=>'#'+SLUG[k]===location.hash)??8);
@@ -2414,10 +2476,13 @@ $('bksave').onclick=async()=>{
   if(backupBusy||!downloads) return; backupLock(true); ksay('Yedek hazırlanıyor…');
   try{
     if(!trackReady) throw new Error('bilgiler henüz okunmadı, birazdan tekrar dene');
-    const blob=await makeBackup($('bkfiles').checked);
+    const secret=$('bkenc').checked?$('bkpw').value:'';
+    if($('bkenc').checked){ if(secret.length<8) throw new Error('şifre en az 8 karakter olmalı'); if(secret!==$('bkpw2').value) throw new Error('iki şifre aynı değil'); }
+    let blob=await makeBackup($('bkfiles').checked);
+    if(secret){ ksay('Yedek şifreleniyor…'); blob=await sealBackup(blob,secret); }
     ksay('Yedek hazır. Kaydetmeyi onayla.');
     await downloads.save({filename:'pdf-atolyesi-yedek-'+dayKey()+'.json',data:blob});
-    track.backup=Date.now(); saveTrack(); backupInfo(); ksay('Yedek kaydetme ekranına gönderildi ('+mb(blob.size)+').');
+    track.backup=Date.now(); saveTrack(); backupInfo(); $('bkpw').value=$('bkpw2').value=''; ksay('Yedek kaydetme ekranına gönderildi ('+mb(blob.size)+').');
   }catch(e){ ksay(e&&e.code==='declined'?'Kaydetme iptal edildi.':'Yedek alınamadı: '+((e&&(e.message||e.code))||'bilinmeyen hata')); }
   backupLock(false);
 };
@@ -2486,13 +2551,53 @@ async function applyBackup(d){
   brender(); trackAll(); await shelfLoad();
   return {q,f};
 }
+// ---- şifreli yedek: AES-GCM, anahtar paroladan PBKDF2 ile türetilir ----
+const KDF_ROUNDS=310000;
+const b64=u=>{ let s=''; for(let i=0;i<u.length;i+=32768) s+=String.fromCharCode(...u.subarray(i,i+32768)); return btoa(s); };
+const unb64=t=>{ const s=atob(t), u=new Uint8Array(s.length); for(let i=0;i<s.length;i++) u[i]=s.charCodeAt(i); return u; };
+async function deriveBits(secret,salt,rounds){
+  if(!window.crypto||!crypto.subtle) throw new Error('bu tarayıcı şifrelemeyi desteklemiyor');
+  const base=await crypto.subtle.importKey('raw',new TextEncoder().encode(secret.normalize('NFC')),'PBKDF2',false,['deriveBits']);
+  return new Uint8Array(await crypto.subtle.deriveBits({name:'PBKDF2',salt,iterations:rounds,hash:'SHA-256'},base,256));
+}
+const aesKey=async(secret,salt,use)=>crypto.subtle.importKey('raw',await deriveBits(secret,salt,KDF_ROUNDS),'AES-GCM',false,[use]);
+async function sealBackup(blob,secret){
+  const salt=crypto.getRandomValues(new Uint8Array(16)), iv=crypto.getRandomValues(new Uint8Array(12));
+  const data=await crypto.subtle.encrypt({name:'AES-GCM',iv},await aesKey(secret,salt,'encrypt'),await blob.arrayBuffer());
+  return new Blob(['{"app":"pdf-atolyesi","sifreli":1,"salt":"'+b64(salt)+'","iv":"'+b64(iv)+'","data":"',await to64(new Blob([data])),'"}'],{type:'application/json'});
+}
+function parseSealed(raw){
+  if(!raw.slice(0,80).includes('"sifreli"')) return null;
+  try{ const d=JSON.parse(raw); return d&&d.app==='pdf-atolyesi'&&d.sifreli===1&&typeof d.data==='string'&&typeof d.salt==='string'&&typeof d.iv==='string'?d:null; }catch(e){ return null; }
+}
+async function openSealed(d,secret){
+  let plain;
+  try{ plain=await crypto.subtle.decrypt({name:'AES-GCM',iv:unb64(d.iv)},await aesKey(secret,unb64(d.salt),'decrypt'),unb64(d.data)); }
+  catch(e){ throw new Error('şifre yanlış veya dosya bozuk'); }
+  return new TextDecoder().decode(plain);
+}
+let sealed=null;
+function offerRestore(raw){
+  incoming=readBackup(raw);
+    $('bksum').textContent=(incoming.date?new Date(incoming.date).toLocaleDateString('tr-TR',{day:'numeric',month:'long',year:'numeric'})+' tarihli yedek: ':'Yedek: ')+incoming.sorular.length+' soru, '+incoming.arsiv.length+' PDF'+(incoming.takip?', takip, program ve kartlar':'')+'. Cihazdaki bilgiler silinmez, yedektekiler eklenir. Sınav tarihi ve günlük hedef yedekteki gibi olur.';
+    $('bkconfirm').hidden=false; ksay('');
+}
+$('bkenc').onchange=()=>{ $('bkpwbox').hidden=!$('bkenc').checked; $('bkpw').value=$('bkpw2').value=''; };
+$('bkdecrypt').onclick=async()=>{
+  if(!sealed||backupBusy) return; backupLock(true); ksay('Şifre açılıyor…');
+  try{ offerRestore(await openSealed(sealed,$('bkopenpw').value)); sealed=null; $('bklockbox').hidden=true; $('bkopenpw').value=''; }
+  catch(e){ ksay('Yedek açılamadı: '+e.message+'.'); }
+  backupLock(false);
+};
+$('bkcancelpw').onclick=()=>{ sealed=null; $('bklockbox').hidden=true; $('bkopenpw').value=''; ksay(''); };
 $('bkopen').onchange=async e=>{
   const file=e.target.files[0]; e.target.value=''; if(!file||backupBusy) return;
-  incoming=null; $('bkconfirm').hidden=true; backupLock(true); ksay('Yedek okunuyor…');
+  incoming=null; sealed=null; $('bkconfirm').hidden=$('bklockbox').hidden=true; backupLock(true); ksay('Yedek okunuyor…');
   try{
-    incoming=readBackup(await file.text());
-    $('bksum').textContent=(incoming.date?new Date(incoming.date).toLocaleDateString('tr-TR',{day:'numeric',month:'long',year:'numeric'})+' tarihli yedek: ':'Yedek: ')+incoming.sorular.length+' soru, '+incoming.arsiv.length+' PDF'+(incoming.takip?', takip ve program':'')+'. Cihazdaki bilgiler silinmez, yedektekiler eklenir. Sınav tarihi ve günlük hedef yedekteki gibi olur.';
-    $('bkconfirm').hidden=false; ksay('');
+    const raw=await file.text();
+    sealed=parseSealed(raw);
+    if(sealed){ $('bklockbox').hidden=false; $('bkopenpw').value=''; ksay(''); backupLock(false); return; }
+    offerRestore(raw);
   }catch(err){ ksay('Yedek açılamadı: '+err.message+'.'); }
   backupLock(false);
 };
@@ -2528,6 +2633,105 @@ $('theme').onclick=()=>{
 };
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change',themeApply);
 themeApply();
+
+// ================= Ayarlar: uygulama kilidi =================
+const LOCK_KEY='pdf-atolyesi-kilit';
+let lockMemory=null, wrong=0, waitUntil=0, hiddenAt=0;
+function lockGet(){ try{ const d=JSON.parse(localStorage.getItem(LOCK_KEY)); return d&&d.salt&&d.hash?d:null; }catch(e){ return lockMemory; } }
+async function pinHash(pin,salt){ return b64(await deriveBits(pin,unb64(salt),150000)); }
+async function pinOk(pin){ const d=lockGet(); return !!d&&await pinHash(pin,d.salt)===d.hash; }
+// 5 yanlıştan sonra 30 saniye beklenir
+function pinGate(){ const left=Math.ceil((waitUntil-Date.now())/1000); return left>0?'Çok fazla yanlış deneme. '+left+' saniye bekle.':''; }
+function pinFail(){ if(++wrong>=5){ wrong=0; waitUntil=Date.now()+30000; } return pinGate()||'Şifre yanlış.'; }
+function lockBehind(on){ for(const el of $('lock').parentElement.children) if(el.id!=='lock'&&el.tagName!=='SCRIPT'&&el.tagName!=='STYLE'){ if(on){ if(!el.inert){ el.inert=true; el.dataset.locked=1; } } else if(el.dataset.locked){ el.inert=false; delete el.dataset.locked; } } }
+function lockShow(){
+  if(!lockGet()) return;
+  $('lock').hidden=false; lockBehind(true); $('lkpin').value=$('lkword').value=''; $('lkerr').textContent=''; $('lkreset').hidden=true; $('lkwipe').disabled=true;
+  document.documentElement.setAttribute('data-locked','');
+}
+function lockHide(){ $('lock').hidden=true; lockBehind(false); document.documentElement.removeAttribute('data-locked'); }
+async function unlock(){
+  const gate=pinGate(); if(gate){ $('lkerr').textContent=gate; return; }
+  $('lkgo').disabled=true;
+  try{ if(await pinOk($('lkpin').value)){ wrong=0; $('lkpin').value=''; lockHide(); } else { $('lkerr').textContent=pinFail(); $('lkpin').value=''; } }
+  catch(e){ $('lkerr').textContent='Şifre denetlenemedi: '+e.message; }
+  $('lkgo').disabled=false;
+}
+$('lkgo').onclick=unlock; $('lkpin').onkeydown=e=>{ if(e.key==='Enter') unlock(); };
+$('lkforgot').onclick=()=>{ $('lkreset').hidden=!$('lkreset').hidden; };
+$('lkword').oninput=()=>{ $('lkwipe').disabled=!['SİL','SIL'].includes($('lkword').value.trim().toLocaleUpperCase('tr')); };
+$('lkwipe').onclick=async()=>{
+  $('lkwipe').disabled=true; $('lkerr').textContent='Siliniyor…';
+  try{
+    await bookReady; await writing; await trackChain; await draftChain;
+    if(bookDb){ draftReady=false; await kv(s=>s.clear()); }
+    localStorage.removeItem(LOCK_KEY); location.reload();
+  }catch(e){ $('lkerr').textContent='Silinemedi. Tarayıcı ayarlarından bu sitenin verilerini temizleyebilirsin.'; $('lkwipe').disabled=false; }
+};
+document.addEventListener('visibilitychange',()=>{ if(document.hidden) hiddenAt=Date.now(); else if(hiddenAt&&Date.now()-hiddenAt>60000) lockShow(); });
+function lockCard(msg){
+  const on=!!lockGet();
+  $('lkstate').textContent=on?'Kilit açık. Site açılırken ve 1 dakikadan uzun ayrıldığında şifre sorulur.':'Kilit kapalı.';
+  $('lkold').hidden=!on; $('lkmore').hidden=!on; $('lkset').textContent=on?'Şifreyi değiştir':'Kilidi etkinleştir';
+  $('lkold').value=$('lknew').value=$('lkagain').value=''; $('lkmsg').textContent=msg||'';
+}
+async function lockCheckOld(){
+  if(!lockGet()) return true;
+  const gate=pinGate(); if(gate){ $('lkmsg').textContent=gate; return false; }
+  if(await pinOk($('lkold').value)){ wrong=0; return true; }
+  $('lkmsg').textContent=pinFail(); return false;
+}
+$('lkset').onclick=async()=>{
+  const pin=$('lknew').value;
+  if(!/^\d{4,8}$/.test(pin)){ $('lkmsg').textContent='Yeni şifre 4-8 rakam olmalı.'; return; }
+  if(pin!==$('lkagain').value){ $('lkmsg').textContent='İki şifre aynı değil.'; return; }
+  try{
+    if(!await lockCheckOld()) return;
+    const salt=b64(crypto.getRandomValues(new Uint8Array(16))), d={salt,hash:await pinHash(pin,salt)};
+    localStorage.setItem(LOCK_KEY,JSON.stringify(d)); lockCard('Kilit hazır. Şifreni unutma.');
+  }catch(e){ $('lkmsg').textContent='Bu tarayıcı kilit ayarını saklayamıyor.'; }
+};
+$('lkoff').onclick=async()=>{ try{ if(!await lockCheckOld()){ if(!$('lkold').value) $('lkmsg').textContent='Önce şimdiki şifreni yaz.'; return; } localStorage.removeItem(LOCK_KEY); lockCard('Kilit kaldırıldı.'); }catch(e){ $('lkmsg').textContent='Kilit kaldırılamadı.'; } };
+$('lknow').onclick=lockShow;
+lockCard(); if(lockGet()) lockShow(); else document.documentElement.removeAttribute('data-locked');
+
+// ================= Ayarlar: depolama, geri bildirim, yardım =================
+const sizeText=n=>n<1048576?Math.max(n?1:0,Math.round(n/1024))+' KB':n<1073741824?(n/1048576).toFixed(1).replace('.',',')+' MB':(n/1073741824).toFixed(1).replace('.',',')+' GB';
+async function storageRender(){
+  await bookReady; if($('panel10').hidden) return;
+  const parts=[];
+  if(bookDb){
+    await writing; await trackChain;
+    const files=await kv(s=>s.getAll(IDBKeyRange.bound('ars:','ars:￿'))), imgs=await kv(s=>s.getAll(IDBKeyRange.bound('img:','img:￿')));
+    parts.push(['Arşiv ('+files.length+' PDF)',files.reduce((a,f)=>a+f.blob.size,0)]);
+    parts.push(['Yanlış defteri ('+book.length+' soru)',book.reduce((a,q)=>a+q.data.length,0)]);
+    parts.push(['Yarım kalan tarama ('+imgs.length+' görüntü)',imgs.reduce((a,f)=>a+(f.size||0),0)]);
+    parts.push(['Takip ve kartlar',new Blob([JSON.stringify(track)]).size]);
+  }
+  const ul=$('stlist'); ul.textContent='';
+  for(const [name,n] of parts){ const li=document.createElement('li'), a=document.createElement('span'), c=document.createElement('b'); a.textContent=name; c.textContent=sizeText(n); li.append(a,c); ul.appendChild(li); }
+  const sum=parts.reduce((a,p)=>a+p[1],0);
+  $('stused').textContent=sizeText(sum);
+  let est=null; try{ est=await navigator.storage.estimate(); }catch(e){}
+  $('stbar').style.width=est&&est.quota?Math.min(100,est.usage/est.quota*100)+'%':'0';
+  $('stfree').textContent=!bookDb?'Bu tarayıcı bilgi saklayamıyor.':est&&est.quota?'Tarayıcının bildirdiği kullanım: '+sizeText(est.usage)+' / yaklaşık '+sizeText(est.quota):'Bu tarayıcı sınırı bildirmiyor.';
+  let kept=null; try{ kept=await navigator.storage.persisted(); }catch(e){}
+  $('stkeep').textContent=kept===true?'Tarayıcı bu verileri koruma isteğini kabul etti. Yine de yedek al.':kept===false?'Yer azalırsa tarayıcı bu verileri silebilir.':'';
+  $('stask').hidden=kept!==false;
+}
+$('stask').onclick=async()=>{ let yes=false; try{ yes=await navigator.storage.persist(); }catch(e){} await storageRender(); if(!yes) $('stkeep').textContent='Tarayıcı isteği şimdilik kabul etmedi. Düzenli yedek al.'; };
+const fbBody=()=>'['+$('fbtype').value+'] '+$('fbtext').value.trim();
+function fbLink(){ const t=$('fbtext').value.trim(); $('fbgit').href='https://github.com/xizarf/pdf-atolyesi/issues/new'+(t?'?title='+encodeURIComponent('['+$('fbtype').value+'] '+t.slice(0,60))+'&body='+encodeURIComponent(t):''); }
+$('fbtext').oninput=$('fbtype').onchange=fbLink;
+async function fbCopy(){ try{ await navigator.clipboard.writeText(fbBody()); $('fbmsg').textContent='Kopyalandı. İstediğin uygulamaya yapıştır.'; }catch(e){ $('fbtext').select(); $('fbmsg').textContent='Kopyalanamadı. Metni seçip elle kopyala.'; } }
+$('fbcopy').onclick=()=>{ if(!$('fbtext').value.trim()){ $('fbmsg').textContent='Önce mesajını yaz.'; return; } fbCopy(); };
+$('fbshare').onclick=async()=>{
+  if(!$('fbtext').value.trim()){ $('fbmsg').textContent='Önce mesajını yaz.'; return; }
+  if(!navigator.share) return fbCopy();
+  try{ await navigator.share({text:fbBody()}); $('fbmsg').textContent=''; }catch(e){ if(e.name!=='AbortError') fbCopy(); }
+};
+const fold=t=>t.toLocaleLowerCase('tr').replace(/[’']/g,'');
+$('hsearch').oninput=()=>{ const q=fold($('hsearch').value.trim()); let n=0; for(const d of $('helps').children){ const hit=fold(d.textContent).includes(q); d.hidden=!hit; if(hit) n++; } $('hnone').hidden=!!n; };
 
 // ================= Ana sayfa =================
 function homeRender(){
