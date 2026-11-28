@@ -634,7 +634,8 @@ function detect(d, W, H) {
 // Eşit olmayan ışıkta tek eşik yetmez: birkaç eşik denenir, gerçek kenarlara en iyi oturan seçilir.
 function detectPage(d,W,H){
   const found=[];
-  for(const f of [0,.15,.3,.45,.6,.75,.9,1.05,1.2]){ const r=pageAt(d,W,H,f); if(r) found.push({...r,score:edgeScore(d,W,H,r)}); }
+  const tone=toneOf(d,W,H); if(!tone) return null;
+  for(const f of [0,.15,.3,.45,.6,.75,.9,1.05,1.2]){ const r=pageAt(tone,W,H,f); if(r) found.push({...r,score:edgeScore(d,W,H,r)}); }
   if(!found.length) return null;
   const top=Math.max(...found.map(r=>r.score));
   const pick=found.find(r=>r.score>=top-.02);
@@ -651,12 +652,12 @@ function growOuter(d,W,H,r){
   for(const [a,b,ia,ib,dir] of outer){
     const unit=(from,to)=>{ const dx=to[0]-from[0], dy=to[1]-from[1], L=Math.hypot(dx,dy)||1; return [dx/L,dy/L]; };
     const ua=unit(q[ia],q[a]), ub=unit(q[ib],q[b]); // üst ve alt kenar doğrultusunda uzat
-    const fit=(p,s)=>{ let hit=0; for(let i=0;i<60;i++){ const t=.04+.92*i/59, x=p[0]+(s[0]-p[0])*t, y=p[1]+(s[1]-p[1])*t;
+    const fit=(p,s,need=0)=>{ let hit=0; for(let i=0;i<60;i++){ if(hit+60-i<need) return 0; const t=.04+.92*i/59, x=p[0]+(s[0]-p[0])*t, y=p[1]+(s[1]-p[1])*t;
         for(let o=-3;o<=3;o++){ const xi=x+dir*(o-3), xo=x+dir*(o+3); if(inside(xi,y)&&inside(xo,y)&&warmAt(xo,y)-warmAt(xi,y)>.04){ hit++; break; } } } return hit/60; };
     const now=fit(q[a],q[b]); let best=null;
     for(let m=4;m<W*.28;m+=3){ const p=[q[a][0]+ua[0]*m,q[a][1]+ua[1]*m]; if(!inside(...p)) break;
       for(let n=4;n<W*.28;n+=3){ const e=[q[b][0]+ub[0]*n,q[b][1]+ub[1]*n]; if(!inside(...e)) break;
-        const f=fit(p,e); if(f>=.8&&f>now+.2&&(!best||f>best.f+.001)) best={f,p,e}; } }
+        const f=fit(p,e,48); if(f>=.8&&f>now+.2&&(!best||f>best.f+.001)) best={f,p,e}; } }
     if(best){ q[a]=best.p; q[b]=best.e; }
   }
   const nq=q.map(([x,y])=>[x/W,y/H]);
@@ -681,7 +682,7 @@ function edgeScore(d,W,H,r){
   }
   return sides.reduce((x,y)=>x+y,0)/sides.length+Math.min(...sides);
 }
-function pageAt(d,W,H,lift){
+function toneOf(d,W,H){
   const N=W*H, warm=new Float32Array(N), lum=new Float32Array(N), hist=new Float64Array(200);
   const bin=v=>Math.max(0,Math.min(199,Math.floor((v+.1)*500)));
   for(let i=0;i<N;i++){ const r=d[i*4],g=d[i*4+1],b=d[i*4+2]; lum[i]=(r+g+b)/3; warm[i]=((r+g)/2-b)/(lum[i]+1); if(lum[i]>70) hist[bin(warm[i])]++; }
@@ -691,18 +692,31 @@ function pageAt(d,W,H,lift){
     const diff=(sum-m1)/w2-m1/w1, s=w1*w2*diff*diff; if(s>best){best=s;cut_=i;gapW=diff/500;} }
   if(gapW<.025) return null; // masa ile sayfa arasında belirgin renk farkı yok
   let hiSum=0, hiN=0; for(let i=cut_+1;i<200;i++){ hiSum+=hist[i]*i; hiN+=hist[i]; }
-  const base=(cut_+.5)/500-.1, thr=base+lift*((hiSum/(hiN||1)+.5)/500-.1-base);
-  let mask=new Uint8Array(N); for(let i=0;i<N;i++) mask[i]=warm[i]<thr&&lum[i]>45?1:0;
-  const morph=(m,grow)=>{ const o=new Uint8Array(N);
-    for(let y=0;y<H;y++) for(let x=0;x<W;x++){ const i=y*W+x;
-      const a=x>0?m[i-1]:0,b=x<W-1?m[i+1]:0,c=y>0?m[i-W]:0,e=y<H-1?m[i+W]:0;
-      o[i]=grow?(m[i]|a|b|c|e):(m[i]&a&b&c&e); } return o; };
-  for(let k=0;k<3;k++) mask=morph(mask,false); for(let k=0;k<3;k++) mask=morph(mask,true);
+  return {warm,lum,cut_,hi:(hiSum/(hiN||1)+.5)/500-.1};
+}
+function pageAt({warm,lum,cut_,hi},W,H,lift){
+  const N=W*H, base=(cut_+.5)/500-.1, thr=base+lift*(hi-base);
+  let mask=new Uint8Array(N), spare=new Uint8Array(N); for(let i=0;i<N;i++) mask[i]=warm[i]<thr&&lum[i]>45?1:0;
+  // aşındırma (komşuların hepsi dolu) ve genişletme (herhangi biri dolu)
+  const morph=grow=>{ const m=mask, o=spare;
+    const edge=(x,y)=>{ const i=y*W+x, a=x>0?m[i-1]:0,b=x<W-1?m[i+1]:0,c=y>0?m[i-W]:0,e=y<H-1?m[i+W]:0; o[i]=grow?(m[i]|a|b|c|e):(m[i]&a&b&c&e); };
+    for(let y=1;y<H-1;y++){
+      const from=y*W+1, to=y*W+W-1;
+      if(grow) for(let i=from;i<to;i++) o[i]=m[i]|m[i-1]|m[i+1]|m[i-W]|m[i+W];
+      else for(let i=from;i<to;i++) o[i]=m[i]&m[i-1]&m[i+1]&m[i-W]&m[i+W];
+      edge(0,y); edge(W-1,y);
+    }
+    for(let x=0;x<W;x++){ edge(x,0); edge(x,H-1); }
+    spare=m; mask=o; };
+  for(let k=0;k<3;k++) morph(false); for(let k=0;k<3;k++) morph(true);
   // en büyük parça
   const lab=new Int32Array(N), st=new Int32Array(N); let id=0,bigId=0,big=0;
   for(let s=0;s<N;s++){ if(!mask[s]||lab[s]) continue; let n=0,top=0; lab[s]=++id; st[top++]=s;
-    while(top){ const i=st[--top]; n++; const x=i%W;
-      for(const j of [x>0?i-1:-1,x<W-1?i+1:-1,i-W,i+W]) if(j>=0&&j<N&&mask[j]&&!lab[j]){lab[j]=id;st[top++]=j;} }
+    while(top){ const i=st[--top]; n++; const x=i%W; let j;
+      if(x>0&&mask[j=i-1]&&!lab[j]){lab[j]=id;st[top++]=j;}
+      if(x<W-1&&mask[j=i+1]&&!lab[j]){lab[j]=id;st[top++]=j;}
+      if((j=i-W)>=0&&mask[j]&&!lab[j]){lab[j]=id;st[top++]=j;}
+      if((j=i+W)<N&&mask[j]&&!lab[j]){lab[j]=id;st[top++]=j;} }
     if(n>big){big=n;bigId=id;} }
   if(big<N*.2||big>N*.93) return null;
   const top=new Int32Array(W).fill(-1), bot=new Int32Array(W).fill(-1), count=new Int32Array(W);
@@ -737,7 +751,10 @@ function pageAt(d,W,H,lift){
 }
 // 4 köşeyi düz dikdörtgene çevirir (perspektif düzeltme).
 function warp(img,q,maxW){
-  const sk=Math.min(1,2600/Math.max(img.naturalWidth,img.naturalHeight));
+  const qlen=(a,b)=>Math.hypot((q[a][0]-q[b][0])*img.naturalWidth,(q[a][1]-q[b][1])*img.naturalHeight);
+  const wide=Math.max(qlen(0,1),qlen(3,2),1);
+  // küçük çıktı için tüm fotoğrafı büyük boyda işlemeye gerek yok
+  const sk=Math.min(1,2600/Math.max(img.naturalWidth,img.naturalHeight),(maxW||2000)*1.7/wide);
   const src=cut(img,[0,0,1,1],Math.round(img.naturalWidth*sk)), SW=src.width, SH=src.height;
   const s=src.getContext('2d').getImageData(0,0,SW,SH).data; src.width=src.height=1;
   const p=q.map(([x,y])=>[x*SW,y*SH]), len=(a,b)=>Math.hypot(p[a][0]-p[b][0],p[a][1]-p[b][1]);
@@ -749,12 +766,20 @@ function warp(img,q,maxW){
   const a=X1-X0+g*X1,b=X3-X0+hh*X3,c=X0,dd=Y1-Y0+g*Y1,e=Y3-Y0+hh*Y3,f=Y0;
   const cv=document.createElement('canvas'); cv.width=w; cv.height=h;
   const ctx=cv.getContext('2d'), out=ctx.createImageData(w,h), o=out.data;
-  for(let j=0;j<h;j++) for(let i=0;i<w;i++){
-    const u=(i+.5)/w, v=(j+.5)/h, z=g*u+hh*v+1;
-    const x=Math.max(0,Math.min(SW-1.001,(a*u+b*v+c)/z-.5)), y=Math.max(0,Math.min(SH-1.001,(dd*u+e*v+f)/z-.5));
-    const ix=x|0, iy=y|0, fx=x-ix, fy=y-iy, n=(iy*SW+ix)*4, m=n+SW*4, t=(j*w+i)*4;
-    for(let ch=0;ch<3;ch++) o[t+ch]=(s[n+ch]*(1-fx)+s[n+4+ch]*fx)*(1-fy)+(s[m+ch]*(1-fx)+s[m+4+ch]*fx)*fy;
-    o[t+3]=255;
+  const mx=SW-1.001, my=SH-1.001, row=SW*4;
+  for(let j=0,t=0;j<h;j++){
+    const v=(j+.5)/h, zv=hh*v+1, xv=b*v+c, yv=e*v+f;
+    for(let i=0;i<w;i++,t+=4){
+      const u=(i+.5)/w, z=g*u+zv;
+      let x=(a*u+xv)/z-.5, y=(dd*u+yv)/z-.5;
+      x=x<0?0:x>mx?mx:x; y=y<0?0:y>my?my:y;
+      const ix=x|0, iy=y|0, fx=x-ix, fy=y-iy, n=iy*row+ix*4, m=n+row;
+      const w00=(1-fx)*(1-fy), w10=fx*(1-fy), w01=(1-fx)*fy, w11=fx*fy;
+      o[t]=s[n]*w00+s[n+4]*w10+s[m]*w01+s[m+4]*w11;
+      o[t+1]=s[n+1]*w00+s[n+5]*w10+s[m+1]*w01+s[m+5]*w11;
+      o[t+2]=s[n+2]*w00+s[n+6]*w10+s[m+2]*w01+s[m+6]*w11;
+      o[t+3]=255;
+    }
   }
   ctx.putImageData(out,0,0); return cv;
 }
@@ -764,15 +789,32 @@ function flatten(cv){
   const sm=document.createElement('canvas'); sm.width=sw; sm.height=sh;
   const sg=sm.getContext('2d'); sg.imageSmoothingQuality='high'; sg.drawImage(cv,0,0,sw,sh);
   const s=sg.getImageData(0,0,sw,sh).data;
-  const filter=(src,r,fn)=>{ let cur=src; for(const [dx,dy] of [[1,0],[0,1]]){ const out=new Float32Array(cur.length);
-    for(let y=0;y<sh;y++) for(let x=0;x<sw;x++){ const vals=[]; for(let k=-r;k<=r;k++){ const xx=Math.max(0,Math.min(sw-1,x+k*dx)), yy=Math.max(0,Math.min(sh-1,y+k*dy)); vals.push(cur[yy*sw+xx]); } out[y*sw+x]=fn(vals); } cur=out; } return cur; };
+  // kind: 1 en büyük, -1 en küçük, 0 ortalama
+  const filter=(src,r,kind)=>{ let cur=src; for(let pass=0;pass<2;pass++){ const out=new Float32Array(cur.length);
+    const len=pass?sh:sw, lines=pass?sw:sh, step=pass?sw:1, jump=pass?1:sw;
+    for(let l=0;l<lines;l++){ const base=l*jump;
+      for(let x=0;x<len;x++){ let v=kind>0?-Infinity:kind<0?Infinity:0;
+        for(let k=-r;k<=r;k++){ let xx=x+k; xx=xx<0?0:xx>=len?len-1:xx; const q=cur[base+xx*step];
+          if(kind>0){ if(q>v) v=q; } else if(kind<0){ if(q<v) v=q; } else v+=q; }
+        out[base+x*step]=kind?v:v/(2*r+1); } }
+    cur=out; } return cur; };
   const bg=[0,1,2].map(ch=>{ let p=new Float32Array(sw*sh); for(let i=0;i<p.length;i++) p[i]=s[i*4+ch];
-    p=filter(p,4,v=>Math.max(...v)); p=filter(p,4,v=>Math.min(...v)); return filter(p,5,v=>v.reduce((a,b)=>a+b,0)/v.length); });
+    return filter(filter(filter(p,4,1),4,-1),5,0); });
+  drop(sm);
   const g=cv.getContext('2d'), im=g.getImageData(0,0,W,H), d=im.data;
-  for(let y=0;y<H;y++){ const fy=Math.max(0,Math.min(sh-1.001,(y+.5)*sh/H-.5)), iy=fy|0, ty=fy-iy;
-    for(let x=0;x<W;x++){ const fx=Math.max(0,Math.min(sw-1.001,(x+.5)*sw/W-.5)), ix=fx|0, tx=fx-ix, n=iy*sw+ix, i=(y*W+x)*4;
-      for(let ch=0;ch<3;ch++){ const p=bg[ch], v=(p[n]*(1-tx)+p[n+1]*tx)*(1-ty)+(p[n+sw]*(1-tx)+p[n+sw+1]*tx)*ty;
-        d[i+ch]=d[i+ch]*248/Math.max(60,v); } } }
+  const colI=new Int32Array(W), colT=new Float32Array(W);
+  for(let x=0;x<W;x++){ const fx=Math.max(0,Math.min(sw-1.001,(x+.5)*sw/W-.5)); colI[x]=fx|0; colT[x]=fx-(fx|0); }
+  const line=[new Float32Array(sw),new Float32Array(sw),new Float32Array(sw)];
+  for(let y=0,i=0;y<H;y++){
+    const fy=Math.max(0,Math.min(sh-1.001,(y+.5)*sh/H-.5)), iy=fy|0, ty=fy-iy;
+    for(let ch=0;ch<3;ch++){ const p=bg[ch], l=line[ch]; for(let n=0;n<sw;n++) l[n]=p[iy*sw+n]*(1-ty)+p[(iy+1)*sw+n]*ty; }
+    const R=line[0], G=line[1], B=line[2];
+    for(let x=0;x<W;x++,i+=4){
+      const n=colI[x], tx=colT[x], ux=1-tx;
+      const vr=R[n]*ux+R[n+1]*tx, vg=G[n]*ux+G[n+1]*tx, vb=B[n]*ux+B[n+1]*tx;
+      d[i]=d[i]*248/(vr>60?vr:60); d[i+1]=d[i+1]*248/(vg>60?vg:60); d[i+2]=d[i+2]*248/(vb>60?vb:60);
+    }
+  }
   g.putImageData(im,0,0); return cv;
 }
 
@@ -783,6 +825,18 @@ dl.then(x=>{downloads=x; ready=true; update();});
 
 function load(file){ return new Promise((ok,no)=>{ const url=URL.createObjectURL(file), img=new Image();
   img.onload=()=>{URL.revokeObjectURL(url);ok(img)}; img.onerror=()=>{URL.revokeObjectURL(url);no(new Error('okunamadı'))}; img.src=url; }); }
+
+// Büyük fotoğraf bir kez küçültülür; kırpma bulma, önizleme ve netlik bu kopyadan yapılır.
+// PDF, kırpma düzenleyici ve soru seçme yine asıl fotoğrafı kullanır.
+const SMALL=1600;
+async function loadSmall(file){
+  const img=await load(file), W=img.naturalWidth, H=img.naturalHeight, k=Math.min(1,SMALL/Math.max(W,H));
+  const cv=document.createElement('canvas'); cv.width=Math.max(1,Math.round(W*k)); cv.height=Math.max(1,Math.round(H*k));
+  const g=cv.getContext('2d'); g.imageSmoothingQuality='high'; g.drawImage(img,0,0,cv.width,cv.height);
+  img.removeAttribute('src'); // asıl fotoğrafın belleği beklemeden bırakılabilsin
+  cv.naturalWidth=cv.width; cv.naturalHeight=cv.height; return cv;
+}
+const drop=cv=>{ cv.width=cv.height=1; };
 
 function cut(img, c, maxW){
   if(c.q) return warp(img,c.q,maxW);
@@ -796,10 +850,10 @@ function cut(img, c, maxW){
 
 function autoCrop(img){
   const W=Math.min(600,img.naturalWidth), cv=cut(img,[0,0,1,1],W);
-  const shot=()=>detect(cv.getContext('2d').getImageData(0,0,cv.width,cv.height).data,cv.width,cv.height);
+  const w=cv.width, h=cv.height, data=cv.getContext('2d').getImageData(0,0,w,h).data; drop(cv);
   // uzun dikey görüntü: telefon ekran görüntüsü; diğerleri: kamera fotoğrafı
-  if(img.naturalHeight/img.naturalWidth>1.7) return shot();
-  return detectPage(cv.getContext('2d').getImageData(0,0,cv.width,cv.height).data,cv.width,cv.height);
+  if(img.naturalHeight/img.naturalWidth>1.7) return detect(data,w,h);
+  return detectPage(data,w,h);
 }
 const copyCrop=c=>c.q?{q:c.q.map(p=>p.slice())}:c.slice();
 
@@ -832,11 +886,13 @@ function move(i,d){ [items[i],items[i+d]]=[items[i+d],items[i]]; render(); }
 
 $('file').onchange=$('camera').onchange=async e=>{
   const files=[...e.target.files]; e.target.value=''; if(!files.length||busy) return;
-  busy=true; render(); let failed=0;
+  busy=true; render(); let failed=0; const started=Date.now();
   for (let i=0;i<files.length;i++){
-    say('Kırpılıyor: '+(i+1)+' / '+files.length);
-    try { const img=await load(files[i]), c=autoCrop(img);
-      const it={file:files[i], crop:c||[0,0,1,1], found:!!c&&!c.unsure, rot:0, marks:[]}; it.thumb=makeThumb(img,it); items.push(it); render();
+    const left=i>2?Math.ceil((Date.now()-started)/i*(files.length-i)/1000):0;
+    say('Kırpılıyor: '+(i+1)+' / '+files.length+(left>3?' · yaklaşık '+(left<90?left+' sn':Math.round(left/60)+' dk')+' kaldı':''));
+    await sleep();
+    try { const img=await loadSmall(files[i]), c=autoCrop(img);
+      const it={file:files[i], crop:c||[0,0,1,1], found:!!c&&!c.unsure, rot:0, marks:[]}; it.thumb=makeThumb(img,it); drop(img); items.push(it); render();
     } catch(err){ failed++; }
     await new Promise(r=>setTimeout(r));
   }
@@ -888,10 +944,12 @@ $('cancel').onclick=close;
 $('full').onclick=()=>{draft=[0,0,1,1];sync()};
 const sameCrop=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
 function setCrop(it,c){ if(!sameCrop(it.crop,c)) it.marks=[]; it.crop=copyCrop(c); it.found=true; }
-$('ok').onclick=()=>{ const had=(editing.marks||[]).length; setCrop(editing,draft); editing.thumb=makeThumb(editImg,editing); if(had&&!editing.marks.length) say('Kırpma değişti, bu sayfadaki çizimler silindi.'); close(); render(); };
+$('ok').onclick=async()=>{ const it=editing, d=draft; if(!it) return; const had=(it.marks||[]).length; $('ok').disabled=true;
+  let small; try{ small=await loadSmall(it.file); }catch(e){ $('ok').disabled=false; return; }
+  $('ok').disabled=false; if(editing!==it) return; setCrop(it,d); it.thumb=makeThumb(small,it); drop(small); if(had&&!editing.marks.length) say('Kırpma değişti, bu sayfadaki çizimler silindi.'); close(); render(); };
 $('all').onclick=async()=>{
   const c=copyCrop(draft); close(); busy=true; render(); say('Kırpma uygulanıyor…'); let failed=0;
-  for (const it of items) try { const img=await load(it.file); setCrop(it,c); it.thumb=makeThumb(img,it); } catch(e){ failed++; }
+  for (const it of items) try { const img=await loadSmall(it.file); setCrop(it,c); it.thumb=makeThumb(img,it); drop(img); await sleep(); } catch(e){ failed++; }
   busy=false; say(failed?failed+' görüntüye uygulanamadı.':'Kırpma tümüne uygulandı.'); render();
 };
 
@@ -904,12 +962,19 @@ function enhance(src){
   const W=cv.width,H=cv.height, im=g.getImageData(0,0,W,H), d=im.data, o=new Uint8ClampedArray(d);
   const lut=new Uint8ClampedArray(256); for(let v=0;v<256;v++) lut[v]=Math.round((v-12)*255/(248-12));
   const a=.45, row=W*4;
-  for(let y=0;y<H;y++) for(let x=0;x<W;x++){
-    const i=(y*W+x)*4;
-    for(let c=0;c<3;c++){
-      const j=i+c; let v=o[j];
-      if(x>0&&x<W-1&&y>0&&y<H-1) v+=a*(4*v-o[j-4]-o[j+4]-o[j-row]-o[j+row])/2;
-      d[j]=lut[v<0?0:v>255?255:Math.round(v)];
+  // kenar pikselleri yalnızca ton eğrisinden geçer; iç pikseller ayrıca netleştirilir
+  const tone=i=>{ d[i]=lut[o[i]]; d[i+1]=lut[o[i+1]]; d[i+2]=lut[o[i+2]]; };
+  for(let x=0;x<W;x++){ tone(x*4); tone((H-1)*row+x*4); }
+  for(let y=1;y<H-1;y++){ tone(y*row); tone(y*row+row-4); }
+  // LUT'un önüne ve arkasına pay eklenir: her değer için sınır denetimi gerekmez
+  const OFF=1024, wide=new Uint8ClampedArray(256+2*OFF); for(let v=0;v<wide.length;v++){ const t=v-OFF; wide[v]=lut[t<0?0:t>255?255:t]; }
+  const half=a/2, mid=1+4*half, base=OFF+.5;
+  for(let y=1;y<H-1;y++){
+    for(let i=y*row+4, end=y*row+row-4; i<end; i+=4){
+      const L=i-4, R=i+4, U=i-row, D=i+row;
+      d[i]=wide[(mid*o[i]-half*(o[L]+o[R]+o[U]+o[D])+base)|0];
+      d[i+1]=wide[(mid*o[i+1]-half*(o[L+1]+o[R+1]+o[U+1]+o[D+1])+base)|0];
+      d[i+2]=wide[(mid*o[i+2]-half*(o[L+2]+o[R+2]+o[U+2]+o[D+2])+base)|0];
     }
   }
   g.putImageData(im,0,0); return cv;
@@ -1504,14 +1569,24 @@ function processPage(img,it,{maxW,hq,filter,marks=true,fingers=$('fingers').chec
   cv=shrink(cv,maxW); if(fingers) cleanFingers(cv); applyFilter(cv,filter); cv=rotateCanvas(cv,it.rot||0);
   return marks?drawMarks(cv,it.marks):cv;
 }
-function makeThumb(img,it){
-  const raw=cut(img,it.crop,1200); it.blur=isBlurry(raw); raw.width=raw.height=1;
-  return processPage(img,it,{maxW:360,hq:$('hq').checked,filter:$('filter').value});
+function blurOf(img,it){
+  // sayfanın orta bölümü yeter; perspektif düzeltmeye gerek yok
+  const c=it.crop, xs=c.q?c.q.map(p=>p[0]):[c[0],c[2]], ys=c.q?c.q.map(p=>p[1]):[c[1],c[3]];
+  const x0=Math.min(...xs), x1=Math.max(...xs), y0=Math.min(...ys), y1=Math.max(...ys), in_=c.q?.1:0;
+  const part=cut(img,[x0+(x1-x0)*in_,y0+(y1-y0)*in_,x1-(x1-x0)*in_,y1-(y1-y0)*in_],1200), v=isBlurry(part); drop(part); return v;
 }
+function makeThumb(img,it){
+  const key=JSON.stringify(it.crop); if(it.blurKey!==key){ it.blur=blurOf(img,it); it.blurKey=key; }
+  const cv=processPage(img,it,{maxW:360,hq:$('hq').checked,filter:$('filter').value});
+  it.th=cv.toDataURL('image/jpeg',.82); // sayfa yeniden açılınca hazır önizleme kullanılır
+  return cv;
+}
+// saklanmış önizlemeyi tuvale çizer
+const thumbFrom=url=>new Promise((ok,no)=>{ const img=new Image(); img.onload=()=>{ const cv=document.createElement('canvas'); cv.width=img.naturalWidth; cv.height=img.naturalHeight; cv.getContext('2d').drawImage(img,0,0); ok(cv); }; img.onerror=()=>no(new Error('önizleme')); img.src=url; });
 async function rethumb(){
   if(!items.length) return;
   busy=true; render(); say('Önizlemeler güncelleniyor…'); let failed=0;
-  for(const it of items){ try{ it.thumb=makeThumb(await load(it.file),it); }catch(e){ failed++; } await sleep(); }
+  for(let i=0;i<items.length;i++){ const it=items[i]; say('Önizlemeler güncelleniyor: '+(i+1)+' / '+items.length); try{ const img=await loadSmall(it.file); it.thumb=makeThumb(img,it); drop(img); }catch(e){ failed++; } await sleep(); }
   busy=false; say(failed?failed+' önizleme güncellenemedi.':items.length+' görüntü hazır.'); render();
 }
 $('filter').onchange=$('hq').onchange=rethumb;
@@ -1560,7 +1635,7 @@ async function buildScanPages(o,title){
   let sheet=null, no=0;
   for(let i=0;i<items.length;i++){
     say('PDF hazırlanıyor: '+(i+1)+' / '+items.length); await sleep();
-    const cv=processPage(await load(items[i].file),items[i],{maxW:o.quality.w,hq:o.hq,filter:o.filter});
+    const photo=await load(items[i].file), cv=processPage(photo,items[i],{maxW:o.quality.w,hq:o.hq,filter:o.filter}); photo.removeAttribute('src');
     if(two){
       if(!sheet) sheet=sheetCanvas(A4H,A4W,Math.min(2800,o.quality.w*1.4)/A4H);
       const slot=i%2, half=A4H/2;
@@ -1967,7 +2042,7 @@ function saveDraft(now){
   const run=()=>{ draftChain=draftChain.then(async()=>{
     if(!bookDb) throw 0;
     for(const it of items) if(!it.id) it.id=++nextId;
-    const list=items.map(it=>({id:it.id,crop:it.crop,found:it.found,rot:it.rot||0,marks:it.marks||[]}));
+    const list=items.map(it=>({id:it.id,crop:it.crop,found:it.found,rot:it.rot||0,marks:it.marks||[],th:it.th,blur:it.blur,blurKey:it.blurKey}));
     const fresh=items.filter(it=>!stored.has(it.id)), live=new Set(list.map(x=>x.id)), gone=[...stored].filter(id=>!live.has(id));
     const opts={}; for(const k of DRAFT_OPTS) opts[k]=$(k).type==='checkbox'?$(k).checked:$(k).value;
     await kv(s=>{ for(const it of fresh) s.put(it.file,'img:'+it.id); for(const id of gone) s.delete('img:'+id); s.put({list,opts},'taslak'); });
@@ -1987,9 +2062,12 @@ async function restoreDraft(){
         say('Yarım kalan iş açılıyor: '+(i+1)+' / '+d.list.length);
         try{
           const m=d.list[i], file=await kv(s=>s.get('img:'+m.id)); if(!file) throw 0;
-          const it={...m,file}; it.thumb=makeThumb(await load(file),it); items.push(it); stored.add(m.id);
+          const it={...m,file};
+          let ready_=null; if(typeof m.th==='string'&&m.th.startsWith('data:image/')) try{ ready_=await thumbFrom(m.th); }catch(e){}
+          if(ready_) it.thumb=ready_; else { const img=await loadSmall(file); it.thumb=makeThumb(img,it); drop(img); }
+          items.push(it); stored.add(m.id);
         }catch(e){ lost++; stored.add(d.list[i].id); }
-        await sleep();
+        if(i%6===5) await sleep();
       }
     }
   }catch(e){}
