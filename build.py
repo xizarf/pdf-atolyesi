@@ -80,6 +80,8 @@ def icon(size,scale=1.0):
     return im.resize((size,size),Image.LANCZOS)
 icon(180).save('site/icon.png'); icon(192).save('site/icon-192.png'); icon(512).save('site/icon-512.png'); icon(512,.82).save('site/icon-maskable.png')
 shutil.copyfile('assets/og.png','site/og.png')
+# PDF görüntüleyici: yalnızca PDF üzerine yazarken indirilir
+for f in os.listdir('vendor'): shutil.copyfile('vendor/'+f,'site/'+f)
 # olmayan bir adrese gidilirse
 open('site/404.html','w').write("""<!doctype html>
 <html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
