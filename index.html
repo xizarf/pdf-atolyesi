@@ -51,7 +51,7 @@ section{animation:fade .35s ease}@keyframes fade{from{opacity:.2}}
 .pick b{font-size:19px}.pick small{color:var(--mut);font-size:14px}
 .plus{width:58px;height:58px;border-radius:50%;margin-bottom:8px;display:grid;place-items:center;color:var(--on);background:linear-gradient(160deg,var(--acc2),var(--acc));box-shadow:inset 0 1px 1px rgba(128,128,128,.5),0 8px 22px var(--shade)}
 .plus svg{width:26px;height:26px}
-#bfile,#bscan,#camera,#vfile,#dfile,#file{position:absolute;opacity:0;width:1px;height:1px}
+#bfile,#bscan,#camera,#vfile,#dfile,#file,#pfile{position:absolute;opacity:0;width:1px;height:1px}
 .pick:has(input:disabled){opacity:.5}
 .how{list-style:none;padding:0;margin:14px 0 0;display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .how li{border-radius:22px;padding:14px 8px;text-align:center;font-size:13px;color:var(--mut);min-width:0}
@@ -332,6 +332,11 @@ box-shadow:inset 1.5px 1.5px 1px -.5px #fff,inset -1.5px -1.5px 1px -.5px #fff,i
 .flash{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;width:100%;max-width:640px;min-height:46vh;margin:0 auto;padding:28px 20px;border-radius:34px;text-align:center;overflow-wrap:anywhere;white-space:pre-line}
 .flash b{font-size:clamp(24px,7vw,36px);line-height:1.2}.flash span{font-size:20px;font-weight:500}.flash span:not(:empty){border-top:2px solid var(--fg);padding-top:16px;align-self:stretch}.flash small{font-size:15px;color:var(--mut);font-weight:400}.flash i{font-style:normal;font-size:14px;font-weight:500;color:var(--mut)}
 @media (min-width:1080px) and (max-width:1279px){.bar{grid-template-columns:minmax(0,1fr) auto;border-radius:30px;padding:0 14px}.brand{padding:11px 0 4px}nav{grid-column:1/-1;grid-row:2}#theme{grid-column:2;grid-row:1;margin-top:6px}}
+.opts input[role=switch]#fingers{margin:0}
+#pdpages{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;max-width:760px;margin:12px auto 0}
+#pdpages button{display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px;border-radius:18px;min-width:0;min-height:150px;justify-content:center}
+#pdpages canvas{width:100%;height:auto;border-radius:8px;background:#fff}#pdpages small{font-size:13px;font-weight:600}
+#pdfed{z-index:19}
 #saver{position:fixed;inset:0;z-index:30;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.4);padding:16px 12px calc(16px + env(safe-area-inset-bottom,0px))}
 #saver>div{width:100%;max-width:480px;border-radius:34px;padding:18px 14px 8px;text-align:center;background:var(--solid)}
 #sname{font-weight:600;overflow-wrap:anywhere;margin:0 0 14px}#sno{width:100%;padding:14px}
@@ -374,6 +379,8 @@ box-shadow:inset 1.5px 1.5px 1px -.5px #fff,inset -1.5px -1.5px 1px -.5px #fff,i
 <div class="opts glass">
 <span>PDF adı</span><input id="name" type="text" maxlength="80" placeholder="Örn. Oran ve Orantı" autocomplete="off" enterkeyhint="done">
 <label class="wide"><span>Kaliteyi iyileştir</span><input id="hq" type="checkbox" role="switch" checked></label>
+<label class="wide"><span>Kenardaki parmakları sil</span><input id="fingers" type="checkbox" role="switch"></label>
+<small id="fingernote" class="wide hint" hidden>Ten rengine benzeyen kenar lekeleri kapatılır. Her sayfanın önizlemesini kontrol et.</small>
 <span>Filtre</span><select id="filter"><option value="color">Renkli</option><option value="gray">Gri</option><option value="bw">Siyah-beyaz</option></select>
 <span>Sayfa</span><select id="layout"><option value="orig">Orijinal oran</option><option value="a4">A4</option><option value="two">A4'te 2 sayfa (yatay)</option></select>
 <span>Boyut</span><select id="quality"><option value="small">Küçük dosya</option><option value="mid">Dengeli</option><option value="high" selected>Yüksek kalite</option></select>
@@ -392,6 +399,8 @@ box-shadow:inset 1.5px 1.5px 1px -.5px #fff,inset -1.5px -1.5px 1px -.5px #fff,i
 <header><h1>Her dosya.<span>Tek PDF.</span></h1><p>Dosyalar telefonunda işlenir. Karmaşık belgelerde düzen farklı olabilir.</p></header>
 <div class="side">
 <label class="pick glass"><span class="plus" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 4v16M4 12h16"/></svg></span><b>Dosya ekle</b><small>Word (.docx), Excel (.xlsx), CSV, metin, görsel</small><input id="dfile" type="file" multiple></label>
+<label class="cam glass"><span>Hazır PDF’in üzerine yaz</span><input id="pfile" type="file" accept=".pdf,application/pdf"></label>
+<p id="pfmsg" class="hint" role="status"></p>
 <div class="opts glass"><span>PDF adı</span><input id="dname" class="field" type="text" maxlength="80" placeholder="Örn. Ders Notları" autocomplete="off" enterkeyhint="done"></div>
 <div class="dock glass"><p id="dstatus" role="status">Henüz dosya eklenmedi.</p><button id="dmake" class="main" disabled>PDF oluştur</button></div>
 </div>
@@ -536,9 +545,13 @@ box-shadow:inset 1.5px 1.5px 1px -.5px #fff,inset -1.5px -1.5px 1px -.5px #fff,i
 <div id="review" class="sheet" hidden role="dialog" aria-modal="true" aria-label="Tekrar"><p id="rvpos" role="status"></p><p id="rvtag" class="hint"></p><div class="stage"><canvas id="rvview"></canvas></div>
 <button id="rvnotes" class="glass" aria-pressed="false">Notlarımı göster</button>
 <div class="acts"><button id="rvno" class="glass">Yapamadım</button><button id="rvyes" class="main">Çözdüm</button><button id="rvskip">Sonraya bırak</button><button id="rvclose">Kapat</button></div></div>
+<div id="pdfed" class="sheet" hidden role="dialog" aria-modal="true" aria-label="PDF üzerine yazma"><p id="pdtitle"></p><p class="hint">Yazmak istediğin sayfaya dokun. Kaydedilen PDF’te sayfalar görüntü olur: yazılar seçilemez, bağlantılar çalışmaz. Asıl dosyan değişmez.</p>
+<div id="pdpages"></div><p id="pdmsg" class="hint" role="status"></p>
+<div class="acts"><button id="pdsave" class="main">Yeni PDF olarak kaydet</button><button id="pdclose" class="glass">Kapat</button></div></div>
 <div id="pen" class="sheet" hidden><div id="pbox" class="stage"><canvas id="pview"></canvas></div>
 <div id="colors" class="swatches" role="group" aria-label="Araç"><button data-c="#111111"><i style="background:#111111"></i>Siyah</button><button data-c="#d11f1f"><i style="background:#d11f1f"></i>Kırmızı</button><button data-c="#1457c8"><i style="background:#1457c8"></i>Mavi</button><button data-c="#ffffff"><i style="background:#ffffff"></i>Silgi</button></div>
 <label class="line thick">Kalınlık<input id="psize" type="range" min="2" max="30" value="6"></label>
+<div class="thick"><input id="ptext" class="field" maxlength="200" placeholder="Yazı yaz, sonra sayfaya dokun" aria-label="Sayfaya eklenecek yazı" autocomplete="off"></div>
 <div class="acts four"><button id="pundo" class="glass">Geri al</button><button id="pclear" class="glass">Temizle</button><button id="pzoom" class="glass" aria-pressed="false">Yakınlaş</button><button id="ppan" class="glass" aria-pressed="false">Gezdir</button></div>
 <div class="acts"><button id="psave" class="main">Kaydet</button><button id="pcancel" class="glass">Vazgeç</button></div></div>
 <div id="study" class="sheet" hidden role="dialog" aria-modal="true" aria-label="Kart çalışması"><p id="stpos" role="status"></p><p id="stdeck" class="hint"></p>
@@ -790,8 +803,8 @@ function render(){
   const grid=$('grid'); grid.textContent='';
   items.forEach((it,i)=>{
     const el=document.createElement('div'); el.className='item'; el.appendChild(it.thumb);
-    const m=document.createElement('div'); m.className='meta'+(it.found?'':' warn');
-    m.textContent=(i+1)+'. sayfa'+(it.found?'':' · ⚠︎ Kırpmayı kontrol et'); el.appendChild(m);
+    const m=document.createElement('div'); m.className='meta'+(it.found&&!it.blur?'':' warn');
+    m.textContent=(i+1)+'. sayfa'+(it.found?'':' · ⚠︎ Kırpmayı kontrol et')+(it.blur?' · ⚠︎ Bulanık olabilir, yeniden çekmeyi dene':''); el.appendChild(m);
     const row=document.createElement('div'); row.className='row tools';
     [['◀','Öne al',()=>move(i,-1),i===0],['▶','Sona al',()=>move(i,1),i===items.length-1],
      ['⟳','Döndür',()=>rotateItem(it),false],['✂︎','Kırpmayı düzenle',()=>openEditor(it),false],
@@ -1411,20 +1424,79 @@ function drawMarks(cv,marks){
   const g=cv.getContext('2d'); g.lineCap=g.lineJoin='round';
   for(const m of marks||[]){ g.strokeStyle=g.fillStyle=m.c; g.lineWidth=m.s*cv.width;
     const p=m.p.map(([x,y])=>[x*cv.width,y*cv.height]);
+    if(typeof m.tx==='string'){ const size=Math.max(8,m.s*cv.width*6); g.font='600 '+size+'px -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif'; g.textAlign='left'; g.textBaseline='top';
+      m.tx.slice(0,200).split('\n').forEach((line,i)=>g.fillText(line,p[0][0],p[0][1]+i*size*1.25)); g.textBaseline='alphabetic'; continue; }
     if(p.length===1){ g.beginPath(); g.arc(p[0][0],p[0][1],g.lineWidth/2,0,7); g.fill(); continue; }
     g.beginPath(); p.forEach((q,i)=>i?g.lineTo(...q):g.moveTo(...q)); g.stroke(); }
   return cv;
 }
+// Netlik ölçüsü: güçlü kenarlarda geçişin ne kadarı tek pikselde oluyor. Net sayfa ~0,65+, bulanık ~0,3.
+function sharpness(src){
+  const w=Math.min(1200,src.width), h=Math.max(1,Math.round(src.height*w/src.width)), cv=document.createElement('canvas'); cv.width=w; cv.height=h;
+  const g=cv.getContext('2d',{willReadFrequently:true}); g.imageSmoothingQuality='high'; g.drawImage(src,0,0,w,h);
+  const d=g.getImageData(0,0,w,h).data, a=new Float32Array(w*h); for(let i=0;i<a.length;i++) a[i]=.299*d[i*4]+.587*d[i*4+1]+.114*d[i*4+2];
+  cv.width=cv.height=1;
+  const hist=new Uint32Array(101); let n=0;
+  const mx=Math.floor(w/20), my=Math.floor(h/20);
+  // yatay ve dikey yönde 9 piksellik pencereler
+  for(const [step,line,from,to,l0,l1] of [[1,w,mx,w-mx-9,my,h-my],[w,1,my,h-my-9,mx,w-mx]])
+    for(let l=l0;l<l1;l+=2) for(let x=from;x<to;x+=2){
+      const o=l*line+x*step; let lo=a[o], hi=lo, jump=0, prev=lo;
+      for(let k=1;k<9;k++){ const v=a[o+k*step]; if(v<lo) lo=v; if(v>hi) hi=v; const j=Math.abs(v-prev); if(j>jump) jump=j; prev=v; }
+      if(hi-lo>60){ hist[Math.min(100,Math.round(jump/(hi-lo)*100))]++; n++; }
+    }
+  if(n<100) return null;
+  let left=n*.25; for(let i=100;i>=0;i--){ left-=hist[i]; if(left<=0) return i/100; }
+  return null;
+}
+const BLUR_LIMIT=.35;
+const isBlurry=src=>{ const v=sharpness(src); return v!==null&&v<BLUR_LIMIT; };
+// Parmak temizleme: yalnızca sayfa kenarına değen, dikdörtgen olmayan ten rengi lekeler kapatılır.
+function cleanFingers(cv){
+  const W=Math.min(360,cv.width), H=Math.max(1,Math.round(cv.height*W/cv.width)), sm=document.createElement('canvas'); sm.width=W; sm.height=H;
+  const sg=sm.getContext('2d',{willReadFrequently:true}); sg.drawImage(cv,0,0,W,H); const d=sg.getImageData(0,0,W,H).data, N=W*H, skin=new Uint8Array(N);
+  for(let i=0;i<N;i++){ const R=d[i*4],G=d[i*4+1],B=d[i*4+2], Y=.299*R+.587*G+.114*B, cb=128-.169*R-.331*G+.5*B, cr=128+.5*R-.419*G-.081*B;
+    skin[i]=Y>45&&cr>138&&cr<180&&cb>78&&cb<127&&R>G+8&&G>B-6?1:0; }
+  const seen=new Uint8Array(N), take=new Uint8Array(N); let found=0;
+  for(let s0=0;s0<N;s0++){
+    if(!skin[s0]||seen[s0]) continue;
+    const comp=[s0]; seen[s0]=1; let x0=W,x1=0,y0=H,y1=0;
+    for(let k=0;k<comp.length;k++){ const i=comp[k], x=i%W, y=(i/W)|0; if(x<x0)x0=x; if(x>x1)x1=x; if(y<y0)y0=y; if(y>y1)y1=y;
+      for(const j of [x?i-1:-1,x<W-1?i+1:-1,i-W,i+W]) if(j>=0&&j<N&&skin[j]&&!seen[j]){ seen[j]=1; comp.push(j); } }
+    const m=3, L=x0<=m, Rt=x1>=W-1-m, T=y0<=m, Bt=y1>=H-1-m;
+    if(!(L||Rt||T||Bt)) continue;
+    if(comp.length<N*.002||comp.length>N*.12) continue;
+    // kenardan içeri fazla uzananlar ve düz renkli kutular (basılı başlık şeritleri) korunur
+    const bw=x1-x0+1, bh=y1-y0+1, deep=Math.min(L?(x1+1)/W:9, Rt?(W-x0)/W:9, T?(y1+1)/H:9, Bt?(H-y0)/H:9);
+    if(deep>.32||comp.length/(bw*bh)>.9||Math.max(bw/bh,bh/bw)>7) continue;
+    for(const i of comp) take[i]=1; found++;
+  }
+  if(!found){ sm.width=sm.height=1; return 0; }
+  // lekeyi biraz genişlet: tırnak ve gölge kenarı da kapansın
+  const grow=Math.max(3,Math.round(W*.018)), fat=new Uint8Array(N);
+  for(let i=0;i<N;i++) if(take[i]){ const x=i%W, y=(i/W)|0;
+    for(let b=-grow;b<=grow;b++) for(let a=-grow;a<=grow;a++) if(a*a+b*b<=grow*grow){ const X=x+a, Yy=y+b; if(X>=0&&X<W&&Yy>=0&&Yy<H) fat[Yy*W+X]=1; } }
+  // dolgu rengi: lekenin dışındaki açık (kâğıt) piksellerin ortanca değeri
+  const paper=[]; for(let i=0;i<N;i+=3) if(!fat[i]){ const Y=d[i*4]+d[i*4+1]+d[i*4+2]; paper.push([Y,i]); }
+  paper.sort((a,b)=>a[0]-b[0]); const pi=paper.length?paper[Math.floor(paper.length*.7)][1]:-1;
+  const col=pi<0?[255,255,255]:[d[pi*4],d[pi*4+1],d[pi*4+2]];
+  const im=sg.createImageData(W,H); for(let i=0;i<N;i++) if(fat[i]){ im.data[i*4]=col[0]; im.data[i*4+1]=col[1]; im.data[i*4+2]=col[2]; im.data[i*4+3]=255; }
+  sg.putImageData(im,0,0); const g=cv.getContext('2d'); g.imageSmoothingEnabled=true; g.drawImage(sm,0,0,cv.width,cv.height); sm.width=sm.height=1;
+  return found;
+}
 // Sıra: kırp, gölge temizle, netleştir, filtre, döndür, işaretler.
-function processPage(img,it,{maxW,hq,filter,marks=true}){
+function processPage(img,it,{maxW,hq,filter,marks=true,fingers=$('fingers').checked}){
   const photo=!!it.crop.q;
   let cv=cut(img,it.crop,maxW);
   if(photo&&(hq||filter==='bw')) flatten(cv);
   if(hq&&maxW>1100){ const e=enhance(cv); cv.width=cv.height=1; cv=e; }
-  cv=shrink(cv,maxW); applyFilter(cv,filter); cv=rotateCanvas(cv,it.rot||0);
+  cv=shrink(cv,maxW); if(fingers) cleanFingers(cv); applyFilter(cv,filter); cv=rotateCanvas(cv,it.rot||0);
   return marks?drawMarks(cv,it.marks):cv;
 }
-const makeThumb=(img,it)=>processPage(img,it,{maxW:360,hq:$('hq').checked,filter:$('filter').value});
+function makeThumb(img,it){
+  const raw=cut(img,it.crop,1200); it.blur=isBlurry(raw); raw.width=raw.height=1;
+  return processPage(img,it,{maxW:360,hq:$('hq').checked,filter:$('filter').value});
+}
 async function rethumb(){
   if(!items.length) return;
   busy=true; render(); say('Önizlemeler güncelleniyor…'); let failed=0;
@@ -1432,13 +1504,14 @@ async function rethumb(){
   busy=false; say(failed?failed+' önizleme güncellenemedi.':items.length+' görüntü hazır.'); render();
 }
 $('filter').onchange=$('hq').onchange=rethumb;
+$('fingers').onchange=()=>{ $('fingernote').hidden=!$('fingers').checked; rethumb(); };
 async function rotateItem(it){
   if(busy) return; busy=true; render();
   try{
     const img=await load(it.file), before=processPage(img,it,{maxW:360,hq:false,filter:'color',marks:false}), k=before.width/before.height;
     it.rot=((it.rot||0)+90)%360;
     // saat yönünde 90°: (x,y) -> (1-y,x); kalınlık yeni genişliğe göre ölçeklenir
-    it.marks=(it.marks||[]).map(m=>({c:m.c,s:m.s*k,p:m.p.map(([x,y])=>[1-y,x])}));
+    it.marks=(it.marks||[]).map(m=>({...m,s:m.s*k,p:m.p.map(([x,y])=>[1-y,x])}));
     it.thumb=makeThumb(img,it);
   }catch(e){ say('Sayfa döndürülemedi.'); }
   busy=false; render();
@@ -1517,16 +1590,22 @@ function penPaint(){
   $('pundo').disabled=!pen.marks.length;
 }
 function openPen(base,marks,onSave){
-  pen={base,marks:marks.map(m=>({c:m.c,s:m.s,p:m.p.slice()})),color:'#111111',stroke:null,onSave};
+  $('ptext').value='';
+  pen={base,marks:marks.map(m=>({...m,p:m.p.map(q=>q.slice())})),color:'#111111',stroke:null,onSave};
   $('pen').hidden=false; pickColor('#111111'); penPaint();
 }
 function pickColor(c){ pen.color=c; for(const b of $('colors').children) b.setAttribute('aria-pressed',b.dataset.c===c); }
 for(const b of $('colors').children) b.onclick=()=>pickColor(b.dataset.c);
 const rel=(el,e)=>{ const r=el.getBoundingClientRect(); return [Math.max(0,Math.min(1,(e.clientX-r.left)/r.width)),Math.max(0,Math.min(1,(e.clientY-r.top)/r.height))]; };
 $('pview').onpointerdown=e=>{ if(!pen||pen.stroke||!e.isPrimary) return; $('pview').setPointerCapture(e.pointerId);
-  pen.stroke={c:pen.color,s:penSize(),p:[rel($('pview'),e)]}; pen.marks.push(pen.stroke); penPaint(); };
+  const tx=$('ptext').value.trim();
+  pen.stroke={c:pen.color,s:penSize(),p:[rel($('pview'),e)]};
+  if(tx){ pen.stroke.tx=tx; pen.stroke.c=pen.color==='#ffffff'?'#111111':pen.color; pen.stroke.s=$('psize').value/1000; $('ptext').value=''; $('ptext').blur(); }
+  pen.marks.push(pen.stroke); penPaint(); };
 $('pview').onpointermove=e=>{ if(!pen||!pen.stroke||!e.isPrimary) return;
-  const p=rel($('pview'),e), last=pen.stroke.p.at(-1); pen.stroke.p.push(p);
+  const p=rel($('pview'),e);
+  if(pen.stroke.tx){ pen.stroke.p=[p]; penPaint(); return; } // yazı parmakla sürüklenerek yerleştirilir
+  const last=pen.stroke.p.at(-1); pen.stroke.p.push(p);
   const v=$('pview'); drawMarks(v,[{c:pen.stroke.c,s:pen.stroke.s,p:[last,p]}]); };
 $('pview').onpointerup=$('pview').onpointercancel=()=>{ if(pen) pen.stroke=null; };
 $('pundo').onclick=()=>{ pen.marks.pop(); penPaint(); };
@@ -1543,6 +1622,79 @@ async function annotateItem(it){
     openPen(base,it.marks||[],m=>{ it.marks=m; it.thumb=makeThumb(img,it); render(); });
   }catch(e){ say('Sayfa açılamadı.'); }
 }
+
+// ================= PDF üzerine yazma =================
+const PDF_MAX=60;
+let pdfLib=null, pdoc=null;
+async function loadPdfLib(){
+  if(!pdfLib){
+    const lib=await import(new URL('pdfjs.js',document.baseURI).href);
+    lib.GlobalWorkerOptions.workerSrc=new URL('pdfjs-worker.js',document.baseURI).href; pdfLib=lib;
+  }
+  return pdfLib;
+}
+async function pdfPageCanvas(doc,n,width){
+  const page=await doc.getPage(n), base=page.getViewport({scale:1});
+  // telefonlarda çok büyük tuval açılamaz
+  const scale=Math.min(width/base.width,Math.sqrt(9e6/(base.width*base.height)));
+  const vp=page.getViewport({scale}), cv=document.createElement('canvas'); cv.width=Math.round(vp.width); cv.height=Math.round(vp.height);
+  await page.render({canvas:cv,viewport:vp,background:'#fff'}).promise;
+  return {cv,pw:+base.width.toFixed(2),ph:+base.height.toFixed(2)};
+}
+const pdMarked=()=>Object.values(pdoc.marks).filter(m=>m.length).length;
+async function pdThumb(me,n,slot){
+  const {cv}=await pdfPageCanvas(me.doc,n,320); drawMarks(cv,me.marks[n]); if(pdoc===me) slot.replaceChildren(cv);
+}
+async function pdOpen(file){
+  const say2=t=>{ $('pfmsg').textContent=t; };
+  if(file.size>60e6){ say2('Bu PDF 60 MB’tan büyük.'); return; }
+  say2('PDF açılıyor…');
+  let doc;
+  try{
+    const lib=await loadPdfLib();
+    doc=await lib.getDocument({data:new Uint8Array(await file.arrayBuffer()),useWasm:false,wasmUrl:new URL('./',document.baseURI).href}).promise;
+  }catch(e){ say2(e&&e.name==='PasswordException'?'Bu PDF şifreli, açılamıyor.':'PDF açılamadı. Dosya bozuk olabilir veya bu tarayıcı desteklemiyor olabilir.'); return; }
+  if(doc.numPages>PDF_MAX){ say2('Bu PDF '+doc.numPages+' sayfa. En fazla '+PDF_MAX+' sayfa açılabiliyor.'); doc.destroy&&doc.destroy(); return; }
+  say2('');
+  const me=pdoc={doc,name:file.name.replace(/\.pdf$/i,''),marks:{},saved:true,busy:false};
+  $('pdtitle').textContent=file.name+' ('+doc.numPages+' sayfa)'; $('pdmsg').textContent=''; $('pdsave').disabled=true;
+  const box=$('pdpages'); box.textContent=''; const slots=[];
+  for(let n=1;n<=doc.numPages;n++){
+    const b=document.createElement('button'); b.type='button'; b.className='glass'; b.setAttribute('aria-label',n+'. sayfaya yaz');
+    const slot=document.createElement('span'), label=document.createElement('small'); slot.textContent='…'; label.textContent=n+'. sayfa';
+    b.append(slot,label); box.appendChild(b); slots.push(slot);
+    b.onclick=async()=>{
+      if(me.busy) return; me.busy=true;
+      try{
+        const {cv}=await pdfPageCanvas(me.doc,n,1400);
+        if(pdoc===me) openPen(cv,me.marks[n]||[],m=>{ me.marks[n]=m; me.saved=false; $('pdsave').disabled=!pdMarked()||!downloads; label.textContent=n+'. sayfa'+(m.length?' · yazıldı':''); pdThumb(me,n,slot); });
+      }catch(e){ $('pdmsg').textContent='Sayfa açılamadı.'; }
+      me.busy=false;
+    };
+  }
+  $('pdfed').hidden=false; $('pdfed').scrollTop=0;
+  for(let n=1;n<=doc.numPages&&pdoc===me;n++){ try{ await pdThumb(me,n,slots[n-1]); }catch(e){ slots[n-1].textContent='Önizlenemedi'; } await sleep(); }
+}
+$('pfile').onchange=e=>{ const f=e.target.files[0]; e.target.value=''; if(f) pdOpen(f); };
+$('pdsave').onclick=async()=>{
+  const me=pdoc; if(!me||me.busy) return; me.busy=true; $('pdsave').disabled=$('pdclose').disabled=true;
+  try{
+    const pages=[];
+    for(let n=1;n<=me.doc.numPages;n++){
+      $('pdmsg').textContent='PDF hazırlanıyor: '+n+' / '+me.doc.numPages; await sleep();
+      const {cv,pw,ph}=await pdfPageCanvas(me.doc,n,1700); drawMarks(cv,me.marks[n]);
+      pages.push(finishSheet(cv,pw,ph,.88));
+    }
+    const name=cleanName(me.name+' (yazılı)','yazili'), blob=buildPdf(pages), kept=await archive(name,blob,'PDF üzerine yazma');
+    $('pdmsg').textContent='PDF hazır. Kaydetmeyi onayla.'; await downloads.save({filename:name,data:blob});
+    me.saved=true; $('pdmsg').textContent='PDF kaydetme ekranına gönderildi.'+archived(kept);
+  }catch(e){ $('pdmsg').textContent=e&&e.code==='declined'?'Kaydetme iptal edildi.':'PDF kaydedilemedi. Cihazın belleği yetmemiş olabilir.'; }
+  me.busy=false; $('pdclose').disabled=false; $('pdsave').disabled=!pdMarked()||!downloads;
+};
+function pdClose(){ if(!pdoc) return; const d=pdoc.doc; pdoc=null; $('pdfed').hidden=true; $('pdpages').textContent=''; delete $('pdclose').dataset.sure; $('pdclose').textContent='Kapat'; try{ d.loadingTask?d.loadingTask.destroy():d.destroy(); }catch(e){} }
+$('pdclose').onclick=()=>{ const b=$('pdclose');
+  if(!pdoc||pdoc.saved||b.dataset.sure) return pdClose();
+  b.dataset.sure=1; b.textContent='Kaydetmeden kapat?'; setTimeout(()=>{ delete b.dataset.sure; b.textContent='Kapat'; },4000); };
 
 // ================= Yanlış soru defteri =================
 let book=[], bookDb=null, bookBusy=false, bookSaved=true;
@@ -1637,7 +1789,9 @@ async function nextSource(){
   bsay('Fotoğraf hazırlanıyor…');
   try{
     const img=await load(file), c=autoCrop(img), it={crop:c&&!c.unsure?c:[0,0,1,1]};
+    const raw=cut(img,it.crop,1200), blurry=isBlurry(raw); raw.width=raw.height=1;
     openSelector(processPage(img,it,{maxW:1600,hq:!!it.crop.q,filter:'color'}),nextSource);
+    if(blurry) $('shint').textContent='⚠︎ Bu fotoğraf bulanık olabilir. Okunmuyorsa yeniden çek. Devam etmek için sorunun çevresine kutu çiz.';
   }catch(e){ bsay('Fotoğraf açılamadı.'); nextSource(); }
 }
 $('sders').onchange=()=>{ $('skonu').value=''; konuHints(); };
@@ -1794,7 +1948,7 @@ function net(){
 
 // ================= Yarım işi saklama (Tara) =================
 // Her görüntü ayrı anahtarda durur; her değişiklikte yalnızca yeni olanlar yazılır.
-const DRAFT_OPTS=['name','hq','filter','layout','quality','cover','nums'];
+const DRAFT_OPTS=['name','fingers','hq','filter','layout','quality','cover','nums'];
 let draftReady=false, draftTimer=0, draftChain=Promise.resolve(), stored=new Set(), nextId=Date.now();
 const kv=fn=>new Promise((ok,no)=>{ const t=bookDb.transaction('defter','readwrite'), r=fn(t.objectStore('defter')); t.oncomplete=()=>ok(r&&r.result); t.onerror=t.onabort=()=>no(t.error); });
 function saveDraft(now){
@@ -1829,6 +1983,7 @@ async function restoreDraft(){
     }
   }catch(e){}
   busy=false; draftReady=true;
+  $('fingernote').hidden=!$('fingers').checked;
   say(items.length?'Kaldığın yerden devam: '+items.length+' görüntü.'+(lost?' '+lost+' görüntü açılamadı.':''):'Henüz görüntü eklenmedi.');
   render();
 }
