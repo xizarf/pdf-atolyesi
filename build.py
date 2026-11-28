@@ -22,7 +22,7 @@ rep('</style>','''#saver{position:fixed;inset:0;z-index:30;display:flex;align-it
 </style>''')
 rep('// Beyaz sayfayı bulur.','''function saveFile({filename,data}){
   return new Promise((ok,no)=>{
-    const types={pdf:'application/pdf',zip:'application/zip',json:'application/json'};
+    const types={pdf:'application/pdf',zip:'application/zip',json:'application/json',png:'image/png'};
     const file=new File([data],filename,{type:types[filename.split('.').pop()]});
     const share=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
     const el=id=>document.getElementById(id);
