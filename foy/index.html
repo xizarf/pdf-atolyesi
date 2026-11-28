@@ -81,7 +81,9 @@ select option{color:#000;background:#fff}
 .meter{height:10px;border-radius:9px;background:var(--hair);overflow:hidden;margin-top:8px}.meter i{display:block;height:100%;width:0;background:var(--fg);transition:width .3s}
 .pair.four{grid-template-columns:repeat(4,1fr);gap:6px}
 #gweek{list-style:none;padding:0;margin:16px 0 0;display:grid;grid-template-columns:repeat(7,1fr);gap:4px;align-items:end;font-size:12px}
-#gweek li{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0}#gweek i{width:70%;max-width:28px;border-radius:5px;background:var(--mut);opacity:.4}#gweek i.full{background:var(--fg);opacity:1}#gweek span{color:var(--mut)}
+#gweek li{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0}#gweek i{width:70%;max-width:28px;border-radius:5px;border:1.5px solid var(--fg);box-sizing:border-box}#gweek i.full{background:var(--fg)}
+.today #hgoal{white-space:nowrap;font-size:clamp(18px,5.2vw,24px);letter-spacing:-.02em}
+.pair.four [data-add]{white-space:nowrap;padding-left:2px;padding-right:2px;font-size:15px}#gweek span{color:var(--mut)}
 #topics{list-style:none;padding:0;margin:12px 0 0;text-align:left}
 #topics li{display:flex;align-items:center;gap:6px;border-top:1px solid var(--hair)}
 #topics label{flex:1;display:flex;align-items:center;gap:11px;padding:11px 2px;min-width:0;font-size:15px;cursor:pointer}
@@ -302,7 +304,7 @@ box-shadow:inset 1.5px 1.5px 1px -.5px #fff,inset -1.5px -1.5px 1px -.5px #fff,i
 <div class="desk" aria-hidden="true"><div class="paper"><i class="t"></i><i></i><i></i><i class="s"></i><u><b></b><b class="on"></b><b></b><b></b><b></b></u><i></i><i class="s"></i><i class="x"></i><u><b></b><b></b><b></b><b class="on"></b><b></b></u><i></i><i></i><i class="s"></i><div class="frame"><b></b><b></b><b></b><b></b></div></div><div class="done">PDF hazır ✓</div></div></div>
 <div class="lens"><div class="today" aria-label="Bugünkü durumun">
 <button data-go="6"><b id="hdays">–</b><span id="hdaysl">sınava kalan gün</span></button>
-<button data-go="6"><b id="hgoal">–</b><span>bugün çözülen soru</span></button>
+<button data-go="6"><b id="hgoal">–</b><span>bugün çalıştığın süre</span></button>
 <button data-go="3"><b id="hbook">0</b><span id="hbookl">defterdeki soru</span></button>
 <button data-go="7"><b id="hshelf">0</b><span>arşivdeki PDF</span></button></div></div>
 <div class="plan glass"><h2 id="hplant">Bugünün programı</h2><p id="hplanempty">Bugün için ders eklenmemiş.</p><ul id="hplan" class="checks"></ul><button class="soft" data-go="6">Haftalık programı düzenle</button></div>
@@ -312,7 +314,7 @@ box-shadow:inset 1.5px 1.5px 1px -.5px #fff,inset -1.5px -1.5px 1px -.5px #fff,i
 <button class="glass wide2" data-go="3"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h13v17H7a2 2 0 0 1-2-2z"/><path d="M9.500 9.500l5 5M14.500 9.500l-5 5"/></svg><b>Yanlış defteri</b><span>Yapamadığın soruları kutuyla seç, ders ve konuya göre topla.</span></button>
 <button class="glass" data-go="1"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3h8l4 4v11H8z"/><path d="M4 8v13h11"/></svg><b>Dosyadan PDF</b><span>Word, Excel, metin ve görselleri tek PDF yap.</span></button>
 <button class="glass" data-go="4"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 2h6"/></svg><b>Sayaç ve net</b><span>Deneme süresi, soru başı süre, Pomodoro ve net hesabı.</span></button>
-<button class="glass" data-go="6"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16M7 16v-5M12 16V6M17 16v-8"/></svg><b>Takip</b><span>Haftalık program, konular, günlük hedef ve kalan gün.</span></button>
+<button class="glass" data-go="6"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16M7 16v-5M12 16V6M17 16v-8"/></svg><b>Takip</b><span>Haftalık program, konular, çalışma süresi ve kalan gün.</span></button>
 <button class="glass" data-go="5"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-9 9"/><path d="M18 14v6H4V6h6"/></svg><b>Çıkmış sorular</b><span>2018-2026 kitapçıkları için ÖSYM bağlantıları.</span></button>
 <button class="glass" data-go="2"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10v4h4l5 4V6L8 10z"/><path d="M16.500 9a4 4 0 0 1 0 6"/></svg><b>Videodan ses</b><span>Videonun sesini ayırıp kaydet.</span></button>
 <button class="glass" data-go="7"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16v13H4zM3 4h18v3H3zM9 11h6"/></svg><b>Arşiv</b><span>Oluşturduğun PDF’leri bu cihazda bul.</span></button>
@@ -407,9 +409,9 @@ box-shadow:inset 1.5px 1.5px 1px -.5px #fff,inset -1.5px -1.5px 1px -.5px #fff,i
 <div class="card glass"><h2>Sınava geri sayım</h2><output id="days" class="big">–</output><p id="daysnote"></p>
 <label class="line">Sınav tarihi<input id="examdate" class="field date" type="date"></label>
 <p class="hint">Varsayılan: 19 Haziran 2027 (ÖSYM duyurusu: YKS 19-20 Haziran 2027). Tarih değişirse buradan güncelle.</p></div>
-<div class="card glass"><h2>Günlük hedef</h2><output id="gcount" class="big">0 / 100</output><div class="meter"><i id="gbar"></i></div><p id="gnote" role="status"></p>
-<div class="pair four"><button class="soft" data-add="1">+1</button><button class="soft" data-add="5">+5</button><button class="soft" data-add="10">+10</button><button id="gminus" class="soft" data-add="-1">−1</button></div>
-<label class="line">Günlük soru hedefi<input id="goal" class="field" type="number" inputmode="numeric" min="1" max="2000" value="100"></label>
+<div class="card glass"><h2>Çalışma süresi</h2><output id="gcount" class="big">0 dk</output><div class="meter"><i id="gbar"></i></div><p id="gnote" role="status"></p>
+<div class="pair four"><button class="soft" data-add="15">+15 dk</button><button class="soft" data-add="30">+30 dk</button><button class="soft" data-add="60">+1 sa</button><button id="gminus" class="soft" data-add="-15">−15 dk</button></div>
+<label class="line">Günlük hedef (saat)<input id="goal" class="field" type="number" inputmode="decimal" min="0.5" max="16" step="0.5" value="6"></label>
 <ul id="gweek" aria-label="Son 7 gün"></ul><p id="gsum"></p></div>
 <div class="card glass"><h2>Konu takibi</h2><label class="line col">Ders<select id="tsel"></select></label>
 <p id="tprog"></p><div class="meter"><i id="tbar"></i></div><p id="ttotal"></p>
@@ -1765,7 +1767,7 @@ const TOPICS={
 'AYT Felsefe Grubu':'Felsefe|Mantık|Psikoloji|Sosyoloji',
 'AYT Din Kültürü':'Dünya ve Ahiret|Kur\'an\'da Bazı Kavramlar|İnançla İlgili Meseleler|İslam ve Bilim|Anadolu\'da İslam'};
 const SUBJECTS=['Türkçe','Matematik','Geometri','Fizik','Kimya','Biyoloji','Edebiyat','Tarih','Coğrafya','Felsefe','Din Kültürü','Yabancı Dil','Diğer'];
-let track={exam:'2027-06-19',goal:100,days:{},lists:{},done:{},plan:[[],[],[],[],[],[],[]],backup:0}, trackChain=Promise.resolve(), trackReady=false;
+let track={exam:'2027-06-19',goal:100,days:{},mgoal:360,mins:{},lists:{},done:{},plan:[[],[],[],[],[],[],[]],backup:0}, trackChain=Promise.resolve(), trackReady=false;
 const topicsOf=k=>track.lists[k]||TOPICS[k].split('|');
 const dayKey=(d=new Date())=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
 const dayNo=s=>{ const [y,m,d]=s.split('-').map(Number); return Date.UTC(y,m-1,d)/864e5; };
@@ -1782,22 +1784,24 @@ function countdown(){
   big.textContent=n>0?n:n===0?'Bugün':'–';
   note.textContent=n>0?'gün kaldı':n===0?'Başarılar!':'Bu tarih geçti. Yeni tarih seç.';
 }
+// süreler dakika olarak tutulur (eski soru kayıtları days/goal içinde durur)
+const dur=m=>{ const h=Math.floor(m/60), d=m%60; return h?h+' sa'+(d?' '+d+' dk':''):d+' dk'; };
 function goalRender(){
-  const today=track.days[dayKey()]||0, goal=track.goal;
-  $('gcount').textContent=today+' / '+goal;
+  const today=track.mins[dayKey()]||0, goal=track.mgoal;
+  $('gcount').textContent=dur(today);
   $('gbar').style.width=Math.min(100,today/goal*100)+'%';
-  $('gnote').textContent=today>=goal?'Bugünkü hedef tamam.':'Hedefe '+(goal-today)+' soru kaldı.';
+  $('gnote').textContent=today>=goal?'Bugünkü '+dur(goal)+' hedefi tamam.':'Hedef '+dur(goal)+', '+dur(goal-today)+' kaldı.';
   $('gminus').disabled=!today;
   const list=$('gweek'); list.textContent=''; let sum=0;
   for(let i=6;i>=0;i--){
-    const d=new Date(); d.setHours(12,0,0,0); d.setDate(d.getDate()-i); const n=track.days[dayKey(d)]||0; sum+=n;
+    const d=new Date(); d.setHours(12,0,0,0); d.setDate(d.getDate()-i); const n=track.mins[dayKey(d)]||0; sum+=n;
     const li=document.createElement('li'), bar=document.createElement('i'), a=document.createElement('b'), t=document.createElement('span');
-    a.textContent=n; bar.style.height=(4+Math.min(1,n/goal)*46)+'px'; if(n>=goal) bar.className='full'; t.textContent=d.toLocaleDateString('tr-TR',{weekday:'short'});
+    a.textContent=(n/60).toLocaleString('tr-TR',{maximumFractionDigits:1}); li.title=dur(n); bar.style.height=(4+Math.min(1,n/goal)*46)+'px'; if(n>=goal) bar.className='full'; t.textContent=d.toLocaleDateString('tr-TR',{weekday:'short'});
     li.append(a,bar,t); list.appendChild(li);
   }
-  $('gsum').textContent='Son 7 gün: '+sum+' soru'; homeSoon();
+  $('gsum').textContent='Son 7 gün: '+dur(sum)+' (sütunlar saat)'; homeSoon();
 }
-function addSolved(n){ const k=dayKey(); track.days[k]=Math.max(0,Math.min(9999,(track.days[k]||0)+n)); goalRender(); saveTrack(); }
+function addStudy(n){ const k=dayKey(); track.mins[k]=Math.max(0,Math.min(1440,(track.mins[k]||0)+n)); goalRender(); saveTrack(); }
 function topicRender(){
   const key=$('tsel').value, list=topicsOf(key), ul=$('topics'); ul.textContent='';
   const count=keys=>keys.reduce((a,k)=>{ for(const t of topicsOf(k)){ a[1]++; if(track.done[k+'|'+t]) a[0]++; } return a; },[0,0]);
@@ -1832,8 +1836,8 @@ $('tadd').onclick=()=>{ const key=$('tsel').value, t=$('tnew').value.replace(/[|
 $('tnew').onkeydown=e=>{ if(e.key==='Enter') $('tadd').click(); };
 $('treset').onclick=()=>{ delete track.lists[$('tsel').value]; saveTrack(); topicRender(); };
 $('examdate').onchange=()=>{ track.exam=$('examdate').value; countdown(); saveTrack(); };
-$('goal').onchange=()=>{ track.goal=num('goal',1,2000,100); $('goal').value=track.goal; goalRender(); saveTrack(); };
-for(const b of document.querySelectorAll('[data-add]')) b.onclick=()=>addSolved(Number(b.dataset.add));
+$('goal').onchange=()=>{ const h=parseFloat($('goal').value.replace(',','.')); track.mgoal=h>0?Math.round(Math.max(.5,Math.min(16,h))*60):360; $('goal').value=track.mgoal/60; goalRender(); saveTrack(); };
+for(const b of document.querySelectorAll('[data-add]')) b.onclick=()=>addStudy(Number(b.dataset.add));
 // ================= Haftalık ders programı =================
 const WDAYS=['Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi','Pazar'];
 const WSHORT=['Pzt','Sal','Çar','Per','Cum','Cmt','Paz'];
@@ -1886,7 +1890,7 @@ $('wadd').onclick=()=>{
 };
 $('wkonu').onkeydown=e=>{ if(e.key==='Enter') $('wadd').click(); };
 
-function trackAll(){ $('examdate').value=track.exam; $('goal').value=track.goal; countdown(); goalRender(); topicRender(); planRender(); backupInfo(); }
+function trackAll(){ $('examdate').value=track.exam; $('goal').value=track.mgoal/60; countdown(); goalRender(); topicRender(); planRender(); backupInfo(); }
 // kayıt okunmadan dokunulursa eski bilgilerin üzerine yazılmasın
 $('panel6').inert=true;
 (async()=>{ await bookReady; try{ const t=bookDb&&await kv(s=>s.get('takip')); if(t) track={...track,...t}; }catch(e){} track.plan=cleanPlan(track.plan); trackReady=true; $('panel6').inert=false; trackAll(); })();
@@ -2014,6 +2018,8 @@ function mergeTrack(t){
   if(isDay(t.exam)||t.exam==='') track.exam=t.exam;
   if(num01(t.goal)) track.goal=Math.max(1,Math.min(2000,Math.round(t.goal)));
   for(const [k,n] of Object.entries(t.days||{})) if(isDay(k)&&num01(n)) track.days[k]=Math.max(track.days[k]||0,Math.max(0,Math.min(9999,Math.round(n))));
+  if(num01(t.mgoal)) track.mgoal=Math.max(30,Math.min(960,Math.round(t.mgoal)));
+  for(const [k,n] of Object.entries(t.mins||{})) if(isDay(k)&&num01(n)) track.mins[k]=Math.max(track.mins[k]||0,Math.max(0,Math.min(1440,Math.round(n))));
   for(const [k,l] of Object.entries(t.lists||{})) if(Object.hasOwn(TOPICS,k)&&Array.isArray(l)){
     const theirs=l.filter(x=>typeof x==='string').map(x=>x.slice(0,60));
     track.lists[k]=track.lists[k]?[...new Set([...track.lists[k],...theirs])]:theirs;
@@ -2097,7 +2103,7 @@ function homeRender(){
     const n=track.exam?dayNo(track.exam)-dayNo(dayKey()):-1;
     $('hdays').textContent=n>0?n:n===0?'Bugün':'–';
     $('hdaysl').textContent=n===0?'sınav günü':n>0?'sınava kalan gün':'sınav tarihi seç';
-    $('hgoal').textContent=(track.days[dayKey()]||0)+' / '+track.goal;
+    $('hgoal').textContent=dur(track.mins[dayKey()]||0);
   }
   const due=book.filter(isDue).length;
   $('hbook').textContent=due||book.length; $('hbookl').textContent=due?'tekrar bekleyen soru':'defterdeki soru'; $('hshelf').textContent=shelf.length;
